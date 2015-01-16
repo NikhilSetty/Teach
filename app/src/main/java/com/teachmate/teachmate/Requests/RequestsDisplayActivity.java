@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
@@ -17,6 +18,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -91,6 +93,8 @@ public class RequestsDisplayActivity extends Fragment {
             populateListView(list);
             progressDialog.dismiss();
         }
+
+        setHasOptionsMenu(true);
 
         /*HttpGetter getter = new HttpGetter();
         getter.execute("http://10.163.180.110/doctool/Main/GetHelpRequests?id=1");*/
@@ -185,6 +189,12 @@ public class RequestsDisplayActivity extends Fragment {
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_requests_display, menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -200,8 +210,8 @@ public class RequestsDisplayActivity extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    private void GenerateNewRequest() {
-        LayoutInflater li = LayoutInflater.from(getActivity().getApplicationContext());
+    public void GenerateNewRequest() {
+        LayoutInflater li = LayoutInflater.from(getActivity());
         View promptsView = li.inflate(R.layout.alert_prompt_new_request, null);
 
         ArrayList<String> array = new ArrayList<String>();
@@ -216,7 +226,7 @@ public class RequestsDisplayActivity extends Fragment {
         spinner1.setAdapter(mAdapter);
 
 
-        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity().getApplicationContext());
+        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
         alertDialogBuilder.setView(promptsView);
         alertDialogBuilder.setMessage("Generate New Request!");
         alertDialogBuilder.setPositiveButton("Yes",
@@ -225,7 +235,7 @@ public class RequestsDisplayActivity extends Fragment {
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {
                         if(requestEditText.getText().toString().equals("") || requestEditText.getText() == null){
-                            Toast.makeText(getActivity().getApplicationContext(), "Please enter a Request Message!", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getActivity(), "Please enter a Request Message!", Toast.LENGTH_LONG).show();
                         }
                         else{
                             newRequestString = requestEditText.getText().toString();
