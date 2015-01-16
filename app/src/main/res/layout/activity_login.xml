@@ -1,0 +1,84 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:background="#0099cc"
+    tools:context="com.teachmate.teachmate.LoginActivity">
+
+    <!-- The primary full-screen view. This can be replaced with whatever view
+         is needed to present your content, e.g. VideoView, SurfaceView,
+         TextureView, etc. -->
+
+    <!-- This FrameLayout insets its children based on system windows using
+         android:fitsSystemWindows. -->
+    <FrameLayout android:layout_width="match_parent" android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
+
+
+        <RelativeLayout android:id="@+id/fullscreen_content_controls" style="?metaButtonBarStyle"
+            android:layout_width="match_parent" android:layout_height="67dp"
+            android:layout_gravity="bottom|center_horizontal"
+            android:background="@color/black_overlay" android:orientation="horizontal"
+            tools:ignore="UselessParent">
+
+            <Button android:id="@+id/buttonSignIn" style="?metaButtonBarButtonStyle"
+                android:layout_width="150dp" android:layout_height="wrap_content"
+                android:layout_weight="1" android:text="@string/SignIn"
+                android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:onClick="AuthenticateUser"
+                android:textColor="#ffffff" />
+
+            <Button android:id="@+id/buttonSignUp" style="?metaButtonBarButtonStyle"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_weight="1" android:text="SignUp/Register"
+                android:onClick="SignUpAction"
+                android:layout_alignTop="@+id/buttonSignIn"
+                android:layout_toRightOf="@+id/buttonSignIn"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:textColor="#ffffff" />
+
+        </RelativeLayout>
+
+        <RelativeLayout android:id="@+id/sign_in_controls" style="?metaButtonBarStyle"
+            android:layout_width="match_parent" android:layout_height="395dp"
+            android:layout_gravity="center_horizontal|top"
+            android:background="@color/black_overlay" android:orientation="horizontal"
+            tools:ignore="UselessParent">
+
+
+            <EditText
+                android:layout_width="300dp"
+                android:layout_height="50dp"
+                android:inputType="textEmailAddress"
+                android:background="@drawable/rounded_edit_text"
+                android:hint="@string/prompt_email"
+                android:textColorHint="#afafaf"
+                android:id="@+id/editTextLoginEmail"
+                android:layout_gravity="left|top"
+                android:layout_above="@+id/editTextLoginPassword"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="28dp"
+                android:padding="5dp" />
+
+            <EditText
+                android:layout_width="300dp"
+                android:layout_height="50dp"
+                android:textColorHint="#afafaf"
+                android:inputType="textPassword"
+                android:background="@drawable/rounded_edit_text"
+                android:ems="10"
+                android:hint="@string/prompt_password"
+                android:id="@+id/editTextLoginPassword"
+                android:layout_marginBottom="32dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignLeft="@+id/editTextLoginEmail"
+                android:layout_alignStart="@+id/editTextLoginEmail"
+                android:padding="5dp" />
+
+        </RelativeLayout>
+
+
+    </FrameLayout>
+
+</FrameLayout>
