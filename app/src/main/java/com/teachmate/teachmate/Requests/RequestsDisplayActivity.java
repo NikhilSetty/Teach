@@ -79,18 +79,18 @@ public class RequestsDisplayActivity extends Fragment {
 
         listViewRequests = (ListView) layout.findViewById(R.id.listViewRequests);
 
-/*        //Debug Code
+        //Debug Code
         String result = "{'UserId':1,'Requests':[{'RequestId':1,'RequesteUserId':'2', 'RequestUserName':'Umang', 'RequestMessage':'Help me, baby!', 'RequestUserProfession':'Software Engineer', 'RequestUserProfilePhotoServerPath':'C:/profile.png', 'RequestedTime':'12/13/14 9.48 a.m.'},{'RequestId':2,'RequesteUserId':3, 'RequestUserName':'Anuj', 'RequestMessage':'Get me out of here', 'RequestUserProfession':'Priest', 'RequestUserProfilePhotoServerPath':'C:/profile.png', 'RequestedTime':'12/14/14 8.48 a.m.'}]}";
         List<Requests> list = GetObjectsFromResponse(result);
         if(list != null){
             populateListView(list);
             progressDialog.dismiss();
-        }*/
+        }
 
         setHasOptionsMenu(true);
 
-        HttpGetter getter = new HttpGetter();
-        getter.execute("http://teach-mate.azurewebsites.net/Request/GetAllRequestsAssigned?id=1&lastRequestId=2");
+/*        HttpGetter getter = new HttpGetter();
+        getter.execute("http://teach-mate.azurewebsites.net/Request/GetAllRequestsAssigned?id=1&lastRequestId=2");*/
 
         return layout;
 

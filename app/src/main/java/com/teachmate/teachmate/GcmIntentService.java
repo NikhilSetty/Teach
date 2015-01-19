@@ -90,7 +90,7 @@ public class GcmIntentService extends IntentService {
                 switch (intType){
                     case 1:
                         verifyUserId = extras.getString("UserId");
-                        return;
+                        break;
                     case 3: //New Request Notification
                         message = extras.getString("message");
                         requestId = extras.getString("requestId");
@@ -161,7 +161,8 @@ public class GcmIntentService extends IntentService {
             mBuilder.setContentIntent(contentIntent);
             mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
         }
+        else{
 
-
+        }
     }
 }

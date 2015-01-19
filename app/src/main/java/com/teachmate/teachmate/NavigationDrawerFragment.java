@@ -124,7 +124,7 @@ public class NavigationDrawerFragment extends Fragment {
         NsItemModel itemMyRequests = new NsItemModel();
         itemResponse.title = "My Requests";
         itemResponse.counter = 3;
-        model[1] = itemResponse;
+        model[2] = itemResponse;
 
         ListAdapter adapter = new NsMenuAdapter(getActivity().getApplicationContext(), model);
 

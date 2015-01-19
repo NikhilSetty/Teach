@@ -1,5 +1,6 @@
 package com.teachmate.teachmate;
 
+import com.teachmate.teachmate.DBHandlers.UserModelDBHandler;
 import com.teachmate.teachmate.models.UserModel;
 import com.teachmate.teachmate.util.SystemUiHider;
 
@@ -40,6 +41,8 @@ public class LoginActivity extends Activity {
     String _editTextPassword = "";
 
     ProgressDialog progressDialog;
+
+    String serverRegId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,12 +90,12 @@ public class LoginActivity extends Activity {
         _editTextPassword = editTextPassword.getText().toString();
         if(_editTextPassword.isEmpty()){
             progressDialog.dismiss();
-            Toast.makeText(getApplicationContext(), "Please Enter Email Id", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Please Enter Password Id", Toast.LENGTH_SHORT).show();
             return;
         }
 
         HttpAuthenticateUser authenticateUser = new HttpAuthenticateUser();
-        authenticateUser.execute("");
+        authenticateUser.execute("http://teach-mate.azurewebsites.net/User/CheckUser");
 
     }
 
@@ -144,26 +147,58 @@ public class LoginActivity extends Activity {
         protected void onPostExecute(String result) {
             Toast.makeText(getBaseContext(), "Data Sent! -" + result.toString(), Toast.LENGTH_LONG).show();
             convertJsonToObject(result);
+            if(!TempDataClass.deviceRegId.equals(serverRegId)){
+                HttpPostRegIdToServer regIdPost = new HttpPostRegIdToServer();
+                regIdPost.execute("http://teach-mate.azurewebsites.net/User/UpdateRegId");
+            }
+            else if(TempDataClass.deviceRegId.equals(serverRegId)){
+                progressDialog.dismiss();
+                Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(i);
+            }
         }
     }
 
     private void convertJsonToObject(String result) {
         try {
-            JSONObject status = (new JSONObject(result)).getJSONObject("Status");
+            String status = (new JSONObject(result)).get("Status").toString();
 
             if(status.equals("Success")){
                 JSONObject userDataJson = (new JSONObject(result)).getJSONObject("UserDetails");
 
                 UserModel userData = new UserModel();
+                String[] temp = new String[2];
+                int i = 0;
+                for (String retval: userDataJson.getString("Name").split(" ", 2)){
+                    if(i == 0)
+                        temp[0] = retval;
+                    else
+                        temp[1] = retval;
 
+                    i++;
+                }
+                userData.FirstName = temp[0];
+                userData.LastName = temp[1];
+                userData.ServerUserId = userDataJson.get("Id").toString();
+                TempDataClass.serverUserId = userData.ServerUserId;
+                userData.PhoneNumber = userDataJson.get("PhoneNumber").toString();
+                userData.Profession = userDataJson.get("Profession").toString();
+                userData.EmailId = userDataJson.get("EmailId").toString();
+                userData.Address1 = userDataJson.get("Address1").toString();
+                userData.PinCode1 = userDataJson.get("PinCode1").toString();
+                userData.Address2 = userDataJson.get("Address2").toString();
+                userData.PinCode2 = userDataJson.get("Pincode2").toString();
 
+                UserModelDBHandler.InsertProfile(getApplicationContext(), userData);
 
+                serverRegId = userDataJson.get("RegistrationId").toString();
             }
             else{
                 progressDialog.dismiss();
                 Toast.makeText(getApplicationContext(), "Wrong EmailId or Password. Try Again", Toast.LENGTH_SHORT).show();
             }
         }catch(Exception ex){
+            progressDialog.dismiss();
             Toast.makeText(getApplicationContext(), ex.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
@@ -178,6 +213,61 @@ public class LoginActivity extends Activity {
 
         inputStream.close();
         return result;
+    }
+
+    public String POSTRegID(String url){
+        InputStream inputStream = null;
+        String result = "";
+        try {
+
+            HttpClient httpclient = new DefaultHttpClient();
+            HttpPost httpPost = new HttpPost(url);
+            String json = "";
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("Id", TempDataClass.serverUserId);
+            jsonObject.put("RegistrationId", TempDataClass.deviceRegId);
+            json = jsonObject.toString();
+            StringEntity se = new StringEntity(json);
+
+            httpPost.setEntity(se);
+
+            httpPost.setHeader("Accept", "application/json");
+            httpPost.setHeader("Content-type", "application/json");
+
+
+            HttpResponse httpResponse = httpclient.execute(httpPost);
+
+            inputStream = httpResponse.getEntity().getContent();
+
+            if(inputStream != null)
+                result = convertInputStreamToString(inputStream);
+            else
+                result = "Did not work!";
+
+            return result;
+
+        } catch (Exception e) {
+            Log.v("Getter", e.getLocalizedMessage());
+        }
+
+        return result;
+    }
+    private class HttpPostRegIdToServer extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... urls) {
+            return POSTRegID(urls[0]);
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            if(result.equals("OK")){
+                Toast.makeText(getApplicationContext(), "Registration Successfull.", Toast.LENGTH_SHORT).show();
+
+                Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(i);
+
+            }
+        }
     }
 
 }
