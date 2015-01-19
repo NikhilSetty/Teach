@@ -1,4 +1,4 @@
-package com.teachmate.teachmate.Requests;
+package com.teachmate.teachmate.models;
 
 /**
  * Created by NiRavishankar on 12/12/2014.

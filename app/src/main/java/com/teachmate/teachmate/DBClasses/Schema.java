@@ -12,7 +12,7 @@ public class Schema {
             + DbTableStrings.ADDRESS1 + " string, "
             + DbTableStrings.PINCODE1 + " string, "
             + DbTableStrings.ADDRESS2 + " string, "
-            + DbTableStrings.PINCODE2 + " string, ) ";
+            + DbTableStrings.PINCODE2 + " string) ";
 
     public static final String CREATE_TABLE_REQUESTS = "create table if not exists " + DbTableStrings.TABLE_NAME_REQUESTS +
             "( _id integer primary key autoincrement, "

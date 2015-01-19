@@ -2,6 +2,7 @@ package com.teachmate.teachmate.DBHandlers;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.widget.Toast;
 
@@ -34,11 +35,35 @@ public class UserModelDBHandler {
 
             dbHelper = new DbHelper((context.getApplicationContext()));
             db = dbHelper.getWritableDatabase();
-            db.insert("",null,contentValues);
+            db.insert(DbTableStrings.TABLE_NAME_USER_MODEL,null,contentValues);
         }
         catch (Exception e)
         {
-            Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT);
+            Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public static boolean CheckIfUserDataExists(Context context){
+
+        try {
+            dbHelper = new DbHelper(context.getApplicationContext());
+            db = dbHelper.getWritableDatabase();
+
+            UserModel contact = new UserModel();
+
+            Cursor c = db.rawQuery("Select * from " + DbTableStrings.TABLE_NAME_USER_MODEL, null);
+            if (c.moveToFirst()) {
+                return true;
+            }
+            else{
+                return false;
+            }
+
+        }
+        catch(Exception e){
+            Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+            return false;
         }
     }
 }
+

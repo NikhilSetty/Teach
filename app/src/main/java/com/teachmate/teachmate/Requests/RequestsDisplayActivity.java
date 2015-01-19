@@ -3,18 +3,12 @@ package com.teachmate.teachmate.Requests;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.ContentValues;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -29,34 +23,29 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.teachmate.teachmate.DBHandlers.RequestsDBHandler;
 import com.teachmate.teachmate.MainActivity;
 import com.teachmate.teachmate.R;
+import com.teachmate.teachmate.models.Requests;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.BasicHttpParams;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -74,10 +63,14 @@ public class RequestsDisplayActivity extends Fragment {
 
     ProgressDialog progressDialog;
 
+    Requests newRequest;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         FragmentActivity activity = (FragmentActivity) super.getActivity();
         RelativeLayout layout = (RelativeLayout) inflater.inflate(R.layout.activity_requests_display, container, false);
+
+        newRequest = new Requests();
 
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setCancelable(false);
@@ -86,18 +79,18 @@ public class RequestsDisplayActivity extends Fragment {
 
         listViewRequests = (ListView) layout.findViewById(R.id.listViewRequests);
 
-        //Debug Code
+/*        //Debug Code
         String result = "{'UserId':1,'Requests':[{'RequestId':1,'RequesteUserId':'2', 'RequestUserName':'Umang', 'RequestMessage':'Help me, baby!', 'RequestUserProfession':'Software Engineer', 'RequestUserProfilePhotoServerPath':'C:/profile.png', 'RequestedTime':'12/13/14 9.48 a.m.'},{'RequestId':2,'RequesteUserId':3, 'RequestUserName':'Anuj', 'RequestMessage':'Get me out of here', 'RequestUserProfession':'Priest', 'RequestUserProfilePhotoServerPath':'C:/profile.png', 'RequestedTime':'12/14/14 8.48 a.m.'}]}";
         List<Requests> list = GetObjectsFromResponse(result);
         if(list != null){
             populateListView(list);
             progressDialog.dismiss();
-        }
+        }*/
 
         setHasOptionsMenu(true);
 
-        /*HttpGetter getter = new HttpGetter();
-        getter.execute("http://10.163.180.110/doctool/Main/GetHelpRequests?id=1");*/
+        HttpGetter getter = new HttpGetter();
+        getter.execute("http://teach-mate.azurewebsites.net/Request/GetAllRequestsAssigned?id=1&lastRequestId=2");
 
         return layout;
 
@@ -274,7 +267,10 @@ public class RequestsDisplayActivity extends Fragment {
             String json = "";
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("UserId", "1");
+            newRequest.RequesteUserId = "1";
+            //TODO
             jsonObject.put("RequestMessage", newRequestString);
+            newRequest.RequestString = newRequestString;
             if(isCurrentLocation){
                 jsonObject.put("isCurrentLocation", "true");
                 jsonObject.put("Location", 123 + "," + 122);
@@ -285,6 +281,7 @@ public class RequestsDisplayActivity extends Fragment {
             }
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH/mm/ss");
             String currentDateandTime = sdf.format(new Date());
+            newRequest.RequestTime = currentDateandTime;
             jsonObject.put("TimeOfRequest", currentDateandTime);
             json = jsonObject.toString();
 
@@ -319,12 +316,14 @@ public class RequestsDisplayActivity extends Fragment {
     private class HttpAsyncTaskPOST extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... urls) {
-
             return POST(urls[0]);
         }
 
         @Override
         protected void onPostExecute(String result) {
+            newRequest.RequestID = result;
+            //TODO
+            RequestsDBHandler.InsertRequests(getActivity().getApplicationContext(), newRequest);
             Toast.makeText(getActivity().getApplicationContext(), "Data Sent! -" + result.toString(), Toast.LENGTH_LONG).show();
         }
     }

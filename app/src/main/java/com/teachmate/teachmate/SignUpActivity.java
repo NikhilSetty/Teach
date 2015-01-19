@@ -1,6 +1,7 @@
 package com.teachmate.teachmate;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.AsyncTask;
@@ -13,7 +14,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.teachmate.teachmate.DBHandlers.DeviceInfoDBHandler;
 import com.teachmate.teachmate.DBHandlers.UserModelDBHandler;
+import com.teachmate.teachmate.models.DeviceInfoKeys;
 import com.teachmate.teachmate.models.UserModel;
 
 import org.apache.http.HttpEntity;
@@ -273,7 +276,7 @@ public class SignUpActivity extends ActionBarActivity {
             }
 
             HttpSignUpAsyncTask signUpUser = new HttpSignUpAsyncTask();
-            signUpUser.execute("http://10.163.179.199:8222/MvcApplication1/Registration/RegisterUser");
+            signUpUser.execute("http://teach-mate.azurewebsites.net/User/AddUser");
 
             return;
         }
@@ -288,8 +291,8 @@ public class SignUpActivity extends ActionBarActivity {
             HttpPost httpPost = new HttpPost(url);
             String json = "";
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("UserId", userData.ServerUserId);
-            jsonObject.put("RegId","");
+            jsonObject.put("Id", userData.ServerUserId);
+            jsonObject.put("RegistrationId", TempDataClass.deviceRegId);
             json = jsonObject.toString();
             StringEntity se = new StringEntity(json);
 
@@ -326,6 +329,10 @@ public class SignUpActivity extends ActionBarActivity {
         protected void onPostExecute(String result) {
             if(result.equals("OK")){
                 Toast.makeText(getApplicationContext(), "Registration Successfull.", Toast.LENGTH_SHORT).show();
+
+                Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(i);
+
             }
         }
     }
@@ -339,7 +346,7 @@ public class SignUpActivity extends ActionBarActivity {
             HttpPost httpPost = new HttpPost(url);
             String json = "";
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("Name", _editTextFirstName + " " + _editTextLastName);
+            jsonObject.put("UserName", _editTextFirstName + " " + _editTextLastName);
             jsonObject.put("PhoneNumber", _editTextPhoneNumber);
             jsonObject.put("Profession", _editTextProfession);
             jsonObject.put("EmailId", _editTextEmailId);
@@ -393,12 +400,16 @@ public class SignUpActivity extends ActionBarActivity {
                 if(!(result.isEmpty() || result.equals("error"))){
                     Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
 
+                    TempDataClass.userName = userData.FirstName + userData.LastName;
+                    TempDataClass.userProfession = userData.Profession;
+                    TempDataClass.serverUserId = result;
+
                     userData.ServerUserId = result;
 
                     UserModelDBHandler.InsertProfile(getApplicationContext(), userData);
 
                     HttpPostRegIdToServer regIdPost = new HttpPostRegIdToServer();
-                    regIdPost.execute("");
+                    regIdPost.execute("http://teach-mate.azurewebsites.net/User/UpdateRegId");
 
                 }
                 else{

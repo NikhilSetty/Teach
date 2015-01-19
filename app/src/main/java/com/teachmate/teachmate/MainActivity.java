@@ -18,6 +18,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.teachmate.teachmate.Requests.MyRequests;
 import com.teachmate.teachmate.Requests.RequestDisplayActivity;
 import com.teachmate.teachmate.Requests.RequestsDisplayActivity;
 import com.teachmate.teachmate.Responses.ResponseDisplayActivity;
@@ -102,6 +103,10 @@ public class MainActivity extends ActionBarActivity
                         .replace(R.id.container, new ResponsesDisplayActivity())
                         .commit();
                 break;
+            case 2:
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, new MyRequests())
+                        .commit();
             default:
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, new RequestsDisplayActivity())

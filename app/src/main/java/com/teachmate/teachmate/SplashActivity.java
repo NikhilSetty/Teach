@@ -6,6 +6,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
@@ -20,14 +24,16 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.teachmate.teachmate.DBHandlers.DeviceInfoDBHandler;
+import com.teachmate.teachmate.DBHandlers.UserModelDBHandler;
 import com.teachmate.teachmate.models.DeviceInfoKeys;
 import com.teachmate.teachmate.models.DeviceInfoModel;
+import com.teachmate.teachmate.models.UserModel;
 
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
-public class SplashActivity extends Activity {
+public class SplashActivity extends Activity implements LocationListener {
 
     public static final String EXTRA_MESSAGE = "message";
     public static final String PROPERTY_REG_ID = "registration_id";
@@ -48,6 +54,11 @@ public class SplashActivity extends Activity {
     AtomicInteger msgId = new AtomicInteger();
     Context context;
 
+    private LocationManager locationManager;
+    private String provider;
+    public static String lattitude;
+    public static String longitude;
+
     private static int SPLASH_TIME_OUT = 3000;
 
     @Override
@@ -67,7 +78,42 @@ public class SplashActivity extends Activity {
             if (regid.isEmpty()) {
                 registerInBackground();
             }
+
+            TempDataClass.deviceRegId = regid;
+
+            String dbRegID = DeviceInfoDBHandler.GetValueForKey(getApplicationContext(), DeviceInfoKeys.REGISTRATION_ID);
+
+            if(!regid.equals(dbRegID)) {
+                //TODO
+            }
+
+
+            getCurrentLocation();
+
+            if (!UserModelDBHandler.CheckIfUserDataExists(getApplication().getApplicationContext())) {
+                new Handler().postDelayed(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        // This method will be executed once the timer is over
+                        // Start your app main activity
+                        Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+                        startActivity(i);
+
+                        // close this activity
+                        finish();
+                    }
+                }, 1000);
+            }
+
             else{
+
+                //TODO user data
+                /*
+                tempDataClass.serverUserId
+
+                 */
+
                 new Handler().postDelayed(new Runnable() {
 
                     @Override
@@ -81,12 +127,60 @@ public class SplashActivity extends Activity {
                         finish();
                     }
                 }, SPLASH_TIME_OUT);
-        }
+            }
             mDisplay.append(regid);
-
-        } else {
+        }
+        else {
             Log.i(TAG, "No valid Google Play Services APK found.");
         }
+
+    }
+
+    private boolean getCurrentLocation(){
+        //Get current Location from LocationManager:
+        // Get the location manager
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        // Define the criteria how to select the locatioin provider -> use
+        // default
+        Criteria criteria = new Criteria();
+        provider = locationManager.getBestProvider(criteria, false);
+        Location location = locationManager.getLastKnownLocation(provider);
+
+        // Initialize the location fields
+        if (location != null) {
+            System.out.println("Provider " + provider + " has been selected.");
+            onLocationChanged(location);
+            return  true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+
+        TempDataClass.currentLongitude = longitude;
+        TempDataClass.currentLattitude = lattitude;
+
+        lattitude = String.valueOf(location.getLatitude());
+        longitude = String.valueOf(location.getLongitude());
+        mDisplay.append("Lattitude:" + lattitude + ", Longitude: " + longitude);
+
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
     }
 
     /**

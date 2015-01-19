@@ -5,11 +5,9 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +18,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.teachmate.teachmate.R;
-import com.teachmate.teachmate.Requests.Requests;
+import com.teachmate.teachmate.models.Responses;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;

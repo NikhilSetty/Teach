@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.teachmate.teachmate.R;
+import com.teachmate.teachmate.models.Responses;
 
 /**
  * Created by NiRavishankar on 12/24/2014.

@@ -44,10 +44,19 @@
             android:name=".SignUpActivity"
             android:label="@string/title_activity_sign_up" >
         </activity>
-        <activity
-            android:name=".Requests.RequestsDisplayActivity"
-            android:label="@string/title_activity_requests_display" >
-        </activity>
+
+        <receiver
+            android:name=".GcmBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+
+                <category android:name="com.example.gcm" />
+            </intent-filter>
+        </receiver>
+
+        <service android:name=".GcmIntentService" />
+
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main" >

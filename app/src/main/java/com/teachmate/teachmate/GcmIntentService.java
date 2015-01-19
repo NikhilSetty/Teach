@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.teachmate.teachmate.GCM;
+package com.teachmate.teachmate;
 
 import android.app.IntentService;
 import android.app.NotificationManager;
@@ -27,9 +27,6 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
-import com.teachmate.teachmate.MainActivity;
-import com.teachmate.teachmate.R;
-import com.teachmate.teachmate.Requests.RequestDisplayActivity;
 
 /**
  * This {@code IntentService} does the actual handling of the GCM message.
@@ -55,6 +52,8 @@ public class GcmIntentService extends IntentService {
     String userId;
     int intType;
     String responseId;
+
+    String verifyUserId;
 
     @Override
     protected void onHandleIntent(Intent intent) {
@@ -89,12 +88,15 @@ public class GcmIntentService extends IntentService {
                 type = extras.getString("Type");
                 intType = Integer.parseInt(type);
                 switch (intType){
-                    case 1: //New Request Notification
+                    case 1:
+                        verifyUserId = extras.getString("UserId");
+                        return;
+                    case 3: //New Request Notification
                         message = extras.getString("message");
                         requestId = extras.getString("requestId");
                         username = extras.getString("userName");
                         break;
-                    case 2://New Response Notification
+                    case 4://New Response Notification
                         message = extras.getString("ResponseMessage");
                         username = extras.getString("ResponseUserName");
                         requestId = extras.getString("RequestId");
