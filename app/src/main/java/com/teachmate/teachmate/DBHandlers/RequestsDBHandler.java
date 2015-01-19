@@ -46,23 +46,28 @@ public class RequestsDBHandler {
 
         Cursor c = db.rawQuery("Select * from " + DbTableStrings.TABLE_NAME_REQUESTS, null);
 
-        Requests[] requests = new Requests[c.getCount()];
+        int count = c.getCount();
 
-        if (c != null ) {
-            int i = 0;
-            if  (c.moveToFirst()) {
-                do {
-                    requests[i].RequesteUserId = c.getString(c.getColumnIndex(DbTableStrings.REQUEST_EUSER_ID));
-                    requests[i].RequestID = c.getString(c.getColumnIndex(DbTableStrings.REQUEST_ID));
-                    requests[i].RequestString = c.getString(c.getColumnIndex(DbTableStrings.REQUEST_STRING));
-                    requests[i].RequestTime = c.getString(c.getColumnIndex(DbTableStrings.REQUEST_TIME));
-                    requests[i].RequestUserName = c.getString(c.getColumnIndex(DbTableStrings.REQUEST_USERNAME));
-                    requests[i].RequestUserProfession = c.getString(c.getColumnIndex(DbTableStrings.REQUEST_USER_PROFESSION));
-                    requests[i].RequestUserProfilePhotoServerPath = c.getString(c.getColumnIndex(DbTableStrings.REQUEST_USER_PROFILE_PHOTO_SERVER_PATH));
-                    i++;
-                }while (c.moveToNext());
+        Requests[] requests = new Requests[count];
+
+        if (c.getCount() != 0) {
+            if(c.getCount() != -1) {
+                int i = 0;
+                if (c.moveToFirst()) {
+                    do {
+                        requests[i] = new Requests();
+                        requests[i].RequesteUserId = c.getString(c.getColumnIndex(DbTableStrings.REQUEST_EUSER_ID));
+                        requests[i].RequestID = c.getString(c.getColumnIndex(DbTableStrings.REQUEST_ID));
+                        requests[i].RequestString = c.getString(c.getColumnIndex(DbTableStrings.REQUEST_STRING));
+                        requests[i].RequestTime = c.getString(c.getColumnIndex(DbTableStrings.REQUEST_TIME));
+                        requests[i].RequestUserName = c.getString(c.getColumnIndex(DbTableStrings.REQUEST_USERNAME));
+                        requests[i].RequestUserProfession = c.getString(c.getColumnIndex(DbTableStrings.REQUEST_USER_PROFESSION));
+                        requests[i].RequestUserProfilePhotoServerPath = c.getString(c.getColumnIndex(DbTableStrings.REQUEST_USER_PROFILE_PHOTO_SERVER_PATH));
+                        i++;
+                    } while (c.moveToNext());
+                }
+                return requests;
             }
-            return requests;
         }
         return null;
     }

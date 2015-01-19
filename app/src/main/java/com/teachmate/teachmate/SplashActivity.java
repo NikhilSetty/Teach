@@ -80,6 +80,7 @@ public class SplashActivity extends Activity implements LocationListener {
             }
 
             TempDataClass.deviceRegId = regid;
+            TempDataClass.isThroughSplash = true;
 
             String dbRegID = DeviceInfoDBHandler.GetValueForKey(getApplicationContext(), DeviceInfoKeys.REGISTRATION_ID);
 
@@ -108,6 +109,7 @@ public class SplashActivity extends Activity implements LocationListener {
 
             else{
 
+                TempDataClass.serverUserId = "11";
                 //TODO user data
                 /*
                 tempDataClass.serverUserId

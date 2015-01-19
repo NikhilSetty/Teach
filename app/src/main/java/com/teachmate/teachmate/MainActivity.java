@@ -41,6 +41,8 @@ public class MainActivity extends ActionBarActivity
      */
     private CharSequence mTitle;
 
+    private boolean isFirst = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,6 +84,13 @@ public class MainActivity extends ActionBarActivity
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
+        if (!TempDataClass.isThroughSplash) {
+            replaceFragment();
+        }
+
+    }
+
+    private void replaceFragment(){
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.container, initialFragment)
@@ -94,25 +103,23 @@ public class MainActivity extends ActionBarActivity
         FragmentManager fragmentManager = getSupportFragmentManager();
         switch(position) {
             case 0:
-                fragmentManager.beginTransaction()
-                    .replace(R.id.container, new RequestsDisplayActivity())
-                    .commit();
+                initialFragment = new RequestsDisplayActivity();
                 break;
             case 1:
-                fragmentManager.beginTransaction()
-                        .replace(R.id.container, new ResponsesDisplayActivity())
-                        .commit();
+                initialFragment = new ResponsesDisplayActivity();
                 break;
             case 2:
-                fragmentManager.beginTransaction()
-                        .replace(R.id.container, new MyRequests())
-                        .commit();
+                initialFragment = new MyRequests();
+                break;
             default:
-                fragmentManager.beginTransaction()
-                        .replace(R.id.container, new RequestsDisplayActivity())
-                        .commit();
+                initialFragment = new RequestsDisplayActivity();
                 break;
         }
+
+        if(TempDataClass.isThroughSplash || isFirst) {
+            replaceFragment();
+        }
+
     }
 
     public void onSectionAttached(int number) {

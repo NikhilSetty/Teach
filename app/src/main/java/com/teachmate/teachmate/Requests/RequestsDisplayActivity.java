@@ -2,10 +2,12 @@ package com.teachmate.teachmate.Requests;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -28,6 +30,7 @@ import android.widget.Toast;
 import com.teachmate.teachmate.DBHandlers.RequestsDBHandler;
 import com.teachmate.teachmate.MainActivity;
 import com.teachmate.teachmate.R;
+import com.teachmate.teachmate.TempDataClass;
 import com.teachmate.teachmate.models.Requests;
 
 import org.apache.http.HttpEntity;
@@ -65,9 +68,11 @@ public class RequestsDisplayActivity extends Fragment {
 
     Requests newRequest;
 
+    FragmentActivity activity;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        FragmentActivity activity = (FragmentActivity) super.getActivity();
+        activity = (FragmentActivity) super.getActivity();
         RelativeLayout layout = (RelativeLayout) inflater.inflate(R.layout.activity_requests_display, container, false);
 
         newRequest = new Requests();
@@ -79,18 +84,18 @@ public class RequestsDisplayActivity extends Fragment {
 
         listViewRequests = (ListView) layout.findViewById(R.id.listViewRequests);
 
-        //Debug Code
+/*        //Debug Code
         String result = "{'UserId':1,'Requests':[{'RequestId':1,'RequesteUserId':'2', 'RequestUserName':'Umang', 'RequestMessage':'Help me, baby!', 'RequestUserProfession':'Software Engineer', 'RequestUserProfilePhotoServerPath':'C:/profile.png', 'RequestedTime':'12/13/14 9.48 a.m.'},{'RequestId':2,'RequesteUserId':3, 'RequestUserName':'Anuj', 'RequestMessage':'Get me out of here', 'RequestUserProfession':'Priest', 'RequestUserProfilePhotoServerPath':'C:/profile.png', 'RequestedTime':'12/14/14 8.48 a.m.'}]}";
         List<Requests> list = GetObjectsFromResponse(result);
         if(list != null){
             populateListView(list);
             progressDialog.dismiss();
-        }
+        }*/
 
         setHasOptionsMenu(true);
 
-/*        HttpGetter getter = new HttpGetter();
-        getter.execute("http://teach-mate.azurewebsites.net/Request/GetAllRequestsAssigned?id=1&lastRequestId=2");*/
+        HttpGetter getter = new HttpGetter();
+        getter.execute("http://teach-mate.azurewebsites.net/Request/GetAllRequestsAssigned?id="+ TempDataClass.serverUserId +"&lastRequestId=0");
 
         return layout;
 
@@ -238,8 +243,9 @@ public class RequestsDisplayActivity extends Fragment {
                             else{
                                 isCurrentLocation = true;
                             }
+                            progressDialog.show();
                             HttpAsyncTaskPOST newPost = new HttpAsyncTaskPOST();
-                            newPost.execute("http://10.163.180.110/doctool/Main/SendPushRequests");
+                            newPost.execute("http://teach-mate.azurewebsites.net/Request/SendRequestNotification");
                         }
                     }
                 });
@@ -266,25 +272,26 @@ public class RequestsDisplayActivity extends Fragment {
             HttpPost httpPost = new HttpPost(url);
             String json = "";
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("UserId", "1");
-            newRequest.RequesteUserId = "1";
+            jsonObject.put("UserId", TempDataClass.serverUserId);
+            newRequest.RequesteUserId = TempDataClass.serverUserId;
             //TODO
             jsonObject.put("RequestMessage", newRequestString);
             newRequest.RequestString = newRequestString;
             if(isCurrentLocation){
-                jsonObject.put("isCurrentLocation", "true");
-                jsonObject.put("Location", 123 + "," + 122);
+                jsonObject.put("IsCurrent", "true");
+                jsonObject.put("Latitude", TempDataClass.currentLattitude);
+                jsonObject.put("Longitude", TempDataClass.currentLongitude);
             }
             else {
-                jsonObject.put("isCurrentLocation", "false");
-                jsonObject.put("Location", "");
+                jsonObject.put("IsCurrent", "false");
+                jsonObject.put("Longitude", 0);
+                jsonObject.put("Longitude", 0);
             }
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH/mm/ss");
             String currentDateandTime = sdf.format(new Date());
             newRequest.RequestTime = currentDateandTime;
             jsonObject.put("TimeOfRequest", currentDateandTime);
             json = jsonObject.toString();
-
 
             StringEntity se = new StringEntity(json);
 
@@ -321,6 +328,7 @@ public class RequestsDisplayActivity extends Fragment {
 
         @Override
         protected void onPostExecute(String result) {
+            progressDialog.dismiss();
             newRequest.RequestID = result;
             //TODO
             RequestsDBHandler.InsertRequests(getActivity().getApplicationContext(), newRequest);
@@ -377,11 +385,30 @@ public class RequestsDisplayActivity extends Fragment {
 
         @Override
         protected void onPostExecute(String result) {
-            List<Requests> list = GetObjectsFromResponse(result);
-            if(list != null){
-                populateListView(list);
+            if (!result.equals("Empty")) {
+                List<Requests> list = GetObjectsFromResponse(result);
+                if (list != null) {
+                    populateListView(list);
+                }
+                progressDialog.dismiss();
+            } else {
+                progressDialog.dismiss();
+                AlertDialog.Builder builder1 = new AlertDialog.Builder(activity);
+                builder1.setTitle("Alert!");
+                builder1.setMessage("No New Requests found in Server!");
+                builder1.setCancelable(true);
+                builder1.setPositiveButton("Ok",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+                AlertDialog alert11 = builder1.create();
+                alert11.show();
             }
-            progressDialog.dismiss();
+
+
         }
     }
 

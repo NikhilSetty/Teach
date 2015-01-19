@@ -17,4 +17,6 @@ public class TempDataClass {
 
     public static String currentLattitude;
     public static String currentLongitude;
+
+    public static boolean isThroughSplash = false;
 }
