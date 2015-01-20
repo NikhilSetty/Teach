@@ -28,7 +28,7 @@ public class DeviceInfoDBHandler {
             db = dbHelper.getWritableDatabase();
             db.insert("", null, contentValues);
         } catch (Exception e) {
-            Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT);
+            Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -51,7 +51,58 @@ public class DeviceInfoDBHandler {
 
         }
         catch(Exception e){
-            Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT);
+            Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+            return null;
+        }
+    }
+
+    public static String CheckKeyAndReturnValue(Context context, String key){
+
+        try {
+            dbHelper = new DbHelper(context.getApplicationContext());
+            db = dbHelper.getWritableDatabase();
+
+
+            Cursor c = db.rawQuery("Select * from " + DbTableStrings.TABLE_NAME_DEVICE_INFO + " where "+ DbTableStrings.KEY +" = '" + key + "'", null);
+            if (c != null ) {
+
+                String val = c.getString(c.getColumnIndex(DbTableStrings.VALUE));
+                return val;
+            }
+            else{
+                return null;
+            }
+
+        }
+        catch(Exception e){
+            Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+            return null;
+        }
+    }
+
+    public static Boolean UpdateValueForExistingKey(Context context, String key){
+
+        try {
+            dbHelper = new DbHelper(context.getApplicationContext());
+            db = dbHelper.getWritableDatabase();
+
+            DeviceInfoModel deviceInfo = new DeviceInfoModel();
+
+            Cursor c = db.rawQuery("Select * from " + DbTableStrings.TABLE_NAME_DEVICE_INFO + " where "+ DbTableStrings.KEY +" = '" + key + "'", null);
+            if (c != null ) {
+                ContentValues contentValues = new ContentValues();
+                contentValues.put(DbTableStrings.KEY, deviceInfo.Key);
+                contentValues.put(DbTableStrings.VALUE, deviceInfo.Value);
+
+                return db.update(DbTableStrings.TABLE_NAME_DEVICE_INFO,contentValues,DbTableStrings.KEY + "=" + key, null)>0;
+            }
+            else{
+                return false;
+            }
+
+        }
+        catch(Exception e){
+            Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
             return null;
         }
     }

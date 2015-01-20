@@ -71,4 +71,18 @@ public class RequestsDBHandler {
         }
         return null;
     }
+
+    public static void DeleteRequest(Context context,int requestID){
+        try{
+
+            dbHelper = new DbHelper((context.getApplicationContext()));
+            db = dbHelper.getWritableDatabase();
+
+            db.delete(DbTableStrings.TABLE_NAME_REQUESTS, DbTableStrings.REQUEST_ID + "=" + requestID, null);
+        }
+        catch (Exception e)
+        {
+            Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
 }

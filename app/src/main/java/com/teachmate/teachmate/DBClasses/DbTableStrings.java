@@ -46,4 +46,25 @@ public class DbTableStrings {
 
     public static final String KEY = "key";
     public static final String VALUE = "value";
+
+    public static final String TABLE_NAME_CHAT_INFO = "chat_info";
+
+    public static final String MESSAGE = "message";
+    public static final String SENTBY = "sentBy";
+    public static final String TIMESTAMP = "timeStamp";
+    public static final String CHATID = "chatId";
+
+    public static final String TABLE_NAME_CHAT_ID_MAPPING = "chat_id_mapping";
+
+    public static final String USERID = "userId";
+
+    public static final String TABLE_NAME_NsItemModel = "NsItemModel";
+
+    public static final String TITLE = "title";
+    public static final String COUNTER = "counter";
+
+    public static final String CONSTANT1 = "constant1";
+    public static final String CONSTANT2 = "constant2";
+    public static final String CONSTANT3 = "constant3";
+    public static final String CONSTANT4 = "constant4";
 }

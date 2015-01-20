@@ -65,5 +65,39 @@ public class UserModelDBHandler {
             return false;
         }
     }
+
+    public static UserModel ReturnValue(Context context, String key){
+
+        try {
+            dbHelper = new DbHelper(context.getApplicationContext());
+            db = dbHelper.getWritableDatabase();
+
+            UserModel userModel = new UserModel();
+
+            Cursor c = db.rawQuery("Select * from " + DbTableStrings.TABLE_NAME_USER_MODEL , null);
+            if (c != null ) {
+                userModel.ServerUserId = c.getString(c.getColumnIndex(DbTableStrings.SERVERUSERID));
+                userModel.FirstName = c.getString(c.getColumnIndex(DbTableStrings.FNAME));
+                userModel.LastName = c.getString(c.getColumnIndex(DbTableStrings.LNAME));
+                userModel.PhoneNumber = c.getString(c.getColumnIndex(DbTableStrings.PHONENUMBER));
+                userModel.EmailId = c.getString(c.getColumnIndex(DbTableStrings.EMAILID));
+                userModel.Profession = c.getString(c.getColumnIndex(DbTableStrings.PROFESSION));
+                userModel.Address1 = c.getString(c.getColumnIndex(DbTableStrings.ADDRESS1));
+                userModel.PinCode1 = c.getString(c.getColumnIndex(DbTableStrings.PINCODE1));
+                userModel.Address2 = c.getString(c.getColumnIndex(DbTableStrings.ADDRESS2));
+                userModel.PinCode2 = c.getString(c.getColumnIndex(DbTableStrings.PINCODE2));
+
+                return  userModel;
+            }
+            else{
+                return null;
+            }
+
+        }
+        catch(Exception e){
+            Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+            return null;
+        }
+    }
 }
 

@@ -45,6 +45,40 @@ public class Schema {
             "( _id integer primary key autoincrement, "
             + DbTableStrings.KEY + " string, "
             + DbTableStrings.VALUE+ " string) ";
+
+    public static final String CREATE_TABLE_CHAT_INFO = "create table if not exists " + DbTableStrings.TABLE_NAME_CHAT_INFO +
+            "( _id integer primary key autoincrement, "
+            + DbTableStrings.MESSAGE + " string, "
+            + DbTableStrings.SENTBY + " string, "
+            + DbTableStrings.TIMESTAMP + " string, "
+            + DbTableStrings.CHATID+ " string) ";
+
+    public static final String CREATE_TABLE_CHAT_ID_MAPPING = "create table if not exists " + DbTableStrings.TABLE_NAME_CHAT_ID_MAPPING +
+            "( _id integer primary key autoincrement, "
+            + DbTableStrings.CHATID + " string, "
+            + DbTableStrings.USERID + " string, "
+            + DbTableStrings.USERNAME + " string) ";
+
+    public static final String CREATE_TABLE_NS_ITEM_MODEL = "create table if not exists " + DbTableStrings.TABLE_NAME_NsItemModel +
+            "( _id integer primary key autoincrement, "
+            + DbTableStrings.TITLE + " string, "
+            + DbTableStrings.COUNTER + " int) ";
+
+    public static final String INSERT_NOTIFICATION_CONSTANT1 = "INSERT INTO " + DbTableStrings.TABLE_NAME_NsItemModel + " ("
+            + DbTableStrings.TITLE + ", "
+            + DbTableStrings.COUNTER + ") Values ('Constant1', 0)";
+
+    public static final String INSERT_NOTIFICATION_CONSTANT2 = "INSERT INTO " + DbTableStrings.TABLE_NAME_NsItemModel + " ("
+            + DbTableStrings.TITLE + ", "
+            + DbTableStrings.COUNTER + ") Values ('Constant2', 0)";
+
+    public static final String INSERT_NOTIFICATION_CONSTANT3 = "INSERT INTO " + DbTableStrings.TABLE_NAME_NsItemModel + " ("
+            + DbTableStrings.TITLE + ", "
+            + DbTableStrings.COUNTER + ") Values ('Constant3', 0)";
+
+    public static final String INSERT_NOTIFICATION_CONSTANT4 = "INSERT INTO " + DbTableStrings.TABLE_NAME_NsItemModel + " ("
+            + DbTableStrings.TITLE + ", "
+            + DbTableStrings.COUNTER + ") Values ('Constant4', 0)";
 }
 
 
