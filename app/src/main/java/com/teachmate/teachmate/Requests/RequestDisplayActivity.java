@@ -68,6 +68,8 @@ public class RequestDisplayActivity extends Fragment {
         progressDialog.setCancelable(false);
         progressDialog.setIndeterminate(true);
 
+        currentRequest = new Requests();
+
         sendResponseButton = (Button) layout.findViewById(R.id.buttonRespond);
 
         requestUserName = (TextView) layout.findViewById(R.id.textViewRequestUserName);
@@ -82,8 +84,6 @@ public class RequestDisplayActivity extends Fragment {
             Log.e("Error", e.getMessage());
         }
         if(notificationRequestId == null){
-            currentRequest = new Requests();
-
             Bundle args = getArguments();
 
             currentRequest.RequestID = args.getString("RequestID");
@@ -94,19 +94,15 @@ public class RequestDisplayActivity extends Fragment {
             currentRequest.RequestUserProfilePhotoServerPath= args.getString("RequestUserProfilePhotoServerPath");
             currentRequest.RequestTime = args.getString("RequestTime");
 
-            requestUserName = (TextView) layout.findViewById(R.id.textViewRequestUserName);
-            requestString = (TextView) layout.findViewById(R.id.textViewRequestString);
-            requestTime = (TextView) layout.findViewById(R.id.textViewTime);
-            requestUserProfession = (TextView) layout.findViewById(R.id.textViewRequestUserProfession);
-
             requestUserName.setText(currentRequest.RequestUserName);
             requestString.setText(currentRequest.RequestString);
             requestTime.setText(currentRequest.RequestTime);
             requestUserProfession.setText(currentRequest.RequestUserProfession);
         }
         else{
+            progressDialog.show();
             HttpGetter getter = new HttpGetter();
-            getter.execute("");
+            getter.execute("http://teach-mate.azurewebsites.net/Request/GetRequestDetails?id=" + notificationRequestId);
             //TODO
         }
 
@@ -124,7 +120,6 @@ public class RequestDisplayActivity extends Fragment {
 
         @Override
         protected String doInBackground(String... urls) {
-            // TODO Auto-generated method stub
             StringBuilder builder = new StringBuilder();
             HttpClient client = new DefaultHttpClient();
             HttpGet httpGet = new HttpGet(urls[0]);
@@ -165,13 +160,14 @@ public class RequestDisplayActivity extends Fragment {
                 requestTime.setText(currentRequest.RequestTime);
                 requestUserProfession.setText(currentRequest.RequestUserProfession);
             }
+            progressDialog.dismiss();
         }
     }
 
     private Requests GetObjectsFromResponse(String response) {
         try {
 
-            JSONObject currentJsonObject = (new JSONObject(response)).getJSONObject("Request");
+            JSONObject currentJsonObject = (new JSONObject(response));
 
             Requests request = new Requests();
 

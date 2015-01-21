@@ -438,31 +438,31 @@ public class RequestsDisplayActivity extends Fragment {
         @Override
         protected void onPostExecute(String result) {
             //TODO validate empty and null
-            if (!result.equals("Empty")) {
-                List<Requests> list = GetObjectsFromResponse(result);
-                resumeList = list;
-                if (list != null) {
-                    populateListView(list);
+            if(result != null && !result.isEmpty()) {
+                if (!result.equals("Empty")) {
+                    List<Requests> list = GetObjectsFromResponse(result);
+                    resumeList = list;
+                    if (list != null) {
+                        populateListView(list);
+                    }
+                    progressDialog.dismiss();
+                } else {
+                    progressDialog.dismiss();
+                    AlertDialog.Builder builder1 = new AlertDialog.Builder(activity);
+                    builder1.setTitle("Alert!");
+                    builder1.setMessage("No New Requests found in Server!");
+                    builder1.setCancelable(true);
+                    builder1.setPositiveButton("Ok",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+
+                    AlertDialog alert11 = builder1.create();
+                    alert11.show();
                 }
-                progressDialog.dismiss();
-            } else {
-                progressDialog.dismiss();
-                AlertDialog.Builder builder1 = new AlertDialog.Builder(activity);
-                builder1.setTitle("Alert!");
-                builder1.setMessage("No New Requests found in Server!");
-                builder1.setCancelable(true);
-                builder1.setPositiveButton("Ok",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                            }
-                        });
-
-                AlertDialog alert11 = builder1.create();
-                alert11.show();
             }
-
-
         }
     }
 

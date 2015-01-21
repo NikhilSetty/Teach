@@ -88,7 +88,10 @@ public class MainActivity extends ActionBarActivity
 
         if (!TempDataClass.isThroughSplash) {
             replaceFragment();
+            TempDataClass.isThroughSplash = false;
         }
+
+        TempDataClass.isThroughSplash = false;
 
     }
 
@@ -131,7 +134,7 @@ public class MainActivity extends ActionBarActivity
                 break;
         }
 
-        if(TempDataClass.isThroughSplash || isFirst) {
+        if(TempDataClass.isThroughSplash) {
             replaceFragment();
         }
 

@@ -8,7 +8,6 @@ import android.util.Log;
 public class DbHelper extends SQLiteOpenHelper{
     public DbHelper(Context context) {
         super(context, DatabaseHelperMeta.DB_NAME, null, DatabaseHelperMeta.DB_VERSION);
-        // TODO Auto-generated constructor stub
     }
 
     @Override
@@ -30,7 +29,6 @@ public class DbHelper extends SQLiteOpenHelper{
     }
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // TODO
     }
 
 }
