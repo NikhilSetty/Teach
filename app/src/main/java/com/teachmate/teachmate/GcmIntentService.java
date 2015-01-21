@@ -17,6 +17,7 @@
 package com.teachmate.teachmate;
 
 import android.app.IntentService;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -27,6 +28,7 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.teachmate.teachmate.Chat.ChatAcitivity;
 
 /**
  * This {@code IntentService} does the actual handling of the GCM message.
@@ -52,6 +54,12 @@ public class GcmIntentService extends IntentService {
     String userId;
     int intType;
     String responseId;
+
+    String chatSenderId;
+    String chatChatId;
+    String chatSenderName;
+    String chatMessage;
+    String chatMessageTime;
 
     String verifyUserId;
 
@@ -103,8 +111,14 @@ public class GcmIntentService extends IntentService {
                         userId = extras.getString("ResponseUserId");
                         responseId = extras.getString("ResponseId");
                         break;
+                    case 5:
+                        chatChatId = extras.getString("ChatId");
+                        chatMessage = extras.getString("Message");
+                        chatMessageTime = extras.getString("SentOn");
+                        chatSenderId = extras.getString("SenderId");
+                        chatSenderName = extras.getString("UserName");
+                        break;
                 }
-
 
                 Log.i(TAG, "Completed work @ " + SystemClock.elapsedRealtime());
                 // Post notification of received message.
@@ -137,7 +151,8 @@ public class GcmIntentService extends IntentService {
                             .setContentTitle("New Request")
                             .setStyle(new NotificationCompat.BigTextStyle()
                                     .bigText(username + " : " + message))
-                            .setContentText(username + " : " + message).setAutoCancel(true);
+                            .setContentText(username + " : " + message)
+                            .setAutoCancel(true);
 
             mBuilder.setContentIntent(contentIntent);
             mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
@@ -156,10 +171,40 @@ public class GcmIntentService extends IntentService {
                             .setContentTitle("New Response")
                             .setStyle(new NotificationCompat.BigTextStyle()
                                     .bigText(username + " : " + message))
-                            .setContentText(username + " : " + message).setAutoCancel(true);
+                            .setContentText(username + " : " + message)
+                            .setAutoCancel(true);
 
             mBuilder.setContentIntent(contentIntent);
             mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
+        }
+        else if(intType == 5){
+            Intent chatIntent = new Intent(getApplicationContext(), ChatAcitivity.class);
+            chatIntent.putExtra("ChatId", chatChatId);
+            chatIntent.putExtra("Message", chatMessage);
+            chatIntent.putExtra("SentOn", chatMessageTime);
+            chatIntent.putExtra("SenderId", chatSenderId);
+            chatIntent.putExtra("UserName", chatSenderName);
+            chatIntent.putExtra("received", true);
+            PendingIntent pendingIntent = PendingIntent.getActivity(
+                    getApplicationContext(),
+                    0,
+                    chatIntent,
+                    0);
+
+            Notification mBuilder =
+                    new NotificationCompat.Builder(getApplicationContext())
+                            .setSmallIcon(R.drawable.ic_stat_gcm)
+                            .setContentTitle("Chat Notification")
+                            .setContentIntent(pendingIntent)
+                            .setStyle(new NotificationCompat.BigTextStyle()
+                                    .bigText(chatSenderName + ":" + chatMessage))
+                            .setContentText(chatSenderName + ":" + chatMessage)
+                            .setAutoCancel(true)
+                            .build();
+
+            mNotificationManager =
+                    (NotificationManager)getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+            mNotificationManager.notify(NOTIFICATION_ID, mBuilder);
         }
         else{
 

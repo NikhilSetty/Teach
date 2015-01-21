@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListAdapter;
@@ -79,6 +80,8 @@ public class RequestsDisplayActivity extends Fragment {
 
     private boolean isFromOnResume = false;
 
+    Button retryButton;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         activity = (FragmentActivity) super.getActivity();
@@ -86,6 +89,7 @@ public class RequestsDisplayActivity extends Fragment {
 
         newRequest = new Requests();
         listViewRequests = (ListView) layout.findViewById(R.id.listViewRequests);
+        retryButton = (Button) layout.findViewById(R.id.buttonRetry);
         connectionLostLayout = (RelativeLayout) layout.findViewById(R.id.layout_connectionLost);
         setHasOptionsMenu(true);
 
@@ -96,8 +100,7 @@ public class RequestsDisplayActivity extends Fragment {
             progressDialog.show();
 
 
-            //if(CommonMethods.hasActiveInternetConnection(activity)){
-            if(true){
+            if(new CommonMethods().hasActiveInternetConnection(activity)){
                 HttpGetter getter = new HttpGetter();
                 getter.execute("http://teach-mate.azurewebsites.net/Request/GetAllRequestsAssigned?id=" + TempDataClass.serverUserId + "&lastRequestId=0");
             }
@@ -117,6 +120,15 @@ public class RequestsDisplayActivity extends Fragment {
             populateListView(list);
             progressDialog.dismiss();
         }*/
+
+        retryButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                FragmentManager fragmentManager = activity.getSupportFragmentManager();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, new RequestsDisplayActivity())
+                        .commit();
+            }
+        });
 
         return layout;
 

@@ -204,7 +204,7 @@ public class ViewResponsesForARequest extends Fragment {
                 Responses response = new Responses();
                 JSONObject temp = contacts.getJSONObject(i);
 
-                response.RequestId = temp.getString("RequestId") != null ? temp.getString("RequestId") : null;
+                response.RequestId = currentRequest.RequestID;
                 response.ResponseId= temp.getString("ResponseId") != null ? temp.getString("ResponseId"): null;
                 response.ResponseString= temp.getString("ResponseString") != null ? temp.getString("ResponseString"): null;
                 response.ResponseUserId = temp.getString("ResponseUserId") != null ? temp.getString("ResponseUserId"): null;

@@ -1,5 +1,6 @@
 package com.teachmate.teachmate.Responses;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -14,7 +15,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.teachmate.teachmate.Chat.ChatAcitivity;
+import com.teachmate.teachmate.DBHandlers.ChatIdMapDBHandler;
 import com.teachmate.teachmate.R;
+import com.teachmate.teachmate.TempDataClass;
+import com.teachmate.teachmate.models.ChatIdMap;
 import com.teachmate.teachmate.models.Requests;
 import com.teachmate.teachmate.models.Responses;
 
@@ -24,6 +29,8 @@ import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONObject;
 
@@ -48,13 +55,14 @@ public class ResponseDisplayActivity extends Fragment {
     TextView responseUserProfession;
     TextView responseString;
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         FragmentActivity activity = (FragmentActivity) super.getActivity();
         RelativeLayout layout = (RelativeLayout) inflater.inflate(R.layout.activity_response_display, container, false);
 
         acceptResponse = (Button) layout.findViewById(R.id.buttonAccept);
+
+        currentResponse = new Responses();
 
         try {
             Bundle args = getArguments();
@@ -67,7 +75,7 @@ public class ResponseDisplayActivity extends Fragment {
 
             Bundle args = getArguments();
 
-            currentRequest.RequestID = args.getString("RequestID");
+            currentRequest.RequestID = args.getString("RequestId");
             currentRequest.RequestString = args.getString("RequestString");
             currentRequest.RequestTime = args.getString("RequestTime");
 
@@ -86,12 +94,15 @@ public class ResponseDisplayActivity extends Fragment {
             currentResponse.ResponseUserProfilePhotoServerPath = args.getString("ResponseUserProfilePhotoServerPath");
 
             requestString.setText(currentRequest.RequestString);
-
-
+            responseUserName.setText(currentResponse.ResponseUserName);
+            responseUserProfession.setText(currentResponse.ResponseUserProfession);
+            responseString.setText(currentResponse.ResponseString);
         }
 
         acceptResponse.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                GetChatId chat = new GetChatId();
+                chat.execute("http://teach-mate.azurewebsites.net/Chat/ChatReg");
             }
         });
 
@@ -195,5 +206,83 @@ public class ResponseDisplayActivity extends Fragment {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+
+    public String POST(String url){
+        InputStream inputStream = null;
+        String result = "";
+        try {
+
+            HttpClient httpclient = new DefaultHttpClient();
+            HttpPost httpPost = new HttpPost(url);
+            String json = "";
+            JSONObject jsonObject = new JSONObject();
+
+            jsonObject.put("senderId", TempDataClass.serverUserId);
+            jsonObject.put("receiverId", currentRequest.RequesteUserId);
+
+            json = jsonObject.toString();
+
+            StringEntity se = new StringEntity(json);
+
+            httpPost.setEntity(se);
+
+            httpPost.setHeader("Accept", "application/json");
+            httpPost.setHeader("Content-type", "application/json");
+
+            HttpResponse httpResponse = httpclient.execute(httpPost);
+
+            inputStream = httpResponse.getEntity().getContent();
+
+            if(inputStream != null)
+                result = convertInputStreamToString(inputStream);
+            else
+                result = "";
+
+            return result;
+
+        } catch (Exception e) {
+            Log.v("Getter", e.getLocalizedMessage());
+        }
+
+        return result;
+    }
+
+    private static String convertInputStreamToString(InputStream inputStream) throws IOException {
+        BufferedReader bufferedReader = new BufferedReader( new InputStreamReader(inputStream));
+        String line = "";
+        String result = "";
+        while((line = bufferedReader.readLine()) != null)
+            result += line;
+
+        inputStream.close();
+        return result;
+    }
+
+
+
+    private class GetChatId extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... urls) {
+
+            return POST(urls[0]);
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            ChatIdMap newChatId = new ChatIdMap();
+
+            newChatId.chatId = result;
+            newChatId.userId = currentResponse.ResponseUserId;
+            newChatId.userName = currentResponse.ResponseUserName;
+
+            ChatIdMapDBHandler.InsertChatIdMap(getActivity().getApplicationContext(), newChatId);
+
+            Intent i = new Intent(getActivity().getApplicationContext(), ChatAcitivity.class);
+            i.putExtra("ChatId", newChatId.chatId);
+            startActivity(i);
+        }
     }
 }

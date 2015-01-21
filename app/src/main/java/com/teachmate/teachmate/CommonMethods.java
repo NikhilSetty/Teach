@@ -15,10 +15,10 @@ import java.net.URL;
  */
 public class CommonMethods {
 
-    static boolean isFinished = false;
-    static boolean isAvailable = false;
+    boolean isFinished = false;
+    boolean isAvailable = false;
 
-    public static boolean hasActiveInternetConnection(Context context) {
+    public boolean hasActiveInternetConnection(Context context) {
         HttpGetter getter = new HttpGetter();
         getter.execute(context);
 
@@ -33,14 +33,14 @@ public class CommonMethods {
         }
     }
 
-    private static boolean isNetworkAvailable(Context context) {
+    private boolean isNetworkAvailable(Context context) {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null;
     }
 
-    private static class HttpGetter extends AsyncTask<Context, Void, String> {
+    private class HttpGetter extends AsyncTask<Context, Void, String> {
 
         @Override
         protected String doInBackground(Context... context) {
@@ -51,14 +51,23 @@ public class CommonMethods {
                     urlc.setRequestProperty("Connection", "close");
                     urlc.setConnectTimeout(1500);
                     urlc.connect();
-                    if(urlc.getResponseCode() == 200)
-                        return "true";
+                    if(urlc.getResponseCode() == 200) {
+                        Log.d("Test", "Working fine");
+                        isAvailable = true;
+                    }
+                    else {
+                        isAvailable = false;
+                    }
                 } catch (IOException e) {
                     Log.e("INTERNET", "Error checking internet connection", e);
+                    isAvailable = false;
                 }
-            } else {
-                Log.d("INTERNET", "No network available!");
             }
+            else {
+                Log.d("INTERNET", "No network available!");
+                isAvailable = false;
+            }
+            isFinished = true;
             return "false";
         }
 
