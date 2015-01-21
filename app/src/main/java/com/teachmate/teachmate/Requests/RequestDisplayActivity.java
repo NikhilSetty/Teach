@@ -1,12 +1,14 @@
 package com.teachmate.teachmate.Requests;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -19,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.teachmate.teachmate.R;
+import com.teachmate.teachmate.TempDataClass;
 import com.teachmate.teachmate.models.Requests;
 
 import org.apache.http.HttpEntity;
@@ -54,10 +57,16 @@ public class RequestDisplayActivity extends Fragment {
     TextView requestTime;
     TextView requestUserProfession;
 
+    ProgressDialog progressDialog;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         FragmentActivity activity = (FragmentActivity) super.getActivity();
         RelativeLayout layout = (RelativeLayout) inflater.inflate(R.layout.activity_request_display, container, false);
+
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setCancelable(false);
+        progressDialog.setIndeterminate(true);
 
         sendResponseButton = (Button) layout.findViewById(R.id.buttonRespond);
 
@@ -106,7 +115,6 @@ public class RequestDisplayActivity extends Fragment {
                 SendResponse(v);
             }
         });
-
 
         return layout;
 
@@ -217,7 +225,8 @@ public class RequestDisplayActivity extends Fragment {
                         else{
                             responseMessageString = responseEditText.getText().toString();
                             HttpAsyncTask post = new HttpAsyncTask();
-                            post.execute("http://10.163.179.199:8222/MvcApplication1/Enigma/Test");
+                            post.execute("http://teach-mate.azurewebsites.net/Response/SendResponseNotification");
+                            progressDialog.show();
                         }
                     }
                 });
@@ -245,11 +254,11 @@ public class RequestDisplayActivity extends Fragment {
             String json = "";
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("RequestId", currentRequest.RequestID);
-            jsonObject.put("ResponseUserId", 1);
+            jsonObject.put("UserId", TempDataClass.serverUserId);
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH-mm-ss");
             String currentDateandTime = sdf.format(new Date());
             jsonObject.put("TimeOfResponse", currentDateandTime);
-            jsonObject.put("ResponseMessage", responseMessageString);
+            jsonObject.put("Message", responseMessageString);
             json = jsonObject.toString();
 
             StringEntity se = new StringEntity(json);
@@ -288,9 +297,13 @@ public class RequestDisplayActivity extends Fragment {
             Toast.makeText(getActivity().getBaseContext(), "Data Sent! -" + result.toString(), Toast.LENGTH_LONG).show();
 
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.container, new RequestsDisplayActivity())
-                    .commit();
+            progressDialog.dismiss();
+            FragmentTransaction ft = fragmentManager.beginTransaction();
+            TempDataClass.fragmentStack.lastElement().onPause();
+            TempDataClass.fragmentStack.remove(TempDataClass.fragmentStack.pop());
+            TempDataClass.fragmentStack.lastElement().onResume();
+            ft.replace(R.id.container, TempDataClass.fragmentStack.lastElement());
+            ft.commit();
         }
     }
 

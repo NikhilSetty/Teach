@@ -179,10 +179,12 @@ public class LoginActivity extends Activity {
                 }
                 userData.FirstName = temp[0];
                 userData.LastName = temp[1];
+                TempDataClass.userName = userData.FirstName + " " + userData.LastName;
                 userData.ServerUserId = userDataJson.get("Id").toString();
                 TempDataClass.serverUserId = userData.ServerUserId;
                 userData.PhoneNumber = userDataJson.get("PhoneNumber").toString();
                 userData.Profession = userDataJson.get("Profession").toString();
+                TempDataClass.userProfession = userData.Profession;
                 userData.EmailId = userDataJson.get("EmailId").toString();
                 userData.Address1 = userDataJson.get("Address1").toString();
                 userData.PinCode1 = userDataJson.get("PinCode1").toString();

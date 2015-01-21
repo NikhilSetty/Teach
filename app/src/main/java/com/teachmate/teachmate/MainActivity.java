@@ -1,6 +1,7 @@
 package com.teachmate.teachmate;
 
 import android.app.Activity;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -42,6 +43,7 @@ public class MainActivity extends ActionBarActivity
     private CharSequence mTitle;
 
     private boolean isFirst = true;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,8 +92,24 @@ public class MainActivity extends ActionBarActivity
 
     }
 
+    @Override
+    public void onBackPressed(){
+        if(!(TempDataClass.fragmentStack.size() == 1 || TempDataClass.fragmentStack.size() == 0)) {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction ft = fragmentManager.beginTransaction();
+            ft.replace(R.id.container, TempDataClass.fragmentStack.lastElement());
+            TempDataClass.fragmentStack.pop();
+            ft.commit();
+        }
+        else{
+            finish();
+        }
+    }
+
     private void replaceFragment(){
         FragmentManager fragmentManager = getSupportFragmentManager();
+        Fragment temp = initialFragment;
+        TempDataClass.fragmentStack.push(temp);
         fragmentManager.beginTransaction()
                 .replace(R.id.container, initialFragment)
                 .commit();

@@ -72,6 +72,7 @@ public class SplashActivity extends Activity implements LocationListener {
 
         // Check device for Play Services APK. If check succeeds, proceed with GCM registration.
         if (checkPlayServices()) {
+        //if(true){
             gcm = GoogleCloudMessaging.getInstance(this);
             regid = getRegistrationId(context);
 
@@ -108,13 +109,14 @@ public class SplashActivity extends Activity implements LocationListener {
             }
 
             else{
-
-                TempDataClass.serverUserId = "11";
-                //TODO user data
-                /*
-                tempDataClass.serverUserId
-
-                 */
+                try {
+                    UserModel currentUser = UserModelDBHandler.ReturnValue(getApplicationContext());
+                    TempDataClass.serverUserId = currentUser.ServerUserId;
+                    TempDataClass.userProfession = currentUser.Profession;
+                    TempDataClass.userName = currentUser.FirstName + " " + currentUser.LastName;
+                }catch(Exception ex){
+                    Toast.makeText(getApplicationContext(), ex.getMessage(), Toast.LENGTH_SHORT).show();
+                }
 
                 new Handler().postDelayed(new Runnable() {
 

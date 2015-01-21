@@ -18,6 +18,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.teachmate.teachmate.R;
+import com.teachmate.teachmate.Requests.ResponsesArrayAdapter;
 import com.teachmate.teachmate.models.Responses;
 
 import org.apache.http.HttpEntity;

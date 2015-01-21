@@ -70,21 +70,32 @@ public class RequestsDisplayActivity extends Fragment {
 
     FragmentActivity activity;
 
+    private static List<Requests> resumeList = new ArrayList<Requests>();
+
+    private boolean isFromOnResume = false;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         activity = (FragmentActivity) super.getActivity();
         RelativeLayout layout = (RelativeLayout) inflater.inflate(R.layout.activity_requests_display, container, false);
 
         newRequest = new Requests();
-
-        progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setCancelable(false);
-        progressDialog.setIndeterminate(true);
-        progressDialog.show();
-
         listViewRequests = (ListView) layout.findViewById(R.id.listViewRequests);
+        setHasOptionsMenu(true);
 
-/*        //Debug Code
+        if(!isFromOnResume) {
+            progressDialog = new ProgressDialog(getActivity());
+            progressDialog.setCancelable(false);
+            progressDialog.setIndeterminate(true);
+            progressDialog.show();
+
+            HttpGetter getter = new HttpGetter();
+            getter.execute("http://teach-mate.azurewebsites.net/Request/GetAllRequestsAssigned?id=" + TempDataClass.serverUserId + "&lastRequestId=0");
+        }else{
+            isFromOnResume = false;
+        }
+
+        /*        //Debug Code
         String result = "{'UserId':1,'Requests':[{'RequestId':1,'RequesteUserId':'2', 'RequestUserName':'Umang', 'RequestMessage':'Help me, baby!', 'RequestUserProfession':'Software Engineer', 'RequestUserProfilePhotoServerPath':'C:/profile.png', 'RequestedTime':'12/13/14 9.48 a.m.'},{'RequestId':2,'RequesteUserId':3, 'RequestUserName':'Anuj', 'RequestMessage':'Get me out of here', 'RequestUserProfession':'Priest', 'RequestUserProfilePhotoServerPath':'C:/profile.png', 'RequestedTime':'12/14/14 8.48 a.m.'}]}";
         List<Requests> list = GetObjectsFromResponse(result);
         if(list != null){
@@ -92,13 +103,15 @@ public class RequestsDisplayActivity extends Fragment {
             progressDialog.dismiss();
         }*/
 
-        setHasOptionsMenu(true);
-
-        HttpGetter getter = new HttpGetter();
-        getter.execute("http://teach-mate.azurewebsites.net/Request/GetAllRequestsAssigned?id="+ TempDataClass.serverUserId +"&lastRequestId=0");
-
         return layout;
 
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        isFromOnResume = true;
+        populateListView(resumeList);
     }
 
     private void populateListView(List<Requests> list) {
@@ -129,12 +142,15 @@ public class RequestsDisplayActivity extends Fragment {
                     Fragment individualRequestDisplayFragment = new RequestDisplayActivity();
                     individualRequestDisplayFragment.setArguments(i);
 
+                    Fragment currentFragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.container);
+
                     FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                    TempDataClass.fragmentStack.lastElement().onPause();
+                    TempDataClass.fragmentStack.push(currentFragment);
                     fragmentManager.beginTransaction()
                             .replace(R.id.container, individualRequestDisplayFragment)
                             .addToBackStack("stack")
                             .commit();
-
                 }
                 catch(Exception ex){
                     Toast.makeText(getActivity().getApplicationContext(), ex.toString(), Toast.LENGTH_LONG).show();
@@ -328,11 +344,13 @@ public class RequestsDisplayActivity extends Fragment {
 
         @Override
         protected void onPostExecute(String result) {
-            progressDialog.dismiss();
             newRequest.RequestID = result;
-            //TODO
+            newRequest.RequesteUserId = TempDataClass.serverUserId;
+            newRequest.RequestUserName = TempDataClass.userName;
+            newRequest.RequestUserProfession = TempDataClass.userProfession;
             RequestsDBHandler.InsertRequests(getActivity().getApplicationContext(), newRequest);
             Toast.makeText(getActivity().getApplicationContext(), "Data Sent! -" + result.toString(), Toast.LENGTH_LONG).show();
+            progressDialog.dismiss();
         }
     }
 
@@ -387,6 +405,7 @@ public class RequestsDisplayActivity extends Fragment {
         protected void onPostExecute(String result) {
             if (!result.equals("Empty")) {
                 List<Requests> list = GetObjectsFromResponse(result);
+                resumeList = list;
                 if (list != null) {
                     populateListView(list);
                 }

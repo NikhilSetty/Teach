@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.teachmate.teachmate.DBHandlers.RequestsDBHandler;
 import com.teachmate.teachmate.R;
+import com.teachmate.teachmate.TempDataClass;
 import com.teachmate.teachmate.models.Requests;
 
 import java.util.List;
@@ -38,6 +39,8 @@ public class MyRequests extends Fragment {
 
         activity = (FragmentActivity) super.getActivity();
         RelativeLayout layout = (RelativeLayout) inflater.inflate(R.layout.fragment_my_requests, container, false);
+
+        listViewRequests = (ListView) layout.findViewById(R.id.listViewMyRequests);
 
         populateListView(RequestsDBHandler.GetAllRequests(getActivity().getApplicationContext()));
         return layout;
@@ -66,11 +69,13 @@ public class MyRequests extends Fragment {
 
                     Fragment individualRequestDisplayFragment = new ViewResponsesForARequest();
                     individualRequestDisplayFragment.setArguments(i);
+                    Fragment currentFragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.container);
 
                     FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                    TempDataClass.fragmentStack.push(currentFragment);
                     fragmentManager.beginTransaction()
                             .replace(R.id.container, individualRequestDisplayFragment)
-                            .addToBackStack("stack")
+                            .addToBackStack("MyRequestsStack")
                             .commit();
 
                 }
@@ -105,7 +110,6 @@ public class MyRequests extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
     }
 

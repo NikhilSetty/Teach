@@ -15,6 +15,7 @@ public class DbHelper extends SQLiteOpenHelper{
     public void onCreate(SQLiteDatabase db) {
         Log.v("creating " , "DB");
         db.execSQL(Schema.CREATE_TABLE_DEVICE_INFO);
+        db.execSQL(Schema.CREATE_TABLE_Profile);
         db.execSQL(Schema.CREATE_TABLE_REQUESTS);
         db.execSQL(Schema.CREATE_TABLE_QUESTION_MODEL);
         db.execSQL(Schema.CREATE_TABLE_ANSWER_MODEL);

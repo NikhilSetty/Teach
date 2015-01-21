@@ -21,7 +21,7 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:text="Time"
-                    android:id="@+id/textViewTime"
+                    android:id="@+id/textViewMyRequestTime"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true" />
@@ -31,7 +31,7 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="RequestString"
-                    android:id="@+id/textViewRequestString"
+                    android:id="@+id/textViewMyRequestString"
                     android:layout_marginTop="41dp"
                     android:layout_below="@+id/imageViewProfilePhoto"
                     android:layout_alignParentLeft="true"
@@ -54,7 +54,7 @@
             <ListView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/listViewResponsesRequestDisplay"
+                android:id="@+id/listViewMyRequestsResponsesDisplay"
                 android:layout_below="@+id/relative_layout_request_display"
                 android:layout_alignParentBottom="true"
                 android:layout_marginTop="66dp" />

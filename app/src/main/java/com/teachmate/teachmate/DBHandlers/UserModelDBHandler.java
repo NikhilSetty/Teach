@@ -33,7 +33,7 @@ public class UserModelDBHandler {
             contentValues.put(DbTableStrings.ADDRESS2,userModel.Address2);
             contentValues.put(DbTableStrings.PINCODE2,userModel.PinCode2);
 
-            dbHelper = new DbHelper((context.getApplicationContext()));
+            dbHelper = new DbHelper(context);
             db = dbHelper.getWritableDatabase();
             db.insert(DbTableStrings.TABLE_NAME_USER_MODEL,null,contentValues);
         }
@@ -46,7 +46,7 @@ public class UserModelDBHandler {
     public static boolean CheckIfUserDataExists(Context context){
 
         try {
-            dbHelper = new DbHelper(context.getApplicationContext());
+            dbHelper = new DbHelper(context);
             db = dbHelper.getWritableDatabase();
 
             UserModel contact = new UserModel();
@@ -66,16 +66,16 @@ public class UserModelDBHandler {
         }
     }
 
-    public static UserModel ReturnValue(Context context, String key){
+    public static UserModel ReturnValue(Context context){
 
         try {
-            dbHelper = new DbHelper(context.getApplicationContext());
+            dbHelper = new DbHelper(context);
             db = dbHelper.getWritableDatabase();
 
             UserModel userModel = new UserModel();
 
             Cursor c = db.rawQuery("Select * from " + DbTableStrings.TABLE_NAME_USER_MODEL , null);
-            if (c != null ) {
+            if (c.moveToFirst()) {
                 userModel.ServerUserId = c.getString(c.getColumnIndex(DbTableStrings.SERVERUSERID));
                 userModel.FirstName = c.getString(c.getColumnIndex(DbTableStrings.FNAME));
                 userModel.LastName = c.getString(c.getColumnIndex(DbTableStrings.LNAME));

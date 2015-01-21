@@ -1,4 +1,4 @@
-package com.teachmate.teachmate.Responses;
+package com.teachmate.teachmate.Requests;
 
 import android.content.Context;
 import android.view.LayoutInflater;
