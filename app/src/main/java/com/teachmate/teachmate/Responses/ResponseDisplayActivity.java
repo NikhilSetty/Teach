@@ -11,9 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.teachmate.teachmate.R;
+import com.teachmate.teachmate.models.Requests;
 import com.teachmate.teachmate.models.Responses;
 
 import org.apache.http.HttpEntity;
@@ -33,12 +35,19 @@ import java.io.InputStreamReader;
 
 public class ResponseDisplayActivity extends Fragment {
 
-    String responseId;
     Responses currentResponse;
+    Requests currentRequest;
 
     Button acceptResponse;
 
     String notificationRequestId;
+
+    TextView requestString;
+
+    TextView responseUserName;
+    TextView responseUserProfession;
+    TextView responseString;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -52,6 +61,33 @@ public class ResponseDisplayActivity extends Fragment {
             notificationRequestId = args.getString("NotificationResponseId");
         }catch(Exception e){
             Log.e("Error", e.getMessage());
+        }
+        if(notificationRequestId == null){
+            currentRequest = new Requests();
+
+            Bundle args = getArguments();
+
+            currentRequest.RequestID = args.getString("RequestID");
+            currentRequest.RequestString = args.getString("RequestString");
+            currentRequest.RequestTime = args.getString("RequestTime");
+
+            requestString = (TextView) layout.findViewById(R.id.textViewResponseRequestString);
+            responseUserName = (TextView) layout.findViewById(R.id.textViewResponseDisplayUserName);
+            responseUserProfession = (TextView) layout.findViewById(R.id.textViewResponseDisplayUserProfession);
+            responseString = (TextView) layout.findViewById(R.id.textViewResponseDisplayString);
+
+            currentResponse.RequestId = args.getString("RequestId");
+            currentResponse.ResponseId = args.getString("ResponseId");
+            currentResponse.ResponseString = args.getString("ResponseString");
+            currentResponse.ResponseTime = args.getString("ResponseTime");
+            currentResponse.ResponseUserId = args.getString("ResponseUserId");
+            currentResponse.ResponseUserName = args.getString("ResponseUserName");
+            currentResponse.ResponseUserProfession = args.getString("ResponseUserProfession");
+            currentResponse.ResponseUserProfilePhotoServerPath = args.getString("ResponseUserProfilePhotoServerPath");
+
+            requestString.setText(currentRequest.RequestString);
+
+
         }
 
         acceptResponse.setOnClickListener(new View.OnClickListener() {

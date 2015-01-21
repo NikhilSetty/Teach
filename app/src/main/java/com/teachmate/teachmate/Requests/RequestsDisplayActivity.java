@@ -21,12 +21,14 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.teachmate.teachmate.CommonMethods;
 import com.teachmate.teachmate.DBHandlers.RequestsDBHandler;
 import com.teachmate.teachmate.MainActivity;
 import com.teachmate.teachmate.R;
@@ -51,6 +53,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -70,6 +73,8 @@ public class RequestsDisplayActivity extends Fragment {
 
     FragmentActivity activity;
 
+    RelativeLayout connectionLostLayout;
+
     private static List<Requests> resumeList = new ArrayList<Requests>();
 
     private boolean isFromOnResume = false;
@@ -81,6 +86,7 @@ public class RequestsDisplayActivity extends Fragment {
 
         newRequest = new Requests();
         listViewRequests = (ListView) layout.findViewById(R.id.listViewRequests);
+        connectionLostLayout = (RelativeLayout) layout.findViewById(R.id.layout_connectionLost);
         setHasOptionsMenu(true);
 
         if(!isFromOnResume) {
@@ -89,8 +95,17 @@ public class RequestsDisplayActivity extends Fragment {
             progressDialog.setIndeterminate(true);
             progressDialog.show();
 
-            HttpGetter getter = new HttpGetter();
-            getter.execute("http://teach-mate.azurewebsites.net/Request/GetAllRequestsAssigned?id=" + TempDataClass.serverUserId + "&lastRequestId=0");
+
+            //if(CommonMethods.hasActiveInternetConnection(activity)){
+            if(true){
+                HttpGetter getter = new HttpGetter();
+                getter.execute("http://teach-mate.azurewebsites.net/Request/GetAllRequestsAssigned?id=" + TempDataClass.serverUserId + "&lastRequestId=0");
+            }
+            else{
+                progressDialog.dismiss();
+                listViewRequests.setVisibility(View.INVISIBLE);
+                connectionLostLayout.setVisibility(View.VISIBLE);
+            }
         }else{
             isFromOnResume = false;
         }
@@ -149,7 +164,6 @@ public class RequestsDisplayActivity extends Fragment {
                     TempDataClass.fragmentStack.push(currentFragment);
                     fragmentManager.beginTransaction()
                             .replace(R.id.container, individualRequestDisplayFragment)
-                            .addToBackStack("stack")
                             .commit();
                 }
                 catch(Exception ex){
@@ -303,10 +317,18 @@ public class RequestsDisplayActivity extends Fragment {
                 jsonObject.put("Longitude", 0);
                 jsonObject.put("Longitude", 0);
             }
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH/mm/ss");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH-mm-ss");
             String currentDateandTime = sdf.format(new Date());
             newRequest.RequestTime = currentDateandTime;
             jsonObject.put("TimeOfRequest", currentDateandTime);
+
+            //Code to get current date and month
+            Calendar calendar = Calendar.getInstance();
+            int cYear = calendar.get(Calendar.YEAR);
+            int cDayOfYear = calendar.get(Calendar.DAY_OF_YEAR);
+
+            newRequest.requestYear = cYear;
+            newRequest.requestDayOfTheYear = cDayOfYear;
             json = jsonObject.toString();
 
             StringEntity se = new StringEntity(json);
@@ -403,6 +425,7 @@ public class RequestsDisplayActivity extends Fragment {
 
         @Override
         protected void onPostExecute(String result) {
+            //TODO validate empty and null
             if (!result.equals("Empty")) {
                 List<Requests> list = GetObjectsFromResponse(result);
                 resumeList = list;

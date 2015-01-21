@@ -111,20 +111,16 @@ public class NavigationDrawerFragment extends Fragment {
                         getString(R.string.title_section3),
                 }));
 */
-        NsItemModel[] model = new NsItemModel[3];
+        NsItemModel[] model = new NsItemModel[2];
 
         NsItemModel itemRequests = new NsItemModel();
         itemRequests.title = "Requests";
         itemRequests.counter = 1;
         model[0] = itemRequests;
-        NsItemModel itemResponse = new NsItemModel();
-        itemResponse.title = "Responses";
-        itemResponse.counter = 2;
-        model[1] = itemResponse;
         NsItemModel itemMyRequests = new NsItemModel();
-        itemResponse.title = "My Requests";
-        itemResponse.counter = 3;
-        model[2] = itemResponse;
+        itemMyRequests.title = "My Requests";
+        itemMyRequests.counter = 3;
+        model[1] = itemMyRequests;
 
         ListAdapter adapter = new NsMenuAdapter(getActivity().getApplicationContext(), model);
 

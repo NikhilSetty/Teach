@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -93,7 +94,7 @@ public class ViewResponsesForARequest extends Fragment {
         requestTime.setText(currentRequest.RequestTime);
 
         HttpGetter getter = new HttpGetter();
-        getter.execute("http://teach-mate.azurewebsites.net/Response/GetAllResponsesForARequest?id="+ TempDataClass.serverUserId+"&lastResponseId=0");
+        getter.execute("http://teach-mate.azurewebsites.net/Response/GetAllResponsesForARequest?id="+ currentRequest.RequestID+"&lastResponseId=0");
 
         return layout;
     }
@@ -160,16 +161,29 @@ public class ViewResponsesForARequest extends Fragment {
                     view, int position, long id) {
 
                 try {
-                    Intent i = new Intent(getActivity().getApplicationContext(), ResponseDisplayActivity.class);
-                    i.putExtra("RequestId", responsesArray[position].RequestId);
-                    i.putExtra("ResponseId", responsesArray[position].ResponseId);
-                    i.putExtra("ResponseString", responsesArray[position].ResponseString);
-                    i.putExtra("ResponseTime", responsesArray[position].ResponseTime);
-                    i.putExtra("ResponseUserId", responsesArray[position].ResponseUserId);
-                    i.putExtra("ResponseUserName", responsesArray[position].ResponseUserName);
-                    i.putExtra("ResponseUserProfession", responsesArray[position].ResponseUserProfession);
-                    i.putExtra("ResponseUserProfilePhotoServerPath", responsesArray[position].ResponseUserProfilePhotoServerPath);
-                    startActivity(i);
+                    Bundle i = new Bundle();
+                    i.putString("RequestId", responsesArray[position].RequestId);
+                    i.putString("RequestString", currentRequest.RequestString);
+                    i.putString("RequestTime", currentRequest.RequestTime);
+                    i.putString("ResponseId", responsesArray[position].ResponseId);
+                    i.putString("ResponseString", responsesArray[position].ResponseString);
+                    i.putString("ResponseTime", responsesArray[position].ResponseTime);
+                    i.putString("ResponseUserId", responsesArray[position].ResponseUserId);
+                    i.putString("ResponseUserName", responsesArray[position].ResponseUserName);
+                    i.putString("ResponseUserProfession", responsesArray[position].ResponseUserProfession);
+                    i.putString("ResponseUserProfilePhotoServerPath", responsesArray[position].ResponseUserProfilePhotoServerPath);
+
+                    Fragment individualRequestDisplayFragment = new ResponseDisplayActivity();
+                    individualRequestDisplayFragment.setArguments(i);
+
+                    Fragment currentFragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.container);
+
+                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                    TempDataClass.fragmentStack.lastElement().onPause();
+                    TempDataClass.fragmentStack.push(currentFragment);
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.container, individualRequestDisplayFragment)
+                            .commit();
                 } catch (Exception ex) {
                     Toast.makeText(getActivity().getApplicationContext(), ex.toString(), Toast.LENGTH_LONG).show();
                 }

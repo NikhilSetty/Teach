@@ -13,4 +13,6 @@ public class Requests {
     public String RequestUserProfilePhotoServerPath;
     public String RequestTime;
 
+    public int requestYear;
+    public int requestDayOfTheYear;
 }

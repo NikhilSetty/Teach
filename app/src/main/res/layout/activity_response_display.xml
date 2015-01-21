@@ -19,51 +19,64 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Request String"
-        android:id="@+id/textViewRequestString"
+        android:id="@+id/textViewResponseRequestString"
         android:layout_below="@+id/textView"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
-    <ImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:src="@drawable/user_icon"
-        android:id="@+id/imageViewUserProfilePhoto"
+    <View
+        android:layout_width="fill_parent"
+        android:layout_below="@+id/textViewResponseRequestString"
+        android:layout_height="4dp"
+        android:layout_marginTop="10dp"
+        android:background="#c0c0c0"/>
+
+    <RelativeLayout
+        android:id="@+id/relativeLayoutResponseUserDetails"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView5"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="23dp"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_above="@+id/textView2"
-        android:layout_alignRight="@+id/textViewRequestString"
-        android:layout_alignEnd="@+id/textViewRequestString" />
+        android:layout_alignParentStart="true">
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/user_icon"
+            android:id="@+id/imageViewUserProfilePhoto"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Response Username"
+            android:id="@+id/textViewResponseDisplayUserName"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="User Profession"
+            android:id="@+id/textViewResponseDisplayUserProfession"
+            android:layout_below="@+id/textViewResponseDisplayUserName"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Response Username"
-        android:id="@+id/textViewResponseUserName"
-        android:layout_alignTop="@+id/imageViewUserProfilePhoto"
-        android:layout_alignRight="@+id/textViewResponseUserProfession"
-        android:layout_alignEnd="@+id/textViewResponseUserProfession"
-        android:layout_marginTop="25dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="User Profession"
-        android:id="@+id/textViewResponseUserProfession"
-        android:layout_below="@+id/textViewRequestString"
-        android:layout_alignRight="@+id/buttonAccept"
-        android:layout_alignEnd="@+id/buttonAccept"
-        android:layout_marginTop="187dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Response :"
+        android:text="Response Message:"
         android:id="@+id/textView2"
-        android:layout_below="@+id/textViewResponseUserProfession"
+        android:layout_below="@+id/relativeLayoutResponseUserDetails"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginTop="23dp" />
@@ -73,7 +86,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="ResponseString"
-        android:id="@+id/textViewResponseString"
+        android:id="@+id/textViewResponseDisplayString"
         android:layout_below="@+id/textView2"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
@@ -88,5 +101,16 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Response Details:"
+        android:id="@+id/textView5"
+        android:layout_below="@+id/textViewResponseRequestString"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="23dp" />
 
 </RelativeLayout>

@@ -24,6 +24,5 @@ public class TempDataClass {
 
     public static Stack<Fragment> fragmentStack = new Stack<Fragment>();
 
-
     public static boolean isThroughSplash = false;
 }

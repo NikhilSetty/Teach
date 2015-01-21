@@ -123,7 +123,7 @@ public class GcmIntentService extends IntentService {
         mNotificationManager = (NotificationManager)
                 this.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        if(intType == 1) {
+        if(intType == 3) {
             Intent requestIntent = new Intent(this, MainActivity.class);
             requestIntent.putExtra("type", "request");
             requestIntent.putExtra("requestId", requestId);
@@ -142,7 +142,7 @@ public class GcmIntentService extends IntentService {
             mBuilder.setContentIntent(contentIntent);
             mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
         }
-        else if(intType == 2){
+        else if(intType == 4){
             Intent responseIntent = new Intent(this, MainActivity.class);
             responseIntent.putExtra("type", "response");
             responseIntent.putExtra("NotificationResponseId", responseId);

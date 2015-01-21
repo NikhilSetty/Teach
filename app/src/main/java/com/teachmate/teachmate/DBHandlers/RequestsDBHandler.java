@@ -85,4 +85,31 @@ public class RequestsDBHandler {
             Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
+
+    public static Requests GetRequest(Context context, Requests requestID)
+    {
+        try{
+            dbHelper = new DbHelper(context.getApplicationContext());
+            db = dbHelper.getWritableDatabase();
+
+            Cursor c = db.rawQuery("Select * from " + DbTableStrings.TABLE_NAME_REQUESTS+ " where "+ DbTableStrings.REQUEST_ID+" = '" + requestID + "'", null);
+
+            Requests request = new Requests();
+
+            if  (c.moveToFirst()) {
+                request.RequesteUserId = c.getString(c.getColumnIndex(DbTableStrings.REQUEST_EUSER_ID));
+                request.RequestID = c.getString(c.getColumnIndex(DbTableStrings.REQUEST_ID));
+                request.RequestString = c.getString(c.getColumnIndex(DbTableStrings.REQUEST_STRING));
+                request.RequestTime = c.getString(c.getColumnIndex(DbTableStrings.REQUEST_TIME));
+                request.RequestUserName = c.getString(c.getColumnIndex(DbTableStrings.REQUEST_USERNAME));
+                request.RequestUserProfession = c.getString(c.getColumnIndex(DbTableStrings.REQUEST_USER_PROFESSION));
+                request.RequestUserProfilePhotoServerPath = c.getString(c.getColumnIndex(DbTableStrings.REQUEST_USER_PROFILE_PHOTO_SERVER_PATH));
+                return request;
+            }
+            return null;
+        }catch(Exception ex){
+            Toast.makeText(context, ex.getMessage(), Toast.LENGTH_SHORT).show();
+            return null;
+        }
+    }
 }

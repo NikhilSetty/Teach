@@ -299,10 +299,8 @@ public class RequestDisplayActivity extends Fragment {
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             progressDialog.dismiss();
             FragmentTransaction ft = fragmentManager.beginTransaction();
-            TempDataClass.fragmentStack.lastElement().onPause();
-            TempDataClass.fragmentStack.remove(TempDataClass.fragmentStack.pop());
-            TempDataClass.fragmentStack.lastElement().onResume();
             ft.replace(R.id.container, TempDataClass.fragmentStack.lastElement());
+            TempDataClass.fragmentStack.pop();
             ft.commit();
         }
     }
