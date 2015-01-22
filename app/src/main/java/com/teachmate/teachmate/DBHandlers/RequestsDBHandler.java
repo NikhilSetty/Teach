@@ -90,7 +90,7 @@ public class RequestsDBHandler {
         }
     }
 
-    public static Requests GetRequest(Context context, Requests requestID)
+    public static Requests GetRequest(Context context, String requestID)
     {
         try{
             dbHelper = new DbHelper(context.getApplicationContext());
@@ -117,7 +117,7 @@ public class RequestsDBHandler {
         }
     }
 
-    public static Requests[] GetAllRequestsBeforeThreeDays(Context context)
+    public static String[] GetAllRequestsBeforeThreeDays(Context context)
     {
         dbHelper = new DbHelper(context.getApplicationContext());
         db = dbHelper.getWritableDatabase();
@@ -151,13 +151,18 @@ public class RequestsDBHandler {
                     }
                 }while (c.moveToNext());
             }
-            int i=0;
-            Requests[] requests = new Requests[listOfRequests.size()];
-            for (Requests request1: listOfRequests){
-                requests[i] = request1;
-                i++;
+            if(listOfRequests.size() > 0) {
+                int i = 0;
+                String[] requestIds = new String[listOfRequests.size()];
+                for (Requests request1 : listOfRequests) {
+                    requestIds[i] = request1.RequestID;
+                    i++;
+                }
+                return requestIds;
             }
-            return requests;
+            else{
+                return null;
+            }
         }
         return null;
     }

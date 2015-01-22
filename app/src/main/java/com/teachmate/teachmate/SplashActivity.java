@@ -12,7 +12,6 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Handler;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -23,13 +22,29 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.teachmate.teachmate.Chat.ChatAcitivity;
+import com.teachmate.teachmate.DBHandlers.ChatIdMapDBHandler;
 import com.teachmate.teachmate.DBHandlers.DeviceInfoDBHandler;
+import com.teachmate.teachmate.DBHandlers.RequestsDBHandler;
 import com.teachmate.teachmate.DBHandlers.UserModelDBHandler;
+import com.teachmate.teachmate.models.ChatIdMap;
 import com.teachmate.teachmate.models.DeviceInfoKeys;
 import com.teachmate.teachmate.models.DeviceInfoModel;
+import com.teachmate.teachmate.models.Requests;
 import com.teachmate.teachmate.models.UserModel;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
@@ -58,6 +73,8 @@ public class SplashActivity extends Activity implements LocationListener {
     private String provider;
     public static String lattitude;
     public static String longitude;
+
+    public String[] requestIds;
 
     private static int SPLASH_TIME_OUT = 3000;
 
@@ -93,6 +110,7 @@ public class SplashActivity extends Activity implements LocationListener {
             getCurrentLocation();
 
             if (!UserModelDBHandler.CheckIfUserDataExists(getApplication().getApplicationContext())) {
+
                 new Handler().postDelayed(new Runnable() {
 
                     @Override
@@ -105,10 +123,17 @@ public class SplashActivity extends Activity implements LocationListener {
                         // close this activity
                         finish();
                     }
-                }, 1000);
+                }, 3000);
             }
 
             else{
+                requestIds = RequestsDBHandler.GetAllRequestsBeforeThreeDays(getApplicationContext());
+
+                if(requestIds != null){
+                    DeleteRequestsOnTheServer delete = new DeleteRequestsOnTheServer();
+                    delete.execute("http://teach-mate.azurewebsites.net/Request/DeleteRequests");
+                }
+
                 try {
                     UserModel currentUser = UserModelDBHandler.ReturnValue(getApplicationContext());
                     TempDataClass.serverUserId = currentUser.ServerUserId;
@@ -368,5 +393,74 @@ public class SplashActivity extends Activity implements LocationListener {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public String POST(String url){
+        InputStream inputStream = null;
+        String result = "";
+        try {
+
+            HttpClient httpclient = new DefaultHttpClient();
+            HttpPost httpPost = new HttpPost(url);
+
+            String json = "";
+            JSONObject jsonObject = new JSONObject();
+
+            JSONArray jsonArray = new JSONArray();
+
+            for(int i = 0; i< requestIds.length; i++) {
+                jsonArray.put(requestIds[i]);
+            }
+
+            jsonObject.put("RequestIds", jsonArray);
+
+            json = jsonObject.toString();
+
+            StringEntity se = new StringEntity(json);
+
+            httpPost.setEntity(se);
+
+            httpPost.setHeader("Accept", "application/json");
+            httpPost.setHeader("Content-type", "application/json");
+
+            HttpResponse httpResponse = httpclient.execute(httpPost);
+
+            inputStream = httpResponse.getEntity().getContent();
+
+            if(inputStream != null)
+                result = convertInputStreamToString(inputStream);
+            else
+                result = "";
+
+            return result;
+
+        } catch (Exception e) {
+            Log.v("Getter", e.getLocalizedMessage());
+        }
+
+        return result;
+    }
+
+    private static String convertInputStreamToString(InputStream inputStream) throws IOException {
+        BufferedReader bufferedReader = new BufferedReader( new InputStreamReader(inputStream));
+        String line = "";
+        String result = "";
+        while((line = bufferedReader.readLine()) != null)
+            result += line;
+
+        inputStream.close();
+        return result;
+    }
+
+    private class DeleteRequestsOnTheServer extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... urls) {
+            return POST(urls[0]);
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+
+        }
     }
 }

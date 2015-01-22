@@ -66,12 +66,17 @@ public class MainActivity extends ActionBarActivity
 
         switch (type){
             case "request":
-                extras.putString("NotificationRequestId", getIntent().getStringExtra("requestId"));
+                extras.putString("NotificationRequestId", getIntent().getStringExtra("NotificationRequestId"));
                 initialFragment = new RequestDisplayActivity();
                 initialFragment.setArguments(extras);
                 break;
             case "response":
                 extras.putString("NotificationResponseId", getIntent().getStringExtra("NotificationResponseId"));
+                extras.putString("NotificationRequestId", getIntent().getStringExtra("NotificationRequestId"));
+                extras.putString("NotificationResponseUserId", getIntent().getStringExtra("NotificationResponseUserId"));
+                extras.putString("NotificationResponseUserName", getIntent().getStringExtra("NotificationResponseUserName"));
+                extras.putString("NotificationResponseMessage", getIntent().getStringExtra("NotificationResponseMessage"));
+                extras.putString("NotificationResponseUserProfession", getIntent().getStringExtra("NotificationResponseUserProfession"));
                 initialFragment = new ResponseDisplayActivity();
                 initialFragment.setArguments(extras);
                 break;
@@ -145,7 +150,7 @@ public class MainActivity extends ActionBarActivity
                 mTitle = getString(R.string.title_section1);
                 break;
             case 2:
-                mTitle = getString(R.string.title_section2);
+                mTitle = "My Requests";
                 break;
             case 3:
                 mTitle = getString(R.string.title_section3);

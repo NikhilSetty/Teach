@@ -17,11 +17,14 @@ import android.widget.Toast;
 
 import com.teachmate.teachmate.Chat.ChatAcitivity;
 import com.teachmate.teachmate.DBHandlers.ChatIdMapDBHandler;
+import com.teachmate.teachmate.DBHandlers.RequestsDBHandler;
+import com.teachmate.teachmate.DBHandlers.UserModelDBHandler;
 import com.teachmate.teachmate.R;
 import com.teachmate.teachmate.TempDataClass;
 import com.teachmate.teachmate.models.ChatIdMap;
 import com.teachmate.teachmate.models.Requests;
 import com.teachmate.teachmate.models.Responses;
+import com.teachmate.teachmate.models.UserModel;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -62,10 +65,15 @@ public class ResponseDisplayActivity extends Fragment {
 
         acceptResponse = (Button) layout.findViewById(R.id.buttonAccept);
 
+        requestString = (TextView) layout.findViewById(R.id.textViewResponseRequestString);
+        responseUserName = (TextView) layout.findViewById(R.id.textViewResponseDisplayUserName);
+        responseUserProfession = (TextView) layout.findViewById(R.id.textViewResponseDisplayUserProfession);
+        responseString = (TextView) layout.findViewById(R.id.textViewResponseDisplayString);
+
         currentResponse = new Responses();
+        Bundle args = getArguments();
 
         try {
-            Bundle args = getArguments();
             notificationRequestId = args.getString("NotificationResponseId");
         }catch(Exception e){
             Log.e("Error", e.getMessage());
@@ -73,16 +81,9 @@ public class ResponseDisplayActivity extends Fragment {
         if(notificationRequestId == null){
             currentRequest = new Requests();
 
-            Bundle args = getArguments();
-
             currentRequest.RequestID = args.getString("RequestId");
             currentRequest.RequestString = args.getString("RequestString");
             currentRequest.RequestTime = args.getString("RequestTime");
-
-            requestString = (TextView) layout.findViewById(R.id.textViewResponseRequestString);
-            responseUserName = (TextView) layout.findViewById(R.id.textViewResponseDisplayUserName);
-            responseUserProfession = (TextView) layout.findViewById(R.id.textViewResponseDisplayUserProfession);
-            responseString = (TextView) layout.findViewById(R.id.textViewResponseDisplayString);
 
             currentResponse.RequestId = args.getString("RequestId");
             currentResponse.ResponseId = args.getString("ResponseId");
@@ -92,6 +93,24 @@ public class ResponseDisplayActivity extends Fragment {
             currentResponse.ResponseUserName = args.getString("ResponseUserName");
             currentResponse.ResponseUserProfession = args.getString("ResponseUserProfession");
             currentResponse.ResponseUserProfilePhotoServerPath = args.getString("ResponseUserProfilePhotoServerPath");
+
+            requestString.setText(currentRequest.RequestString);
+            responseUserName.setText(currentResponse.ResponseUserName);
+            responseUserProfession.setText(currentResponse.ResponseUserProfession);
+            responseString.setText(currentResponse.ResponseString);
+        }
+        else{
+            UserModel user = UserModelDBHandler.ReturnValue(getActivity().getApplicationContext());
+            TempDataClass.serverUserId = user.ServerUserId;
+
+            currentResponse.ResponseId = args.getString("NotificationResponseId");
+            currentResponse.RequestId = args.getString("NotificationRequestId");
+            currentResponse.ResponseUserId = args.getString("NotificationResponseUserId");
+            currentResponse.ResponseUserName = args.getString("NotificationResponseUserName");
+            currentResponse.ResponseString = args.getString("NotificationResponseMessage");
+            currentResponse.ResponseUserProfession = args.getString("NotificationResponseUserProfession");
+
+            currentRequest = RequestsDBHandler.GetRequest(getActivity().getApplicationContext(), currentResponse.RequestId);
 
             requestString.setText(currentRequest.RequestString);
             responseUserName.setText(currentResponse.ResponseUserName);
@@ -110,11 +129,10 @@ public class ResponseDisplayActivity extends Fragment {
 
     }
 
-    private class HttpGetter extends AsyncTask<String, Void, String> {
+ /*   private class HttpGetter extends AsyncTask<String, Void, String> {
 
         @Override
         protected String doInBackground(String... urls) {
-            // TODO Auto-generated method stub
             StringBuilder builder = new StringBuilder();
             HttpClient client = new DefaultHttpClient();
             HttpGet httpGet = new HttpGet(urls[0]);
@@ -149,15 +167,11 @@ public class ResponseDisplayActivity extends Fragment {
         @Override
         protected void onPostExecute(String result) {
             currentResponse = GetObjectsFromResponse(result);
-            /*if(currentResponse != null){
-                TextView responseUserName = (TextView) findViewById(R.id.textViewResponseUserName);
-                TextView responseString = (TextView) findViewById(R.id.textViewRequestString);
-                TextView responseUserProfession = (TextView) findViewById(R.id.textViewResponseUserProfession);
-
+            if(currentResponse != null){
                 responseUserName.setText(currentResponse.ResponseUserName);
                 responseString.setText(currentResponse.ResponseString);
                 responseUserProfession.setText(currentResponse.ResponseUserProfession);
-            }*/
+            }
         }
     }
 
@@ -184,7 +198,7 @@ public class ResponseDisplayActivity extends Fragment {
             return null;
         }
     }
-
+*/
 
 /*    @Override
     public boolean onCreateOptionsMenu(Menu menu) {

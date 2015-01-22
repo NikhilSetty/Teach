@@ -55,6 +55,8 @@ public class GcmIntentService extends IntentService {
     int intType;
     String responseId;
 
+    String responseUserProfession;
+
     String chatSenderId;
     String chatChatId;
     String chatSenderName;
@@ -83,15 +85,6 @@ public class GcmIntentService extends IntentService {
                 sendNotification("Deleted messages on server: " + extras.toString());
             // If it's a regular GCM message, do some work.
             } else if (GoogleCloudMessaging.MESSAGE_TYPE_MESSAGE.equals(messageType)) {
-                // This loop represents the service doing some work.
-                /*for (int i = 0; i < 5; i++) {
-                    Log.i(TAG, "Working... " + (i + 1)
-                            + "/5 @ " + SystemClock.elapsedRealtime());
-                    try {
-                        Thread.sleep(5000);
-                    } catch (InterruptedException e) {
-                    }
-                }*/
 
                 type = extras.getString("Type");
                 intType = Integer.parseInt(type);
@@ -110,6 +103,7 @@ public class GcmIntentService extends IntentService {
                         requestId = extras.getString("RequestId");
                         userId = extras.getString("ResponseUserId");
                         responseId = extras.getString("ResponseId");
+                        responseUserProfession = extras.getString("ResponseUserProfession");
                         break;
                     case 5:
                         chatChatId = extras.getString("ChatId");
@@ -140,10 +134,10 @@ public class GcmIntentService extends IntentService {
         if(intType == 3) {
             Intent requestIntent = new Intent(this, MainActivity.class);
             requestIntent.putExtra("type", "request");
-            requestIntent.putExtra("requestId", requestId);
+            requestIntent.putExtra("NotificationRequestId", requestId);
 
-            PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-                    requestIntent, 0);
+            PendingIntent contentIntent = PendingIntent.getActivity(this, Integer.parseInt(requestId),
+                    requestIntent, PendingIntent.FLAG_ONE_SHOT);
 
             NotificationCompat.Builder mBuilder =
                     new NotificationCompat.Builder(this)
@@ -161,9 +155,14 @@ public class GcmIntentService extends IntentService {
             Intent responseIntent = new Intent(this, MainActivity.class);
             responseIntent.putExtra("type", "response");
             responseIntent.putExtra("NotificationResponseId", responseId);
+            responseIntent.putExtra("NotificationRequestId", requestId);
+            responseIntent.putExtra("NotificationResponseUserId", userId);
+            responseIntent.putExtra("NotificationResponseUserName", username);
+            responseIntent.putExtra("NotificationResponseMessage", message);
+            responseIntent.putExtra("NotificationResponseUserProfession", responseUserProfession);
 
-            PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-                    responseIntent, 0);
+            PendingIntent contentIntent = PendingIntent.getActivity(this, Integer.parseInt(responseId),
+                    responseIntent, PendingIntent.FLAG_ONE_SHOT);
 
             NotificationCompat.Builder mBuilder =
                     new NotificationCompat.Builder(this)
@@ -187,9 +186,9 @@ public class GcmIntentService extends IntentService {
             chatIntent.putExtra("received", true);
             PendingIntent pendingIntent = PendingIntent.getActivity(
                     getApplicationContext(),
-                    0,
+                    Integer.parseInt(chatChatId),
                     chatIntent,
-                    0);
+                    PendingIntent.FLAG_ONE_SHOT);
 
             Notification mBuilder =
                     new NotificationCompat.Builder(getApplicationContext())

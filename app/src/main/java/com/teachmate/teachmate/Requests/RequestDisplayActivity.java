@@ -20,9 +20,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.teachmate.teachmate.DBHandlers.UserModelDBHandler;
 import com.teachmate.teachmate.R;
 import com.teachmate.teachmate.TempDataClass;
 import com.teachmate.teachmate.models.Requests;
+import com.teachmate.teachmate.models.UserModel;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -101,6 +103,8 @@ public class RequestDisplayActivity extends Fragment {
         }
         else{
             progressDialog.show();
+            UserModel cUser = UserModelDBHandler.ReturnValue(getActivity().getApplicationContext());
+            TempDataClass.serverUserId = cUser.ServerUserId;
             HttpGetter getter = new HttpGetter();
             getter.execute("http://teach-mate.azurewebsites.net/Request/GetRequestDetails?id=" + notificationRequestId);
             //TODO
