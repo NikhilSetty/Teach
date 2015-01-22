@@ -48,8 +48,6 @@ public class MainActivity extends ActionBarActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
         String type = "";
         try {
             type = getIntent().getStringExtra("type");
@@ -62,6 +60,7 @@ public class MainActivity extends ActionBarActivity
             type = "";
             isThroughNotification = false;
         }
+        setContentView(R.layout.activity_main);
 
         Bundle extras = new Bundle();
 
@@ -90,14 +89,9 @@ public class MainActivity extends ActionBarActivity
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
-        if (!TempDataClass.isThroughSplash && isThroughNotification) {
+        if (isThroughNotification) {
             replaceFragment();
-            TempDataClass.isThroughSplash = false;
-            TempDataClass.isThroughNavigation = true;
         }
-
-        TempDataClass.isThroughSplash = false;
-        TempDataClass.isThroughNavigation = true;
     }
 
     @Override
@@ -126,7 +120,6 @@ public class MainActivity extends ActionBarActivity
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
-        TempDataClass.isThroughNavigation = true;
         TempDataClass.fragmentStack = new Stack<Fragment>();
         switch(position) {
             case 0:
@@ -140,22 +133,7 @@ public class MainActivity extends ActionBarActivity
                 break;
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
         if(TempDataClass.isThroughSplash && !isThroughNotification) {
-            replaceFragment();
-        }
-        if(TempDataClass.isThroughNavigation){
             replaceFragment();
         }
 

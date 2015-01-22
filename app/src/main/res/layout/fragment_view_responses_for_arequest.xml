@@ -56,14 +56,38 @@
                 android:layout_marginTop="10dp"
                 android:background="#c0c0c0"/>
 
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:id="@+id/view_responses_list_view"
+                android:layout_below="@+id/textView4"
+                android:layout_height="fill_parent"
+                android:visibility="visible">
+                <ListView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/listViewMyRequestsResponsesDisplay"
+                    android:layout_alignParentBottom="false"/>
+            </RelativeLayout>
 
-            <ListView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/listViewMyRequestsResponsesDisplay"
-                android:layout_below="@+id/relative_layout_request_display"
-                android:layout_alignParentBottom="true"
-                android:layout_marginTop="66dp" />
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:id="@+id/no_response_view"
+                android:layout_below="@+id/textView4"
+                android:layout_height="fill_parent"
+                android:visibility="invisible">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="No Responses Available."
+                    android:id="@+id/textView7"
+                    android:layout_centerVertical="true"
+                    android:layout_centerHorizontal="true"
+                    android:textColor="#ff717171" />
+
+            </RelativeLayout>
 
             <TextView
                 android:layout_width="wrap_content"

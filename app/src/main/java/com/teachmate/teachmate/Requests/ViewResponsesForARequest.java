@@ -59,6 +59,9 @@ public class ViewResponsesForARequest extends Fragment {
     ListAdapter listAdapter;
     ProgressDialog progressDialog;
 
+    RelativeLayout listViewLayout;
+    RelativeLayout errorLayout;
+
     public ViewResponsesForARequest() {
         // Required empty public constructor
     }
@@ -69,6 +72,9 @@ public class ViewResponsesForARequest extends Fragment {
 
         activity = (FragmentActivity) super.getActivity();
         RelativeLayout layout = (RelativeLayout) inflater.inflate(R.layout.fragment_view_responses_for_arequest, container, false);
+
+        listViewLayout = (RelativeLayout) layout.findViewById(R.id.view_responses_list_view);
+        errorLayout = (RelativeLayout) layout.findViewById(R.id.no_response_view);
 
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setCancelable(false);
@@ -141,6 +147,8 @@ public class ViewResponsesForARequest extends Fragment {
         protected void onPostExecute(String result) {
             if(result != null && !result.isEmpty()){
                 if(!result.equals("empty")){
+                    listViewLayout.setVisibility(View.VISIBLE);
+                    errorLayout.setVisibility(View.GONE);
                     List<Responses> list = GetObjectsFromResponse(result);
                     if(list != null){
                         populateListView(list);
@@ -150,6 +158,10 @@ public class ViewResponsesForARequest extends Fragment {
             }
             else{
                 progressDialog.dismiss();
+
+                listViewLayout.setVisibility(View.INVISIBLE);
+                errorLayout.setVisibility(View.VISIBLE);
+
                 AlertDialog.Builder builder1 = new AlertDialog.Builder(activity);
                 builder1.setTitle("Alert!");
                 builder1.setMessage("No Responses available!");

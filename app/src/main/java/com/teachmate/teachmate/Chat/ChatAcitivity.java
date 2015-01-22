@@ -64,8 +64,6 @@ public class ChatAcitivity extends ListActivity {
         if (bundle != null && bundle.containsKey("UserName")) {
             receivedFrom = bundle.getString("UserName");
         }
-        getActionBar().setTitle(receivedFrom);
-
 
         currentTime = new Time();
         text = (EditText) this.findViewById(R.id.text);

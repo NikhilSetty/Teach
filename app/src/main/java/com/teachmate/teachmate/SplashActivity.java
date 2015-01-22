@@ -82,7 +82,6 @@ public class SplashActivity extends Activity implements LocationListener {
 
             TempDataClass.deviceRegId = regid;
             TempDataClass.isThroughSplash = true;
-            TempDataClass.isThroughNavigation = false;
 
             String dbRegID = DeviceInfoDBHandler.GetValueForKey(getApplicationContext(), DeviceInfoKeys.REGISTRATION_ID);
 

@@ -439,7 +439,6 @@ public class RequestsDisplayActivity extends Fragment {
 
         @Override
         protected void onPostExecute(String result) {
-            //TODO validate empty and null
             if(result != null && !result.isEmpty()) {
                 if (!result.equals("Empty")) {
                     List<Requests> list = GetObjectsFromResponse(result);
