@@ -10,6 +10,10 @@ import com.teachmate.teachmate.DBClasses.DbHelper;
 import com.teachmate.teachmate.DBClasses.DbTableStrings;
 import com.teachmate.teachmate.models.Requests;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+
 /**
  * Created by ASreenivasa on 05-Jan-15.
  */
@@ -53,7 +57,7 @@ public class RequestsDBHandler {
         if (c.getCount() != 0) {
             if(c.getCount() != -1) {
                 int i = 0;
-                if (c.moveToFirst()) {
+                if (c.moveToLast()) {
                     do {
                         requests[i] = new Requests();
                         requests[i].RequesteUserId = c.getString(c.getColumnIndex(DbTableStrings.REQUEST_EUSER_ID));
@@ -64,7 +68,7 @@ public class RequestsDBHandler {
                         requests[i].RequestUserProfession = c.getString(c.getColumnIndex(DbTableStrings.REQUEST_USER_PROFESSION));
                         requests[i].RequestUserProfilePhotoServerPath = c.getString(c.getColumnIndex(DbTableStrings.REQUEST_USER_PROFILE_PHOTO_SERVER_PATH));
                         i++;
-                    } while (c.moveToNext());
+                    } while (c.moveToPrevious());
                 }
                 return requests;
             }
@@ -111,5 +115,50 @@ public class RequestsDBHandler {
             Toast.makeText(context, ex.getMessage(), Toast.LENGTH_SHORT).show();
             return null;
         }
+    }
+
+    public static Requests[] GetAllRequestsBeforeThreeDays(Context context)
+    {
+        dbHelper = new DbHelper(context.getApplicationContext());
+        db = dbHelper.getWritableDatabase();
+
+        Calendar calendar = Calendar.getInstance();
+        int cYear = calendar.get(Calendar.YEAR);
+        int cDayOfYear = calendar.get(Calendar.DAY_OF_YEAR);
+        cDayOfYear -= 3;
+
+        Cursor c = db.rawQuery("Select * from " + DbTableStrings.TABLE_NAME_REQUESTS, null);
+
+        Requests request = new Requests();
+        List<Requests> listOfRequests = new ArrayList<Requests>();
+        if (c != null ) {
+            if  (c.moveToFirst()) {
+                do {
+                    int reqDayOfYear = c.getInt(c.getColumnIndex(DbTableStrings.REQUEST_DAY_OF_THE_YEAR));
+                    int reqYear = c.getInt(c.getColumnIndex(DbTableStrings.REQUEST_YEAR));
+                    if(reqDayOfYear <=cDayOfYear && reqYear == cYear) {
+                        request = new Requests();
+                        request.RequesteUserId = c.getString(c.getColumnIndex(DbTableStrings.REQUEST_EUSER_ID));
+                        request.RequestID = c.getString(c.getColumnIndex(DbTableStrings.REQUEST_ID));
+                        request.RequestString = c.getString(c.getColumnIndex(DbTableStrings.REQUEST_STRING));
+                        request.RequestTime = c.getString(c.getColumnIndex(DbTableStrings.REQUEST_TIME));
+                        request.RequestUserName = c.getString(c.getColumnIndex(DbTableStrings.REQUEST_USERNAME));
+                        request.RequestUserProfession = c.getString(c.getColumnIndex(DbTableStrings.REQUEST_USER_PROFESSION));
+                        request.RequestUserProfilePhotoServerPath = c.getString(c.getColumnIndex(DbTableStrings.REQUEST_USER_PROFILE_PHOTO_SERVER_PATH));
+                        request.requestYear = c.getInt(c.getColumnIndex(DbTableStrings.REQUEST_YEAR));
+                        request.requestDayOfTheYear = c.getInt(c.getColumnIndex(DbTableStrings.REQUEST_DAY_OF_THE_YEAR));
+                        listOfRequests.add(request);
+                    }
+                }while (c.moveToNext());
+            }
+            int i=0;
+            Requests[] requests = new Requests[listOfRequests.size()];
+            for (Requests request1: listOfRequests){
+                requests[i] = request1;
+                i++;
+            }
+            return requests;
+        }
+        return null;
     }
 }

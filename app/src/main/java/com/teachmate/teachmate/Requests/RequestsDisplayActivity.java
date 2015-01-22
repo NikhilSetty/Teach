@@ -329,10 +329,12 @@ public class RequestsDisplayActivity extends Fragment {
                 jsonObject.put("Longitude", 0);
                 jsonObject.put("Longitude", 0);
             }
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH-mm-ss");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
             String currentDateandTime = sdf.format(new Date());
             newRequest.RequestTime = currentDateandTime;
             jsonObject.put("TimeOfRequest", currentDateandTime);
+
+
 
             //Code to get current date and month
             Calendar calendar = Calendar.getInstance();

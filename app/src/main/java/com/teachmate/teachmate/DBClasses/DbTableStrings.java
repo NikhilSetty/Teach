@@ -23,6 +23,8 @@ public class DbTableStrings {
     public static final String REQUEST_USER_PROFESSION = "request_user_profession";
     public static final String REQUEST_USER_PROFILE_PHOTO_SERVER_PATH = "request_user_profile_photo_server_path";
     public static final String REQUEST_TIME = "request_time";
+    public static final String REQUEST_YEAR = "request_year";
+    public static final String REQUEST_DAY_OF_THE_YEAR = "request_day_of_the_year";
 
 
     public static final String TABLE_NAME_QUESTION_MODEL = "question_model";

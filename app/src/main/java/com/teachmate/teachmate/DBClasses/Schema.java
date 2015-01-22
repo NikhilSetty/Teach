@@ -22,7 +22,9 @@ public class Schema {
             + DbTableStrings.REQUEST_STRING + " string, "
             + DbTableStrings.REQUEST_TIME + " string, "
             + DbTableStrings.REQUEST_USER_PROFESSION + " string, "
-            + DbTableStrings.REQUEST_USER_PROFILE_PHOTO_SERVER_PATH + " string) ";
+            + DbTableStrings.REQUEST_USER_PROFILE_PHOTO_SERVER_PATH + " string, "
+            + DbTableStrings.REQUEST_YEAR + " int, "
+            + DbTableStrings.REQUEST_DAY_OF_THE_YEAR + " int) ";
 
     public static final String CREATE_TABLE_QUESTION_MODEL = "create table if not exists " + DbTableStrings.TABLE_NAME_QUESTION_MODEL +
             "( _id integer primary key autoincrement, "

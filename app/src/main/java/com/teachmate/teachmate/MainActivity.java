@@ -42,7 +42,7 @@ public class MainActivity extends ActionBarActivity
      */
     private CharSequence mTitle;
 
-    private boolean isFirst = true;
+    private boolean isThroughNotification = false;
 
 
     @Override
@@ -53,11 +53,15 @@ public class MainActivity extends ActionBarActivity
         String type = "";
         try {
             type = getIntent().getStringExtra("type");
+            isThroughNotification = true;
         }catch(Exception ex){
             type = "";
+            isThroughNotification = false;
         }
-        if(type == null)
+        if(type == null) {
             type = "";
+            isThroughNotification = false;
+        }
 
         Bundle extras = new Bundle();
 
@@ -86,13 +90,14 @@ public class MainActivity extends ActionBarActivity
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
-        if (!TempDataClass.isThroughSplash) {
+        if (!TempDataClass.isThroughSplash && isThroughNotification) {
             replaceFragment();
             TempDataClass.isThroughSplash = false;
+            TempDataClass.isThroughNavigation = true;
         }
 
         TempDataClass.isThroughSplash = false;
-
+        TempDataClass.isThroughNavigation = true;
     }
 
     @Override
@@ -121,6 +126,7 @@ public class MainActivity extends ActionBarActivity
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
+        TempDataClass.isThroughNavigation = true;
         TempDataClass.fragmentStack = new Stack<Fragment>();
         switch(position) {
             case 0:
@@ -134,7 +140,22 @@ public class MainActivity extends ActionBarActivity
                 break;
         }
 
-        if(TempDataClass.isThroughSplash) {
+
+
+
+
+
+
+
+
+
+
+
+
+        if(TempDataClass.isThroughSplash && !isThroughNotification) {
+            replaceFragment();
+        }
+        if(TempDataClass.isThroughNavigation){
             replaceFragment();
         }
 

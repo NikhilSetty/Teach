@@ -1,7 +1,9 @@
 package com.teachmate.teachmate.Requests;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -137,11 +139,32 @@ public class ViewResponsesForARequest extends Fragment {
 
         @Override
         protected void onPostExecute(String result) {
-            List<Responses> list = GetObjectsFromResponse(result);
-            if(list != null){
-                populateListView(list);
+            if(result != null && !result.isEmpty()){
+                if(!result.equals("empty")){
+                    List<Responses> list = GetObjectsFromResponse(result);
+                    if(list != null){
+                        populateListView(list);
+                    }
+                    progressDialog.dismiss();
+                }
             }
-            progressDialog.dismiss();
+            else{
+                progressDialog.dismiss();
+                AlertDialog.Builder builder1 = new AlertDialog.Builder(activity);
+                builder1.setTitle("Alert!");
+                builder1.setMessage("No Responses available!");
+                builder1.setCancelable(true);
+                builder1.setPositiveButton("Ok",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+                AlertDialog alert11 = builder1.create();
+                alert11.show();
+            }
+
         }
     }
 
