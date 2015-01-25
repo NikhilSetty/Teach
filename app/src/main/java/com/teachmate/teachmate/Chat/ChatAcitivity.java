@@ -13,6 +13,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.teachmate.teachmate.DBHandlers.ChatInfoDBHandler;
+import com.teachmate.teachmate.R;
+import com.teachmate.teachmate.models.ChatInfo;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
@@ -26,10 +30,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.teachmate.teachmate.DBHandlers.ChatInfoDBHandler;
-import com.teachmate.teachmate.R;
-import com.teachmate.teachmate.models.ChatInfo;
-
 public class ChatAcitivity extends ListActivity {
 
 
@@ -42,6 +42,7 @@ public class ChatAcitivity extends ListActivity {
     static String chatId;
     String receivedFrom;
     String receivedAt;
+    String previousConversationId;
 
 
     @Override
@@ -51,18 +52,21 @@ public class ChatAcitivity extends ListActivity {
 
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
+        //message bundle from intent service
         if (bundle != null && bundle.containsKey("Message")) {
             addNewMessage(new Message(bundle.getString("Message"), false));
         }
+        //chatId bundle from intent service
         if (bundle != null && bundle.containsKey("ChatId")) {
             chatId = bundle.getString("ChatId");
         }
-
+        //username bundle from intent service
         if (bundle != null && bundle.containsKey("UserName")) {
             receivedFrom = bundle.getString("UserName");
         }
-        if (bundle != null && bundle.containsKey("UserName")) {
-            receivedFrom = bundle.getString("UserName");
+        //previousConversation bundle from previous chat
+        if (bundle != null && bundle.containsKey("previousConversation")) {
+            chatId = bundle.getString("previousConversation");
         }
 
         currentTime = new Time();
@@ -131,12 +135,8 @@ public class ChatAcitivity extends ListActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
