@@ -28,7 +28,7 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
-import com.teachmate.teachmate.Chat.ChatAcitivity;
+import com.teachmate.teachmate.Chat.ChatActivity;
 
 /**
  * This {@code IntentService} does the actual handling of the GCM message.
@@ -177,7 +177,7 @@ public class GcmIntentService extends IntentService {
             mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
         }
         else if(intType == 5){
-            Intent chatIntent = new Intent(getApplicationContext(), ChatAcitivity.class);
+            Intent chatIntent = new Intent(getApplicationContext(), ChatActivity.class);
             chatIntent.putExtra("ChatId", chatChatId);
             chatIntent.putExtra("Message", chatMessage);
             chatIntent.putExtra("SentOn", chatMessageTime);

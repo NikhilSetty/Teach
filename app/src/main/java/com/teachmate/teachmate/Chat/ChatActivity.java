@@ -15,6 +15,7 @@ import android.widget.EditText;
 
 import com.teachmate.teachmate.DBHandlers.ChatInfoDBHandler;
 import com.teachmate.teachmate.R;
+import com.teachmate.teachmate.TempDataClass;
 import com.teachmate.teachmate.models.ChatInfo;
 
 import org.apache.http.HttpResponse;
@@ -30,7 +31,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class ChatAcitivity extends ListActivity {
+public class ChatActivity extends ListActivity {
 
 
     ArrayList<Message> messages;
@@ -42,7 +43,9 @@ public class ChatAcitivity extends ListActivity {
     static String chatId;
     String receivedFrom;
     String receivedAt;
+    String time;
     String previousConversationId;
+    public static final int CHAT_NOTIFICATION = 5;
 
 
     @Override
@@ -104,7 +107,7 @@ public class ChatAcitivity extends ListActivity {
         getListView().setSelection(messages.size() - 1);
 
 
-        String time;
+
         if(m.isMine() == true) {
             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             //get current date time with Date()
@@ -144,7 +147,7 @@ public class ChatAcitivity extends ListActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public static String POST(String url, String message) {
+    public  String POST(String url, String message) {
         String result = "";
         try {
 
@@ -156,10 +159,11 @@ public class ChatAcitivity extends ListActivity {
 
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("chatId", chatId);
-            jsonObject.put("SentOn", "06/01/2015");
-            jsonObject.put("SenderId", "APA91bHLjJ29kbnn-Grd5P0EeyUeCEEcTpRTweedze4AKmAYcmzqhJk9JKQBGTNtURAHy5ZJz8ysMNS-uf8XDqfrKOt1Z7hOTrjeq3N-AhYe5jZgDVXLfSHQMfiDkpglocGSNKpoiaIn2ZdUlA0hYJFBmqe8Wlm4U-uYJso_TW08I6kJr3tXfaw");
             jsonObject.put("message", message);
-            jsonObject.put("id", "ewde");
+            jsonObject.put("SenderId", TempDataClass.serverUserId);
+            jsonObject.put("userName", TempDataClass.userName);
+            jsonObject.put("type",CHAT_NOTIFICATION );
+            jsonObject.put("SentOn", time);
 
 
             json = jsonObject.toString();

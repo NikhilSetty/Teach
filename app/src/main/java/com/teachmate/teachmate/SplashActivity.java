@@ -22,15 +22,11 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
-import com.teachmate.teachmate.Chat.ChatAcitivity;
-import com.teachmate.teachmate.DBHandlers.ChatIdMapDBHandler;
 import com.teachmate.teachmate.DBHandlers.DeviceInfoDBHandler;
 import com.teachmate.teachmate.DBHandlers.RequestsDBHandler;
 import com.teachmate.teachmate.DBHandlers.UserModelDBHandler;
-import com.teachmate.teachmate.models.ChatIdMap;
 import com.teachmate.teachmate.models.DeviceInfoKeys;
 import com.teachmate.teachmate.models.DeviceInfoModel;
-import com.teachmate.teachmate.models.Requests;
 import com.teachmate.teachmate.models.UserModel;
 
 import org.apache.http.HttpResponse;

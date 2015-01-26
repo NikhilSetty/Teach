@@ -63,7 +63,7 @@
             android:label="@string/title_activity_main" >
         </activity>
         <activity
-            android:name=".Chat.ChatAcitivity"
+            android:name=".Chat.ChatActivity"
             android:label="@string/title_activity_chat_acitivity" >
         </activity>
     </application>

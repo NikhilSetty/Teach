@@ -128,7 +128,7 @@ public class PreviousChatFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String selectedConversation = previousChat.get(position).chatId;
                 Intent intent = new Intent(getActivity().getApplicationContext(),
-                        ChatAcitivity.class);
+                        ChatActivity.class);
                 intent.putExtra("previousConversation", selectedConversation);
                 startActivity(intent);
             }

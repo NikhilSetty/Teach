@@ -13,9 +13,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.teachmate.teachmate.Chat.ChatAcitivity;
+import com.teachmate.teachmate.Chat.ChatActivity;
 import com.teachmate.teachmate.DBHandlers.ChatIdMapDBHandler;
 import com.teachmate.teachmate.DBHandlers.RequestsDBHandler;
 import com.teachmate.teachmate.DBHandlers.UserModelDBHandler;
@@ -26,12 +25,8 @@ import com.teachmate.teachmate.models.Requests;
 import com.teachmate.teachmate.models.Responses;
 import com.teachmate.teachmate.models.UserModel;
 
-import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
-import org.apache.http.StatusLine;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -120,8 +115,15 @@ public class ResponseDisplayActivity extends Fragment {
 
         acceptResponse.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                GetChatId chat = new GetChatId();
-                chat.execute("http://teach-mate.azurewebsites.net/Chat/ChatReg");
+                int existingChatId = ChatIdMapDBHandler.CheckUserIdAndReturnChatId(getActivity().getApplicationContext(),currentResponse.ResponseUserId);
+                if (existingChatId > 0){
+                    Intent i = new Intent(getActivity().getApplicationContext(), ChatActivity.class);
+                    i.putExtra("ChatId", existingChatId);
+                    startActivity(i);
+                }else {
+                    GetChatId chat = new GetChatId();
+                    chat.execute("http://teach-mate.azurewebsites.net/Chat/ChatReg");
+                }
             }
         });
 
@@ -294,7 +296,7 @@ public class ResponseDisplayActivity extends Fragment {
 
             ChatIdMapDBHandler.InsertChatIdMap(getActivity().getApplicationContext(), newChatId);
 
-            Intent i = new Intent(getActivity().getApplicationContext(), ChatAcitivity.class);
+            Intent i = new Intent(getActivity().getApplicationContext(), ChatActivity.class);
             i.putExtra("ChatId", newChatId.chatId);
             startActivity(i);
         }
