@@ -5,7 +5,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.widget.Toast;
+import android.util.Log;
 
 import com.teachmate.teachmate.DBClasses.DbHelper;
 import com.teachmate.teachmate.DBClasses.DbTableStrings;
@@ -30,7 +30,7 @@ public class ChatIdMapDBHandler {
             db = dbHelper.getWritableDatabase();
             db.insert(DbTableStrings.TABLE_NAME_CHAT_ID_MAPPING, null, contentValues);
         } catch (Exception e) {
-            Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT);
+            Log.e("ChatIdMapDBHandle", e.getMessage());
         }
     }
 
@@ -52,7 +52,7 @@ public class ChatIdMapDBHandler {
             }
 
         } catch (Exception e) {
-            Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT);
+            Log.e("ChatIdMapDBHandle", e.getMessage());
             return 0;
         }
     }
@@ -77,8 +77,7 @@ public class ChatIdMapDBHandler {
                 }
             }
         } catch (Exception e) {
-            Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT);
-            // return 0;
+            Log.e("ChatIdMapDBHandle", e.getMessage());
         }
         return previousChats;
     }
