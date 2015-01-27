@@ -159,6 +159,9 @@ public class MainActivity extends ActionBarActivity
             case FragmentTitles.HOME:
                 mTitle = FragmentTitles.HOME;
                 break;
+            case FragmentTitles.CHAT:
+                mTitle = FragmentTitles.CHAT;
+                break;
         }
     }
 

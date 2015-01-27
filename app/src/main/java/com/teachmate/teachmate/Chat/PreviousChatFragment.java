@@ -15,6 +15,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.teachmate.teachmate.DBHandlers.ChatIdMapDBHandler;
+import com.teachmate.teachmate.FragmentTitles;
+import com.teachmate.teachmate.MainActivity;
 import com.teachmate.teachmate.R;
 import com.teachmate.teachmate.models.ChatIdMap;
 
@@ -140,12 +142,7 @@ public class PreviousChatFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        try {
-            mListener = (OnFragmentInteractionListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
+        ((MainActivity) activity).onSectionAttached(FragmentTitles.CHAT);
     }
 
     @Override
