@@ -43,9 +43,11 @@ public class ChatIdMapDBHandler {
             Cursor c = db.rawQuery("Select * from " + DbTableStrings.TABLE_NAME_CHAT_ID_MAPPING
                     + " where " + DbTableStrings.USERID + " = '" + userID + "'", null);
             if (c != null) {
-
-                int val = Integer.parseInt(c.getString(c.getColumnIndex(DbTableStrings.CHATID)));
-                return val;
+                if (c.moveToFirst()) {
+                    int val = Integer
+                            .parseInt(c.getString(c.getColumnIndex(DbTableStrings.CHATID)));
+                    return val;
+                }
             }
             else {
                 return 0;
@@ -55,6 +57,7 @@ public class ChatIdMapDBHandler {
             Log.e("ChatIdMapDBHandle", e.getMessage());
             return 0;
         }
+        return 0;
     }
 
     public static List<ChatIdMap> getPreviousChatRecords(Context context) {

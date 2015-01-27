@@ -60,7 +60,7 @@ public class ChatActivity extends ListActivity {
             addNewMessage(new Message(bundle.getString("Message"), false));
         }
         //chatId bundle from intent service
-        if (bundle != null && bundle.containsKey("ChatId")) {
+            if (bundle != null && bundle.containsKey("ChatId")) {
             chatId = bundle.getString("ChatId");
         }
         //username bundle from intent service

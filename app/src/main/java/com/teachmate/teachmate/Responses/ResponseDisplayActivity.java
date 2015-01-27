@@ -2,9 +2,9 @@ package com.teachmate.teachmate.Responses;
 
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -118,7 +118,7 @@ public class ResponseDisplayActivity extends Fragment {
                 int existingChatId = ChatIdMapDBHandler.CheckUserIdAndReturnChatId(getActivity().getApplicationContext(),currentResponse.ResponseUserId);
                 if (existingChatId > 0){
                     Intent i = new Intent(getActivity().getApplicationContext(), ChatActivity.class);
-                    i.putExtra("ChatId", existingChatId);
+                    i.putExtra("ChatId", "" + existingChatId);
                     startActivity(i);
                 }else {
                     GetChatId chat = new GetChatId();
