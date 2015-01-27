@@ -21,6 +21,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.teachmate.teachmate.models.NsItemModel;
@@ -92,8 +94,15 @@ public class NavigationDrawerFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mDrawerListView = (ListView) inflater.inflate(
+        RelativeLayout layout = (RelativeLayout) inflater.inflate(
                 R.layout.fragment_navigation_drawer, container, false);
+        mDrawerListView = (ListView) layout.findViewById(R.id.listView);
+
+        TextView userName = (TextView) layout.findViewById(R.id.textViewUserName);
+        userName.setText(TempDataClass.userName);
+
+        TextView emailId = (TextView) layout.findViewById(R.id.textViewEmailId);
+        emailId.setText(TempDataClass.emailId);
         mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -115,19 +124,19 @@ public class NavigationDrawerFragment extends Fragment {
 
         NsItemModel home = new NsItemModel();
         home.title = "Home";
-        home.counter = 1;
+        home.counter = 0;
         model[0] = home;
         NsItemModel itemRequests = new NsItemModel();
         itemRequests.title = "Requests";
-        itemRequests.counter = 1;
+        itemRequests.counter = 0;
         model[1] = itemRequests;
         NsItemModel itemMyRequests = new NsItemModel();
         itemMyRequests.title = "My Requests";
-        itemMyRequests.counter = 3;
+        itemMyRequests.counter = 0;
         model[2] = itemMyRequests;
         NsItemModel chat = new NsItemModel();
         chat.title = "Chat";
-        chat.counter = 3;
+        chat.counter = 0;
         model[3] = chat;
 
 
@@ -137,7 +146,7 @@ public class NavigationDrawerFragment extends Fragment {
 
 
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
-        return mDrawerListView;
+        return layout;
     }
 
     public boolean isDrawerOpen() {

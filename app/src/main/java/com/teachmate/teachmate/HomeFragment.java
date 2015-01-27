@@ -7,6 +7,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 public class HomeFragment extends Fragment {
 
@@ -19,7 +22,12 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        FrameLayout layout = (FrameLayout) inflater.inflate(R.layout.fragment_home, container, false);
+
+        TextView userName = (TextView) layout.findViewById(R.id.homeUserName);
+        userName.setText(TempDataClass.userName);
+
+        return layout;
     }
 
     @Override

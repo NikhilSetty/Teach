@@ -135,6 +135,7 @@ public class SplashActivity extends Activity implements LocationListener {
                     TempDataClass.serverUserId = currentUser.ServerUserId;
                     TempDataClass.userProfession = currentUser.Profession;
                     TempDataClass.userName = currentUser.FirstName + " " + currentUser.LastName;
+                    TempDataClass.emailId = currentUser.EmailId;
                 }catch(Exception ex){
                     Toast.makeText(getApplicationContext(), ex.getMessage(), Toast.LENGTH_SHORT).show();
                 }

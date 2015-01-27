@@ -236,8 +236,8 @@ public class ResponseDisplayActivity extends Fragment {
             String json = "";
             JSONObject jsonObject = new JSONObject();
 
-            jsonObject.put("senderId", TempDataClass.serverUserId);
-            jsonObject.put("receiverId", currentRequest.RequesteUserId);
+            jsonObject.put("SenderId", TempDataClass.serverUserId);
+            jsonObject.put("ReceiverId", currentRequest.RequesteUserId);
 
             json = jsonObject.toString();
 

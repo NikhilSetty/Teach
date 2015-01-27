@@ -18,6 +18,7 @@ public class TempDataClass {
     public static String serverUserId;
     public static String userProfession;
     public static String userName;
+    public static String emailId;
 
     public static String currentLattitude;
     public static String currentLongitude;

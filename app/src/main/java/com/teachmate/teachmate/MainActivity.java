@@ -15,10 +15,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.teachmate.teachmate.Chat.PreviousChatFragment;
+import com.teachmate.teachmate.DBHandlers.UserModelDBHandler;
 import com.teachmate.teachmate.Requests.MyRequests;
 import com.teachmate.teachmate.Requests.RequestDisplayActivity;
 import com.teachmate.teachmate.Requests.RequestsDisplayActivity;
 import com.teachmate.teachmate.Responses.ResponseDisplayActivity;
+import com.teachmate.teachmate.models.UserModel;
 
 import java.util.Stack;
 
@@ -55,6 +57,12 @@ public class MainActivity extends ActionBarActivity
             type = "";
             isThroughNotification = false;
         }
+        UserModel user = UserModelDBHandler.ReturnValue(getApplicationContext());
+        TempDataClass.userName = user.FirstName + " " + user.LastName;
+        TempDataClass.serverUserId = user.ServerUserId;
+        TempDataClass.userProfession = user.Profession;
+        TempDataClass.emailId = user.EmailId;
+
         setContentView(R.layout.activity_main);
 
         Bundle extras = new Bundle();
@@ -91,6 +99,7 @@ public class MainActivity extends ActionBarActivity
 
         if (isThroughNotification) {
             replaceFragment();
+            isThroughNotification = false;
         }
     }
 
@@ -104,7 +113,7 @@ public class MainActivity extends ActionBarActivity
             ft.commit();
         }
         else{
-            mNavigationDrawerFragment.openDrawer();
+            finish();
         }
     }
 
