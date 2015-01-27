@@ -122,6 +122,9 @@ public class PreviousChatFragment extends Fragment {
 
         // Set the adapter
         mListView = (ListView) view.findViewById(android.R.id.list);
+        if (mAdapter != null){
+
+        }
         ((AdapterView<ListAdapter>) mListView).setAdapter(mAdapter);
 
         // Set OnItemClickListener so we can be notified on item clicks

@@ -1,3 +1,4 @@
+
 package com.teachmate.teachmate.Responses;
 
 import android.content.Intent;
@@ -37,32 +38,33 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-
 public class ResponseDisplayActivity extends Fragment {
 
     Responses currentResponse;
-    Requests currentRequest;
+    Requests  currentRequest;
 
-    Button acceptResponse;
+    Button    acceptResponse;
 
-    String notificationRequestId;
+    String    notificationRequestId;
 
-    TextView requestString;
+    TextView  requestString;
 
-    TextView responseUserName;
-    TextView responseUserProfession;
-    TextView responseString;
+    TextView  responseUserName;
+    TextView  responseUserProfession;
+    TextView  responseString;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         FragmentActivity activity = (FragmentActivity) super.getActivity();
-        RelativeLayout layout = (RelativeLayout) inflater.inflate(R.layout.activity_response_display, container, false);
+        RelativeLayout layout = (RelativeLayout) inflater.inflate(
+                R.layout.activity_response_display, container, false);
 
         acceptResponse = (Button) layout.findViewById(R.id.buttonAccept);
 
         requestString = (TextView) layout.findViewById(R.id.textViewResponseRequestString);
         responseUserName = (TextView) layout.findViewById(R.id.textViewResponseDisplayUserName);
-        responseUserProfession = (TextView) layout.findViewById(R.id.textViewResponseDisplayUserProfession);
+        responseUserProfession = (TextView) layout
+                .findViewById(R.id.textViewResponseDisplayUserProfession);
         responseString = (TextView) layout.findViewById(R.id.textViewResponseDisplayString);
 
         currentResponse = new Responses();
@@ -70,10 +72,10 @@ public class ResponseDisplayActivity extends Fragment {
 
         try {
             notificationRequestId = args.getString("NotificationResponseId");
-        }catch(Exception e){
+        } catch (Exception e) {
             Log.e("Error", e.getMessage());
         }
-        if(notificationRequestId == null){
+        if (notificationRequestId == null) {
             currentRequest = new Requests();
 
             currentRequest.RequestID = args.getString("RequestId");
@@ -87,14 +89,15 @@ public class ResponseDisplayActivity extends Fragment {
             currentResponse.ResponseUserId = args.getString("ResponseUserId");
             currentResponse.ResponseUserName = args.getString("ResponseUserName");
             currentResponse.ResponseUserProfession = args.getString("ResponseUserProfession");
-            currentResponse.ResponseUserProfilePhotoServerPath = args.getString("ResponseUserProfilePhotoServerPath");
+            currentResponse.ResponseUserProfilePhotoServerPath = args
+                    .getString("ResponseUserProfilePhotoServerPath");
 
             requestString.setText(currentRequest.RequestString);
             responseUserName.setText(currentResponse.ResponseUserName);
             responseUserProfession.setText(currentResponse.ResponseUserProfession);
             responseString.setText(currentResponse.ResponseString);
         }
-        else{
+        else {
             UserModel user = UserModelDBHandler.ReturnValue(getActivity().getApplicationContext());
             TempDataClass.serverUserId = user.ServerUserId;
 
@@ -103,9 +106,11 @@ public class ResponseDisplayActivity extends Fragment {
             currentResponse.ResponseUserId = args.getString("NotificationResponseUserId");
             currentResponse.ResponseUserName = args.getString("NotificationResponseUserName");
             currentResponse.ResponseString = args.getString("NotificationResponseMessage");
-            currentResponse.ResponseUserProfession = args.getString("NotificationResponseUserProfession");
+            currentResponse.ResponseUserProfession = args
+                    .getString("NotificationResponseUserProfession");
 
-            currentRequest = RequestsDBHandler.GetRequest(getActivity().getApplicationContext(), currentResponse.RequestId);
+            currentRequest = RequestsDBHandler.GetRequest(getActivity().getApplicationContext(),
+                    currentResponse.RequestId);
 
             requestString.setText(currentRequest.RequestString);
             responseUserName.setText(currentResponse.ResponseUserName);
@@ -115,12 +120,13 @@ public class ResponseDisplayActivity extends Fragment {
 
         acceptResponse.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                int existingChatId = ChatIdMapDBHandler.CheckUserIdAndReturnChatId(getActivity().getApplicationContext(),currentResponse.ResponseUserId);
-                if (existingChatId > 0){
+                int existingChatId = ChatIdMapDBHandler.CheckUserIdAndReturnChatId(getActivity()
+                        .getApplicationContext(), currentResponse.ResponseUserId);
+                if (existingChatId > 0) {
                     Intent i = new Intent(getActivity().getApplicationContext(), ChatActivity.class);
                     i.putExtra("ChatId", "" + existingChatId);
                     startActivity(i);
-                }else {
+                } else {
                     GetChatId chat = new GetChatId();
                     chat.execute("http://teach-mate.azurewebsites.net/Chat/ChatReg");
                 }
@@ -131,83 +137,55 @@ public class ResponseDisplayActivity extends Fragment {
 
     }
 
- /*   private class HttpGetter extends AsyncTask<String, Void, String> {
+    /*
+     * private class HttpGetter extends AsyncTask<String, Void, String> {
+     * @Override protected String doInBackground(String... urls) { StringBuilder
+     * builder = new StringBuilder(); HttpClient client = new
+     * DefaultHttpClient(); HttpGet httpGet = new HttpGet(urls[0]); String line
+     * = ""; try { HttpResponse response = client.execute(httpGet); StatusLine
+     * statusLine = response.getStatusLine(); int statusCode =
+     * statusLine.getStatusCode(); if (statusCode == 200) { HttpEntity entity =
+     * response.getEntity(); InputStream content = entity.getContent();
+     * BufferedReader reader = new BufferedReader( new
+     * InputStreamReader(content)); while ((line = reader.readLine()) != null) {
+     * builder.append(line); } Log.v("Getter", "Your data: " +
+     * builder.toString()); //response data } else { Log.e("Getter",
+     * "Failed to get data"); } } catch (ClientProtocolException e) {
+     * e.printStackTrace(); } catch (IOException e) { e.printStackTrace(); }
+     * return builder.toString(); }
+     * @Override protected void onPostExecute(String result) { currentResponse =
+     * GetObjectsFromResponse(result); if(currentResponse != null){
+     * responseUserName.setText(currentResponse.ResponseUserName);
+     * responseString.setText(currentResponse.ResponseString);
+     * responseUserProfession.setText(currentResponse.ResponseUserProfession); }
+     * } } private Responses GetObjectsFromResponse(String result) { try {
+     * //JSONObject employee =(new
+     * JSONObject(response)).getJSONObject("Requests"); JSONObject temp = (new
+     * JSONObject(result)).getJSONObject("Response"); Responses response = new
+     * Responses(); response.RequestId = temp.getString("RequestId") != null ?
+     * temp.getString("RequestId") : null; response.ResponseId=
+     * temp.getString("ResponseId") != null ? temp.getString("ResponseId"):
+     * null; response.ResponseString= temp.getString("ResponseString") != null ?
+     * temp.getString("ResponseString"): null; response.ResponseUserId =
+     * temp.getString("ResponseUserId") != null ?
+     * temp.getString("ResponseUserId"): null; response.ResponseUserName =
+     * temp.getString("ResponseUserName") != null ?
+     * temp.getString("ResponseUserName"): null; response.ResponseUserProfession
+     * = temp.getString("ResponseUserProfession") != null ?
+     * temp.getString("ResponseUserProfession"): null;
+     * response.ResponseUserProfilePhotoServerPath =
+     * temp.getString("ResponseUserProfilePhotoServerPath") != null ?
+     * temp.getString("ResponseUserProfilePhotoServerPath"): null; return
+     * response; } catch(Exception e){
+     * Toast.makeText(getActivity().getApplicationContext(), e.getMessage(),
+     * Toast.LENGTH_LONG).show(); return null; } }
+     */
 
-        @Override
-        protected String doInBackground(String... urls) {
-            StringBuilder builder = new StringBuilder();
-            HttpClient client = new DefaultHttpClient();
-            HttpGet httpGet = new HttpGet(urls[0]);
-            String line = "";
-
-            try {
-                HttpResponse response = client.execute(httpGet);
-                StatusLine statusLine = response.getStatusLine();
-                int statusCode = statusLine.getStatusCode();
-                if (statusCode == 200) {
-                    HttpEntity entity = response.getEntity();
-                    InputStream content = entity.getContent();
-                    BufferedReader reader = new BufferedReader(
-                            new InputStreamReader(content));
-
-                    while ((line = reader.readLine()) != null) {
-                        builder.append(line);
-                    }
-                    Log.v("Getter", "Your data: " + builder.toString()); //response data
-                } else {
-                    Log.e("Getter", "Failed to get data");
-                }
-            } catch (ClientProtocolException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            return builder.toString();
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            currentResponse = GetObjectsFromResponse(result);
-            if(currentResponse != null){
-                responseUserName.setText(currentResponse.ResponseUserName);
-                responseString.setText(currentResponse.ResponseString);
-                responseUserProfession.setText(currentResponse.ResponseUserProfession);
-            }
-        }
-    }
-
-    private Responses GetObjectsFromResponse(String result) {
-        try {
-
-            //JSONObject employee =(new JSONObject(response)).getJSONObject("Requests");
-            JSONObject temp = (new JSONObject(result)).getJSONObject("Response");
-
-            Responses response = new Responses();
-
-            response.RequestId = temp.getString("RequestId") != null ? temp.getString("RequestId") : null;
-            response.ResponseId= temp.getString("ResponseId") != null ? temp.getString("ResponseId"): null;
-            response.ResponseString= temp.getString("ResponseString") != null ? temp.getString("ResponseString"): null;
-            response.ResponseUserId = temp.getString("ResponseUserId") != null ? temp.getString("ResponseUserId"): null;
-            response.ResponseUserName = temp.getString("ResponseUserName") != null ? temp.getString("ResponseUserName"): null;
-            response.ResponseUserProfession = temp.getString("ResponseUserProfession") != null ? temp.getString("ResponseUserProfession"): null;
-            response.ResponseUserProfilePhotoServerPath = temp.getString("ResponseUserProfilePhotoServerPath") != null ? temp.getString("ResponseUserProfilePhotoServerPath"): null;
-
-            return response;
-        }
-        catch(Exception e){
-            Toast.makeText(getActivity().getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-            return null;
-        }
-    }
-*/
-
-/*    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_response, menu);
-        return true;
-    }*/
+    /*
+     * @Override public boolean onCreateOptionsMenu(Menu menu) { // Inflate the
+     * menu; this adds items to the action bar if it is present.
+     * getMenuInflater().inflate(R.menu.menu_response, menu); return true; }
+     */
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -216,7 +194,7 @@ public class ResponseDisplayActivity extends Fragment {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
+        // noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
@@ -224,9 +202,7 @@ public class ResponseDisplayActivity extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-
-
-    public String POST(String url){
+    public String POST(String url) {
         InputStream inputStream = null;
         String result = "";
         try {
@@ -237,7 +213,7 @@ public class ResponseDisplayActivity extends Fragment {
             JSONObject jsonObject = new JSONObject();
 
             jsonObject.put("SenderId", TempDataClass.serverUserId);
-            jsonObject.put("ReceiverId", currentRequest.RequesteUserId);
+            jsonObject.put("ReceiverId", currentResponse.ResponseUserId);
 
             json = jsonObject.toString();
 
@@ -252,7 +228,7 @@ public class ResponseDisplayActivity extends Fragment {
 
             inputStream = httpResponse.getEntity().getContent();
 
-            if(inputStream != null)
+            if (inputStream != null)
                 result = convertInputStreamToString(inputStream);
             else
                 result = "";
@@ -267,17 +243,15 @@ public class ResponseDisplayActivity extends Fragment {
     }
 
     private static String convertInputStreamToString(InputStream inputStream) throws IOException {
-        BufferedReader bufferedReader = new BufferedReader( new InputStreamReader(inputStream));
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
         String line = "";
         String result = "";
-        while((line = bufferedReader.readLine()) != null)
+        while ((line = bufferedReader.readLine()) != null)
             result += line;
 
         inputStream.close();
         return result;
     }
-
-
 
     private class GetChatId extends AsyncTask<String, Void, String> {
         @Override

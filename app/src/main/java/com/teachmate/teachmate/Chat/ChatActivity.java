@@ -25,6 +25,10 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -44,7 +48,6 @@ public class ChatActivity extends ListActivity {
     String receivedFrom;
     String receivedAt;
     String time;
-    String previousConversationId;
     public static final int CHAT_NOTIFICATION = 5;
 
 
@@ -53,11 +56,24 @@ public class ChatActivity extends ListActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_acitivity);
 
+
+        messages = new ArrayList<Message>();
+        List<ChatInfo> previousChatMessages = ChatInfoDBHandler.GetPreviousChat(getApplicationContext(), chatId);
+        if (previousChatMessages != null) {
+            for (ChatInfo chatmessages : previousChatMessages) {
+                messages.add(new Message(chatmessages.getMessage(), chatmessages.isSentBy()));
+            }
+        }
+        adapter = new ChatAdapter(this, messages);
+        setListAdapter(adapter);
+
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         //message bundle from intent service
         if (bundle != null && bundle.containsKey("Message")) {
-            addNewMessage(new Message(bundle.getString("Message"), false));
+            String receivedMessage = bundle.getString("Message");
+            Log.d("Received Message",receivedMessage);
+            addNewMessage(new Message(receivedMessage, false));
         }
         //chatId bundle from intent service
             if (bundle != null && bundle.containsKey("ChatId")) {
@@ -88,7 +104,7 @@ public class ChatActivity extends ListActivity {
             }
         });
 
-        messages = new ArrayList<Message>();
+/*        messages = new ArrayList<Message>();
         List<ChatInfo> previousChatMessages = ChatInfoDBHandler.GetPreviousChat(getApplicationContext(), chatId);
         if (previousChatMessages != null) {
             for (ChatInfo chatmessages : previousChatMessages) {
@@ -96,7 +112,7 @@ public class ChatActivity extends ListActivity {
             }
         }
         adapter = new ChatAdapter(this, messages);
-        setListAdapter(adapter);
+        setListAdapter(adapter);*/
 
 
     }
@@ -148,6 +164,7 @@ public class ChatActivity extends ListActivity {
     }
 
     public  String POST(String url, String message) {
+        InputStream inputStream = null;
         String result = "";
         try {
 
@@ -160,8 +177,8 @@ public class ChatActivity extends ListActivity {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("chatId", chatId);
             jsonObject.put("message", message);
-            jsonObject.put("SenderId", TempDataClass.serverUserId);
-            jsonObject.put("userName", TempDataClass.userName);
+            jsonObject.put("SenderId", Integer.parseInt(TempDataClass.serverUserId));
+//            jsonObject.put("userName", TempDataClass.userName);
             jsonObject.put("type",CHAT_NOTIFICATION );
             jsonObject.put("SentOn", time);
 
@@ -175,6 +192,10 @@ public class ChatActivity extends ListActivity {
             httpPost.setHeader("Content-type", "application/json");
 
             HttpResponse httpResponse = httpclient.execute(httpPost);
+            inputStream = httpResponse.getEntity().getContent();
+            result = convertInputStreamToString(inputStream);
+
+//            Toast.makeText(getApplicationContext(),result,Toast.LENGTH_LONG).show();
 
         } catch (Exception e) {
             Log.d("InputStream", e.getLocalizedMessage());
@@ -189,5 +210,16 @@ public class ChatActivity extends ListActivity {
 
             return POST(urls[0], urls[1]);
         }
+    }
+
+    private static String convertInputStreamToString(InputStream inputStream) throws IOException {
+        BufferedReader bufferedReader = new BufferedReader( new InputStreamReader(inputStream));
+        String line = "";
+        String result = "";
+        while((line = bufferedReader.readLine()) != null)
+            result += line;
+
+        inputStream.close();
+        return result;
     }
 }
