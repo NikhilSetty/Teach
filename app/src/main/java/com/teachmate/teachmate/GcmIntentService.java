@@ -29,6 +29,12 @@ import android.util.Log;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.teachmate.teachmate.Chat.ChatActivity;
+import com.teachmate.teachmate.DBHandlers.ChatInfoDBHandler;
+import com.teachmate.teachmate.models.ChatInfo;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * This {@code IntentService} does the actual handling of the GCM message.
@@ -203,6 +209,19 @@ public class GcmIntentService extends IntentService {
                             .setContentText(chatSenderName + ":" + chatMessage)
                             .setAutoCancel(true)
                             .build();
+
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            //get current date time with Date()
+            Date date = new Date();
+            String time = dateFormat.format(date);
+
+            ChatInfo newMessage = new ChatInfo();
+            newMessage.setMessage(chatMessage);
+            newMessage.setSentBy(false);
+            newMessage.setTimeStamp(time);
+            newMessage.setChatId(chatChatId);
+
+            ChatInfoDBHandler.InsertChatInfo(getApplicationContext(), newMessage);
 
             mNotificationManager =
                     (NotificationManager)getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);

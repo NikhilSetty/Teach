@@ -58,23 +58,17 @@ public class ChatActivity extends ListActivity {
 
 
         messages = new ArrayList<Message>();
-        List<ChatInfo> previousChatMessages = ChatInfoDBHandler.GetPreviousChat(getApplicationContext(), chatId);
-        if (previousChatMessages != null) {
-            for (ChatInfo chatmessages : previousChatMessages) {
-                messages.add(new Message(chatmessages.getMessage(), chatmessages.isSentBy()));
-            }
-        }
         adapter = new ChatAdapter(this, messages);
         setListAdapter(adapter);
 
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         //message bundle from intent service
-        if (bundle != null && bundle.containsKey("Message")) {
+/*        if (bundle != null && bundle.containsKey("Message")) {
             String receivedMessage = bundle.getString("Message");
             Log.d("Received Message",receivedMessage);
             addNewMessage(new Message(receivedMessage, false));
-        }
+        }*/
         //chatId bundle from intent service
             if (bundle != null && bundle.containsKey("ChatId")) {
             chatId = bundle.getString("ChatId");
@@ -104,7 +98,7 @@ public class ChatActivity extends ListActivity {
             }
         });
 
-/*        messages = new ArrayList<Message>();
+//        messages = new ArrayList<Message>();
         List<ChatInfo> previousChatMessages = ChatInfoDBHandler.GetPreviousChat(getApplicationContext(), chatId);
         if (previousChatMessages != null) {
             for (ChatInfo chatmessages : previousChatMessages) {
@@ -112,7 +106,7 @@ public class ChatActivity extends ListActivity {
             }
         }
         adapter = new ChatAdapter(this, messages);
-        setListAdapter(adapter);*/
+        setListAdapter(adapter);
 
 
     }
