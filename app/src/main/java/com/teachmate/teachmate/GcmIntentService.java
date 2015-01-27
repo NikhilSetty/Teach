@@ -92,6 +92,9 @@ public class GcmIntentService extends IntentService {
                     case 1:
                         verifyUserId = extras.getString("UserId");
                         break;
+                    case 2:
+
+                        break;
                     case 3: //New Request Notification
                         message = extras.getString("message");
                         requestId = extras.getString("requestId");

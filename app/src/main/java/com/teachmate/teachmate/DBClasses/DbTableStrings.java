@@ -26,6 +26,14 @@ public class DbTableStrings {
     public static final String REQUEST_YEAR = "request_year";
     public static final String REQUEST_DAY_OF_THE_YEAR = "request_day_of_the_year";
 
+    public static final String TABLE_NAME_MY_QUESTIONS= "my_questions";
+
+    public static final String MYUSERNAME = "myusername";
+    public static final String MYQUESTION = "myquestion";
+    public static final String MYIMAGE = "myimage";
+    public static final String MYQUESTION_ID = "myquestion_id";
+    public static final String MYCATEGORY = "mycategory";
+    public static final String MYASKED_TIME = "myasked_time";
 
     public static final String TABLE_NAME_QUESTION_MODEL = "question_model";
 
@@ -35,6 +43,11 @@ public class DbTableStrings {
     public static final String QUESTION_ID = "question_id";
     public static final String CATEGORY = "category";
     public static final String ASKED_TIME = "asked_time";
+
+    public static final String TABLE_NAME_NOTIFS_TABLE = "notifs_table";
+    public static final String QUESTIONID_NOTIF = "questionid_notif";
+    public static final String ANSWERID_NOTIF = "answerid_notif";
+
 
 
     public static final String TABLE_NAME_ANSWER_MODEL = "answer_model";
