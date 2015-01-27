@@ -334,10 +334,7 @@ public class SplashActivity extends Activity implements LocationListener {
 
             @Override
             protected void onPostExecute(String msg) {
-
                 mDisplay.append(msg + "\n");
-                Intent i = new Intent(getApplicationContext(), LoginActivity.class);
-                startActivity(i);
 
             }
         }.execute(null, null, null);

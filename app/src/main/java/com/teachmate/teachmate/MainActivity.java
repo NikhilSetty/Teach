@@ -171,6 +171,9 @@ public class MainActivity extends ActionBarActivity
             case FragmentTitles.CHAT:
                 mTitle = FragmentTitles.CHAT;
                 break;
+            case FragmentTitles.TEACH_MATE:
+                mTitle = FragmentTitles.TEACH_MATE;
+                break;
         }
     }
 

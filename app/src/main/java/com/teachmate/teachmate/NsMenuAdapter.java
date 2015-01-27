@@ -55,6 +55,9 @@ public class NsMenuAdapter extends ArrayAdapter<NsItemModel> {
         if(item.title.equals("Home")){
             image1.setImageResource(R.drawable.home);
         }
+        if(item.title.equals("Chat")){
+            image1.setImageResource(R.drawable.chat);
+        }
         text1.setText(item.title);
         if(item.counter == 0){
             textcounter1.setVisibility(View.GONE);
