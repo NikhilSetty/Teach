@@ -27,6 +27,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.teachmate.teachmate.CommonMethods;
@@ -260,12 +261,13 @@ public class RequestsDisplayActivity extends Fragment {
         array.add("Current Locations");
         final Spinner spinner1;
         ArrayAdapter<String> mAdapter;
-        spinner1= (Spinner) promptsView.findViewById(R.id.spinnerLocationSelector);
+        //spinner1= (Spinner) promptsView.findViewById(R.id.spinnerLocationSelector);
         final EditText requestEditText = (EditText) promptsView.findViewById(R.id.editTextDialogUserInput);
-        mAdapter = new ArrayAdapter<String>(getActivity().getApplicationContext(), R.layout.spinner_item, array);
-        mAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
-        spinner1.setAdapter(mAdapter);
+        //mAdapter = new ArrayAdapter<String>(getActivity().getApplicationContext(), R.layout.spinner_item, array);
+        //mAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+        //spinner1.setAdapter(mAdapter);
 
+        final Switch locationSwicth = (Switch) promptsView.findViewById(R.id.switch1);
 
         final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
         alertDialogBuilder.setView(promptsView);
@@ -280,7 +282,8 @@ public class RequestsDisplayActivity extends Fragment {
                         }
                         else{
                             newRequestString = requestEditText.getText().toString();
-                            if(spinner1.getSelectedItem().toString().equals("Registered Locations")){
+                            //if(spinner1.getSelectedItem().toString().equals("Registered Locations")){
+                            if(locationSwicth.isChecked()){
                                 isCurrentLocation = false;
                             }
                             else{

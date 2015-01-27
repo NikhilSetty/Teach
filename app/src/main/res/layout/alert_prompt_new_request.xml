@@ -4,7 +4,6 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    android:padding="10dp"
     android:weightSum="1">
 
     <TextView
@@ -17,29 +16,43 @@
 
     <EditText
         android:id="@+id/editTextDialogUserInput"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="#ff000000">
+        android:background="@drawable/rounded_edit_text"
+        android:layout_width="fill_parent"
+        android:layout_height="35dp"
+        android:layout_margin="5dp"
+        android:textColor="#ff000000"
+        android:textSize="20dp">
 
         <requestFocus />
-
     </EditText>
 
-    <TextView
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_marginBottom="1dp"
+        android:layout_marginTop="1dp" />
+
+<!--    <TextView
         android:id="@+id/textViewSelectLocation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Select the target Location : "
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="#ff000000" />
+        android:textColor="#ff000000" />-->
 
-    <Spinner
+    <!--<Spinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="#ff000000"
         android:entries="@array/location_selector_array"
         android:id="@+id/spinnerLocationSelector"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal" />-->
+
+    <Switch
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Target Users in Current Location :"
+        android:id="@+id/switch1" />
 
 
 </LinearLayout>

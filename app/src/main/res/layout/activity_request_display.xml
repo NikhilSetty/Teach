@@ -25,8 +25,8 @@
             android:layout_alignParentEnd="true" />
 
         <ImageView
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:id="@+id/imageViewProfilePhoto"
             android:src="@drawable/user_icon"
             android:layout_alignParentTop="true"
@@ -43,7 +43,8 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:layout_toRightOf="@+id/imageViewProfilePhoto"
-            android:layout_toEndOf="@+id/imageViewProfilePhoto" />
+            android:layout_toEndOf="@+id/imageViewProfilePhoto"
+            android:gravity="right" />
 
 
         <TextView
@@ -56,8 +57,17 @@
             android:layout_alignEnd="@+id/textViewTime"
             android:layout_alignBottom="@+id/imageViewProfilePhoto"
             android:layout_toRightOf="@+id/imageViewProfilePhoto"
-            android:layout_toEndOf="@+id/imageViewProfilePhoto" />
+            android:layout_toEndOf="@+id/imageViewProfilePhoto"
+            android:gravity="right" />
     </RelativeLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:id="@+id/spacerView1"
+        android:layout_below="@+id/user_info_layout"
+        android:layout_height="4dp"
+        android:layout_marginTop="10dp"
+        android:background="#c0c0c0"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -75,6 +85,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Respond"
+        style="@style/button_text"
+        android:background="@drawable/styled_button"
         android:id="@+id/buttonRespond"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"

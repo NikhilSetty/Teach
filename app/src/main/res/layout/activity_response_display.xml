@@ -22,13 +22,16 @@
         android:id="@+id/textViewResponseRequestString"
         android:layout_below="@+id/textView"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@+id/buttonAccept"
+        android:layout_alignEnd="@+id/buttonAccept" />
 
     <View
         android:layout_width="fill_parent"
+        android:id="@+id/spacerView1"
         android:layout_below="@+id/textViewResponseRequestString"
         android:layout_height="4dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="50dp"
         android:background="#c0c0c0"/>
 
     <RelativeLayout
@@ -95,6 +98,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Accept"
+        style="@style/button_text"
+        android:background="@drawable/styled_button"
         android:id="@+id/buttonAccept"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
@@ -108,7 +113,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Response Details:"
         android:id="@+id/textView5"
-        android:layout_below="@+id/textViewResponseRequestString"
+        android:layout_below="@+id/spacerView1"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginTop="23dp" />
