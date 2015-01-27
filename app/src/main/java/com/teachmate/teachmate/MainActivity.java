@@ -142,7 +142,7 @@ public class MainActivity extends ActionBarActivity
                 break;
         }
 
-        if(TempDataClass.isThroughSplash && !isThroughNotification) {
+        if(!isThroughNotification) {
             replaceFragment();
         }
 

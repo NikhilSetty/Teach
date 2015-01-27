@@ -2,7 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/list_selector"
     android:orientation="horizontal"
     android:padding="5dip" >
 
@@ -35,7 +34,8 @@
         android:textStyle="bold"
         android:layout_above="@+id/textViewRequestString"
         android:layout_toRightOf="@+id/thumbnail"
-        android:layout_toEndOf="@+id/thumbnail" />
+        android:layout_toEndOf="@+id/thumbnail"
+        android:singleLine="true" />
 
     <!-- Artist Name -->
     <TextView
@@ -49,7 +49,8 @@
         android:layout_alignRight="@+id/textViewTime"
         android:layout_alignEnd="@+id/textViewTime"
         android:layout_toRightOf="@+id/thumbnail"
-        android:layout_toEndOf="@+id/thumbnail" />
+        android:layout_toEndOf="@+id/thumbnail"
+        android:singleLine="true" />
 
     <!-- Rightend Duration -->
     <TextView
