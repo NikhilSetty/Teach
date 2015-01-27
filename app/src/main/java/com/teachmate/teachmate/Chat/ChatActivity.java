@@ -83,7 +83,7 @@ public class ChatActivity extends ListActivity {
                     text.setText("");
                     addNewMessage(new Message(newMessage, sentBy));
                     //sentBy = !sentBy;
-                    new SendMessage().execute("http://teach-mate.azurewebsites.net/Chat/ChatMessage", newMessage);
+                    new SendMessage().execute("http://teach-mate.azurewebsites.net/Chat/ChatMsg", newMessage);
                 }
             }
         });
