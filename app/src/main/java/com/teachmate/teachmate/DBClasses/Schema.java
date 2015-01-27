@@ -81,6 +81,20 @@ public class Schema {
     public static final String INSERT_NOTIFICATION_CONSTANT4 = "INSERT INTO " + DbTableStrings.TABLE_NAME_NsItemModel + " ("
             + DbTableStrings.TITLE + ", "
             + DbTableStrings.COUNTER + ") Values ('Constant4', 0)";
+
+    public static final String CREATE_TABLE_MY_QUESTIONS = "create table if not exists " + DbTableStrings.TABLE_NAME_MY_QUESTIONS +
+            "( _id integer primary key autoincrement, "
+            + DbTableStrings.MYUSERNAME + " string, "
+            + DbTableStrings.MYQUESTION + " string, "
+            + DbTableStrings.MYIMAGE + " string, "
+            + DbTableStrings.MYQUESTION_ID + " string, "
+            + DbTableStrings.MYCATEGORY + " string, "
+            + DbTableStrings.MYASKED_TIME + " string) ";
+
+    public static final String CREATE_TABLE_NOTIFS_TABLE ="create table if not exists "+ DbTableStrings.TABLE_NAME_NOTIFS_TABLE +
+            "( _id integer primary key autoincrement, "
+            +DbTableStrings.QUESTIONID_NOTIF + " string, "
+            +DbTableStrings.ANSWERID_NOTIF + " string)";
 }
 
 

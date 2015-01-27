@@ -11,21 +11,18 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.teachmate.teachmate.DBHandlers.DeviceInfoDBHandler;
 import com.teachmate.teachmate.DBHandlers.UserModelDBHandler;
-import com.teachmate.teachmate.models.DeviceInfoKeys;
 import com.teachmate.teachmate.models.UserModel;
 
 import org.apache.http.HttpEntity;
@@ -456,7 +453,7 @@ public class SignUpActivity extends ActionBarActivity {
             Toast.makeText(getBaseContext(), "Data Sent! -" + result.toString(), Toast.LENGTH_LONG).show();
 
             if(result != null){
-                if(!(result.isEmpty() || result.equals("error"))){
+                if(!(result.isEmpty() || result.contains("ERROR"))){
                     Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
 
                     TempDataClass.userName = userData.FirstName + userData.LastName;

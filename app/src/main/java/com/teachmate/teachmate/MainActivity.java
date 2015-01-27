@@ -21,6 +21,9 @@ import com.teachmate.teachmate.Requests.RequestDisplayActivity;
 import com.teachmate.teachmate.Requests.RequestsDisplayActivity;
 import com.teachmate.teachmate.Responses.ResponseDisplayActivity;
 import com.teachmate.teachmate.models.UserModel;
+import com.teachmate.teachmate.questions.MyQuestions;
+import com.teachmate.teachmate.questions.QuestionsFeed;
+import com.teachmate.teachmate.questions.SavedForOfflineReading;
 
 import java.util.Stack;
 
@@ -146,6 +149,15 @@ public class MainActivity extends ActionBarActivity
             case 3:
                 initialFragment = new PreviousChatFragment();
                 break;
+            case 4:
+                initialFragment = new QuestionsFeed();
+                break;
+            case 5:
+                initialFragment = new MyQuestions();
+                break;
+            case 6:
+                initialFragment = new SavedForOfflineReading();
+                break;
             default:
                 initialFragment = new HomeFragment();
                 break;
@@ -173,6 +185,12 @@ public class MainActivity extends ActionBarActivity
                 break;
             case FragmentTitles.TEACH_MATE:
                 mTitle = FragmentTitles.TEACH_MATE;
+                break;
+            case FragmentTitles.QUESTIONS_FEED:
+                mTitle = FragmentTitles.QUESTIONS_FEED;
+                break;
+            case FragmentTitles.MY_QUESTIONS:
+                mTitle = FragmentTitles.MY_QUESTIONS;
                 break;
         }
     }

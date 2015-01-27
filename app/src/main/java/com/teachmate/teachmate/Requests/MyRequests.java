@@ -24,8 +24,6 @@ import com.teachmate.teachmate.R;
 import com.teachmate.teachmate.TempDataClass;
 import com.teachmate.teachmate.models.Requests;
 
-import java.util.List;
-
 public class MyRequests extends Fragment {
 
     ListView listViewRequests;
