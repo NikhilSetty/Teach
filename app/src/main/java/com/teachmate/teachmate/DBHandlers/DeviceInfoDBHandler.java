@@ -26,7 +26,7 @@ public class DeviceInfoDBHandler {
 
             dbHelper = new DbHelper((context.getApplicationContext()));
             db = dbHelper.getWritableDatabase();
-            db.insert("", null, contentValues);
+            db.insert(DbTableStrings.TABLE_NAME_DEVICE_INFO, null, contentValues);
         } catch (Exception e) {
             Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
         }

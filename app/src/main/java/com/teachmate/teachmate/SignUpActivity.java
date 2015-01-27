@@ -1,17 +1,26 @@
 package com.teachmate.teachmate;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.teachmate.teachmate.DBHandlers.DeviceInfoDBHandler;
@@ -28,11 +37,13 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -83,6 +94,16 @@ public class SignUpActivity extends ActionBarActivity {
     String pinCode1HttpStatus = "unknown";
     String pinCode2HttpStatus = "unknown";
 
+    ImageButton image;
+    InputStream inputStream;
+
+    private static int RESULT_LOAD_IMAGE = 2;
+    private final String FILEPATH = "FilePath";
+
+    SharedPreferences prefs;
+
+    private static String profilePath = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,7 +121,45 @@ public class SignUpActivity extends ActionBarActivity {
         editTextAddress2= (EditText) findViewById(R.id.editTextAddress2);
         editTextPinCode2 = (EditText) findViewById(R.id.editTextPinCode2);
 
+        image = (ImageButton) findViewById(R.id.imageButtonProfilePhoto);
+        prefs = getSharedPreferences("com.example.app", Context.MODE_PRIVATE);
+
+
+        image.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+
+                Intent i = new Intent(
+                        Intent.ACTION_PICK,
+                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+                startActivityForResult(i, 2);
+            }
+        });
+
         userData = new UserModel();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
+            Uri SelectedImage = data.getData();
+            String[] FilePathColumn = {MediaStore.Images.Media.DATA };
+
+            Cursor SelectedCursor = getContentResolver().query(SelectedImage, FilePathColumn, null, null, null);
+            SelectedCursor.moveToFirst();
+
+            int columnIndex = SelectedCursor.getColumnIndex(FilePathColumn[0]);
+            String picturePath = SelectedCursor.getString(columnIndex);
+            profilePath = picturePath;
+            SelectedCursor.close();
+
+            image.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+            Toast.makeText(getApplicationContext(), picturePath, Toast.LENGTH_SHORT).show();
+
+        }
     }
 
 
@@ -411,6 +470,10 @@ public class SignUpActivity extends ActionBarActivity {
                     HttpPostRegIdToServer regIdPost = new HttpPostRegIdToServer();
                     regIdPost.execute("http://teach-mate.azurewebsites.net/User/UpdateRegId");
 
+                    if(!profilePath.isEmpty()) {
+                        UploadImage(profilePath);
+                    }
+
                 }
                 else{
                     progressDialog.dismiss();
@@ -650,5 +713,108 @@ public class SignUpActivity extends ActionBarActivity {
 
 
         return pinCode1Status;
+    }
+
+
+    public void UploadImage(String image_location){
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher);
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 90, stream); //compress to which format you want.
+        final byte [] byte_arr = stream.toByteArray();
+        final String image_str = Base64.encodeBytes(byte_arr);
+
+
+        Thread t = new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                try{
+                    JSONObject json=new JSONObject();
+                    json.put("UserID",TempDataClass.serverUserId);
+                    json.put("ImageArray",image_str);
+                    String myjson="";
+
+                    HttpClient httpclient = new DefaultHttpClient();
+                    HttpPost httppost = new HttpPost("http://teach-mate.azurewebsites.net/TeachMate.Web/User/UploadImage");
+                    myjson=json.toString();
+                    StringEntity se = new StringEntity(myjson);
+                    httppost.setEntity(se);
+                    HttpResponse response = httpclient.execute(httppost);
+                    final  String the_string_response = convertResponseToString(response);
+                    runOnUiThread(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            Toast.makeText(getApplicationContext(), "Response " + the_string_response, Toast.LENGTH_LONG).show();
+                        }
+                    });
+
+                }catch(Exception e){
+                   /* runOnUiThread(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            Toast.makeText(UploadImage.this, "ERROR " + e.getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    });*/
+                    System.out.println("Error in http connection "+e.toString());
+                    Toast.makeText(getApplicationContext(), "" +e.toString(),Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+        t.start();
+    }
+
+    public String convertResponseToString(HttpResponse response) throws IllegalStateException, IOException{
+
+        String res = "";
+        StringBuffer buffer = new StringBuffer();
+        inputStream = response.getEntity().getContent();
+        final int contentLength = (int) response.getEntity().getContentLength(); //getting content length…..
+        runOnUiThread(new Runnable() {
+
+            @Override
+            public void run() {
+                Toast.makeText(getApplicationContext(), "contentLength : " + contentLength, Toast.LENGTH_LONG).show();
+            }
+        });
+
+        if (contentLength < 0){
+        }
+        else{
+            byte[] data = new byte[512];
+            int len = 0;
+            try
+            {
+                while (-1 != (len = inputStream.read(data)) )
+                {
+                    buffer.append(new String(data, 0, len)); //converting to string and appending  to stringbuffer…..
+
+                }
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+            try
+            {
+                inputStream.close(); // closing the stream…..
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+            res = buffer.toString();     // converting stringbuffer to string…..
+/*
+            runOnUiThread(new Runnable() {
+
+                @Override
+                public void run() {
+                    Toast.makeText(UploadImage.this, "Result : " + res, Toast.LENGTH_LONG).show();
+                }
+            });*/
+            System.out.println("Response => " +  EntityUtils.toString(response.getEntity()));
+        }
+        return res;
     }
 }
