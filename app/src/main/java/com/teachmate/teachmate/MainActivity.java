@@ -76,7 +76,7 @@ public class MainActivity extends ActionBarActivity
                 initialFragment.setArguments(extras);
                 break;
             default:
-                initialFragment = new RequestsDisplayActivity();
+                initialFragment = new HomeFragment();
                 break;
         }
 
@@ -96,7 +96,7 @@ public class MainActivity extends ActionBarActivity
 
     @Override
     public void onBackPressed(){
-        if(!(TempDataClass.fragmentStack.size() == 1 || TempDataClass.fragmentStack.size() == 0)) {
+        if(!(TempDataClass.fragmentStack.size() == 0)) {
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction ft = fragmentManager.beginTransaction();
             ft.replace(R.id.container, TempDataClass.fragmentStack.lastElement());
@@ -104,14 +104,16 @@ public class MainActivity extends ActionBarActivity
             ft.commit();
         }
         else{
-            finish();
+            mNavigationDrawerFragment.openDrawer();
         }
     }
 
     private void replaceFragment(){
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment temp = initialFragment;
-        TempDataClass.fragmentStack.push(temp);
+        if(!TempDataClass.fragmentStack.lastElement().equals(new HomeFragment()) && TempDataClass.fragmentStack.size() != 1) {
+            TempDataClass.fragmentStack.push(temp);
+        }
         fragmentManager.beginTransaction()
                 .replace(R.id.container, initialFragment)
                 .commit();
@@ -121,18 +123,22 @@ public class MainActivity extends ActionBarActivity
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
         TempDataClass.fragmentStack = new Stack<Fragment>();
+        TempDataClass.fragmentStack.push(new HomeFragment());
         switch(position) {
             case 0:
-                initialFragment = new RequestsDisplayActivity();
+                initialFragment = new HomeFragment();
                 break;
             case 1:
-                initialFragment = new MyRequests();
+                initialFragment = new RequestsDisplayActivity();
                 break;
             case 2:
+                initialFragment = new MyRequests();
+                break;
+            case 3:
                 initialFragment = new PreviousChatFragment();
                 break;
             default:
-                initialFragment = new RequestsDisplayActivity();
+                initialFragment = new HomeFragment();
                 break;
         }
 
@@ -142,16 +148,16 @@ public class MainActivity extends ActionBarActivity
 
     }
 
-    public void onSectionAttached(int number) {
-        switch (number) {
-            case 1:
-                mTitle = getString(R.string.title_section1);
+    public void onSectionAttached(String title) {
+        switch (title) {
+            case FragmentTitles.REQUESTS:
+                mTitle = FragmentTitles.REQUESTS;
                 break;
-            case 2:
-                mTitle = "My Requests";
+            case FragmentTitles.MY_REQUESTS:
+                mTitle = FragmentTitles.MY_REQUESTS;
                 break;
-            case 3:
-                mTitle = getString(R.string.title_section3);
+            case FragmentTitles.HOME:
+                mTitle = FragmentTitles.HOME;
                 break;
         }
     }
@@ -232,8 +238,6 @@ public class MainActivity extends ActionBarActivity
         @Override
         public void onAttach(Activity activity) {
             super.onAttach(activity);
-            ((MainActivity) activity).onSectionAttached(
-                    getArguments().getInt(ARG_SECTION_NUMBER));
         }
     }
 

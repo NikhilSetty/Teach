@@ -12,11 +12,15 @@
         <!-- icon -->
         <ImageView
             android:id="@+id/ns_icon"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="23dp"
             android:layout_alignParentLeft="true"
-            android:layout_marginLeft="12dp"
-            android:layout_marginRight="12dp">
+            android:layout_alignParentStart="true"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_alignBottom="@+id/ns_counter">
         </ImageView>
 
         <!-- text -->
@@ -27,7 +31,7 @@
             android:layout_toRightOf="@+id/ns_icon"
             android:gravity="center_vertical"
             android:minHeight="?android:attr/listPreferredItemHeightSmall"
-            android:textAppearance="?android:attr/textAppearanceListItemSmall" ></TextView>
+            android:textAppearance="?android:attr/textAppearanceListItemSmall" />
 
         <!-- counter -->
         <TextView
@@ -44,7 +48,7 @@
             android:textAppearance="?android:attr/textAppearanceListItemSmall"
             android:textColor="#FFFFFF"
             android:textSize="12sp"
-            android:textStyle="bold" ></TextView>
+            android:textStyle="bold" />
     </RelativeLayout>
 
     <!-- divider -->
@@ -53,6 +57,6 @@
         android:layout_height="1dp"
         android:layout_marginBottom="1dp"
         android:layout_marginTop="1dp"
-        android:background="#DADADC" ></View>
+        android:background="#DADADC" />
 
 </LinearLayout>

@@ -52,8 +52,16 @@ public class NsMenuAdapter extends ArrayAdapter<NsItemModel> {
         TextView textcounter1 = (TextView) view.findViewById(R.id.ns_counter);
         view.setTag(new ViewHolder(text1, image1,textcounter1));
 
+        if(item.title.equals("Home")){
+            image1.setImageResource(R.drawable.home);
+        }
         text1.setText(item.title);
-        textcounter1.setText(String.valueOf(item.counter));
+        if(item.counter == 0){
+            textcounter1.setVisibility(View.GONE);
+        }
+        else {
+            textcounter1.setText(String.valueOf(item.counter));
+        }
 
 /*        if (holder == null && view != null) {
             Object tag = view.getTag();

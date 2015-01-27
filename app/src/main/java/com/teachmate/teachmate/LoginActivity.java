@@ -1,12 +1,16 @@
 package com.teachmate.teachmate;
 
+import com.teachmate.teachmate.DBHandlers.RequestsDBHandler;
 import com.teachmate.teachmate.DBHandlers.UserModelDBHandler;
+import com.teachmate.teachmate.models.Requests;
 import com.teachmate.teachmate.models.UserModel;
 import com.teachmate.teachmate.util.SystemUiHider;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -18,11 +22,16 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.StatusLine;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -30,7 +39,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class LoginActivity extends Activity {
 
@@ -147,6 +159,10 @@ public class LoginActivity extends Activity {
         protected void onPostExecute(String result) {
             Toast.makeText(getBaseContext(), "Data Sent! -" + result.toString(), Toast.LENGTH_LONG).show();
             convertJsonToObject(result);
+
+            HttpGetAllGeneratedRequests requests = new HttpGetAllGeneratedRequests();
+            requests.execute("http://teach-mate.azurewebsites.net/Request/GetRequestsByUser?id=" + TempDataClass.serverUserId);
+
             if(!TempDataClass.deviceRegId.equals(serverRegId)){
                 HttpPostRegIdToServer regIdPost = new HttpPostRegIdToServer();
                 regIdPost.execute("http://teach-mate.azurewebsites.net/User/UpdateRegId");
@@ -269,6 +285,92 @@ public class LoginActivity extends Activity {
                 startActivity(i);
 
             }
+        }
+    }
+
+    private class HttpGetAllGeneratedRequests extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... urls) {
+            // TODO Auto-generated method stub
+            StringBuilder builder = new StringBuilder();
+            HttpClient client = new DefaultHttpClient();
+            HttpGet httpGet = new HttpGet(urls[0]);
+            String line = "";
+
+            try {
+                HttpResponse response = client.execute(httpGet);
+                StatusLine statusLine = response.getStatusLine();
+                int statusCode = statusLine.getStatusCode();
+                if (statusCode == 200) {
+                    HttpEntity entity = response.getEntity();
+                    InputStream content = entity.getContent();
+                    BufferedReader reader = new BufferedReader(
+                            new InputStreamReader(content));
+
+                    while ((line = reader.readLine()) != null) {
+                        builder.append(line);
+                    }
+                    Log.v("Getter", "Your data: " + builder.toString()); //response data
+                } else {
+                    Log.e("Getter", "Failed to get data");
+                }
+            } catch (ClientProtocolException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return builder.toString();
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            if(result != null && !result.isEmpty()) {
+                if (!result.equals("Empty")) {
+                    List<Requests> list = GetObjectsFromResponse(result);
+                    if (list != null) {
+                        for(int i = list.size(); i > 0; i++){
+                            Requests request = list.get(i);
+                            request.requestYear = Calendar.getInstance().get(Calendar.DAY_OF_YEAR);
+                            request.requestDayOfTheYear = Calendar.getInstance().get(Calendar.DAY_OF_YEAR);
+                            RequestsDBHandler.InsertRequests(getApplicationContext(), request);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private List<Requests> GetObjectsFromResponse(String response) {
+        try {
+            //JSONObject employee =(new JSONObject(response)).getJSONObject("Requests");
+            JSONArray contacts = (new JSONObject(response)).getJSONArray("Requests");
+
+            List<Requests> list = new ArrayList<Requests>();
+
+
+            for(int i = contacts.length(); i > 0 ; i--){
+                Requests request = new Requests();
+                JSONObject temp = contacts.getJSONObject(i);
+
+                request.RequestID = temp.getString("RequestId") != null ? temp.getString("RequestId") : null;
+                request.RequestUserName = temp.getString("RequestUserName") != null ? temp.getString("RequestUserName"): null;
+                request.RequestString = temp.getString("RequestMessage") != null ? temp.getString("RequestMessage"): null;
+                request.RequesteUserId = temp.getString("RequesteUserId") != null ? temp.getString("RequesteUserId"): null;
+                request.RequestTime = temp.getString("RequestedTime") != null ? temp.getString("RequestedTime"): null;
+                request.RequestUserProfession = temp.getString("RequestUserProfession") != null ? temp.getString("RequestUserProfession"): null;
+                request.RequestUserProfilePhotoServerPath = temp.getString("RequestUserProfilePhotoServerPath") != null ? temp.getString("RequestUserProfilePhotoServerPath"): null;
+
+                list.add(request);
+
+            }
+
+            return list;
+        }
+        catch(Exception e){
+            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+            return null;
         }
     }
 

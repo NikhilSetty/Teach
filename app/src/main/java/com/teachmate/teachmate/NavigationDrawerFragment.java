@@ -1,16 +1,16 @@
 package com.teachmate.teachmate;
 
+import android.support.v7.app.ActionBarActivity;
 import android.app.Activity;
+import android.support.v7.app.ActionBar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,8 +18,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.teachmate.teachmate.models.NsItemModel;
 
@@ -109,20 +111,24 @@ public class NavigationDrawerFragment extends Fragment {
                         getString(R.string.title_section3),
                 }));
 */
-        NsItemModel[] model = new NsItemModel[3];
+        NsItemModel[] model = new NsItemModel[4];
 
+        NsItemModel home = new NsItemModel();
+        home.title = "Home";
+        home.counter = 1;
+        model[0] = home;
         NsItemModel itemRequests = new NsItemModel();
         itemRequests.title = "Requests";
         itemRequests.counter = 1;
-        model[0] = itemRequests;
+        model[1] = itemRequests;
         NsItemModel itemMyRequests = new NsItemModel();
         itemMyRequests.title = "My Requests";
         itemMyRequests.counter = 3;
-        model[1] = itemMyRequests;
-        NsItemModel itemPreviousChat = new NsItemModel();
-        itemPreviousChat.title = "Chat";
-        itemPreviousChat.counter = 0;
-        model[2] = itemPreviousChat;
+        model[2] = itemMyRequests;
+        NsItemModel chat = new NsItemModel();
+        chat.title = "Chat";
+        chat.counter = 3;
+        model[3] = chat;
 
 
         ListAdapter adapter = new NsMenuAdapter(getActivity().getApplicationContext(), model);
@@ -210,6 +216,10 @@ public class NavigationDrawerFragment extends Fragment {
         });
 
         mDrawerLayout.setDrawerListener(mDrawerToggle);
+    }
+
+    public void openDrawer(){
+        mDrawerLayout.openDrawer(mFragmentContainerView);
     }
 
     private void selectItem(int position) {

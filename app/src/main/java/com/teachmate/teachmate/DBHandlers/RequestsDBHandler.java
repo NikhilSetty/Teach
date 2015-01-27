@@ -32,6 +32,8 @@ public class RequestsDBHandler {
             contentValues.put(DbTableStrings.REQUEST_USER_PROFESSION, requests.RequestUserProfession);
             contentValues.put(DbTableStrings.REQUEST_USER_PROFILE_PHOTO_SERVER_PATH, requests.RequestUserProfilePhotoServerPath);
             contentValues.put(DbTableStrings.REQUEST_TIME,requests.RequestTime);
+            contentValues.put(DbTableStrings.REQUEST_DAY_OF_THE_YEAR,requests.requestDayOfTheYear);
+            contentValues.put(DbTableStrings.REQUEST_YEAR,requests.requestYear);
 
             dbHelper = new DbHelper((context.getApplicationContext()));
             db = dbHelper.getWritableDatabase();

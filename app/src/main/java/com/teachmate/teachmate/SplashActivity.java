@@ -126,8 +126,8 @@ public class SplashActivity extends Activity implements LocationListener {
                 requestIds = RequestsDBHandler.GetAllRequestsBeforeThreeDays(getApplicationContext());
 
                 if(requestIds != null){
-                    DeleteRequestsOnTheServer delete = new DeleteRequestsOnTheServer();
-                    delete.execute("http://teach-mate.azurewebsites.net/Request/DeleteRequests");
+/*                    DeleteRequestsOnTheServer delete = new DeleteRequestsOnTheServer();
+                    delete.execute("http://teach-mate.azurewebsites.net/Request/DeleteRequests");*/
                 }
 
                 try {
@@ -184,11 +184,13 @@ public class SplashActivity extends Activity implements LocationListener {
     @Override
     public void onLocationChanged(Location location) {
 
-        TempDataClass.currentLongitude = longitude;
-        TempDataClass.currentLattitude = lattitude;
 
         lattitude = String.valueOf(location.getLatitude());
         longitude = String.valueOf(location.getLongitude());
+
+        TempDataClass.currentLongitude = longitude;
+        TempDataClass.currentLattitude = lattitude;
+
         mDisplay.append("Lattitude:" + lattitude + ", Longitude: " + longitude);
 
     }
