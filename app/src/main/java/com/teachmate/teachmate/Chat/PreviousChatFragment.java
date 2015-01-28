@@ -4,13 +4,11 @@ package com.teachmate.teachmate.Chat;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -23,7 +21,7 @@ import com.teachmate.teachmate.models.ChatIdMap;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PreviousChatFragment extends Fragment {
+public class PreviousChatFragment extends ListFragment {
 
     private OnFragmentInteractionListener mListener;
 
@@ -123,22 +121,8 @@ public class PreviousChatFragment extends Fragment {
         // Set the adapter
         mListView = (ListView) view.findViewById(android.R.id.list);
         if (mAdapter != null){
-
+            setListAdapter(mAdapter);
         }
-        ((AdapterView<ListAdapter>) mListView).setAdapter(mAdapter);
-
-        // Set OnItemClickListener so we can be notified on item clicks
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String selectedConversation = previousChat.get(position).chatId;
-                Intent intent = new Intent(getActivity().getApplicationContext(),
-                        ChatActivity.class);
-                intent.putExtra("previousConversation", selectedConversation);
-                startActivity(intent);
-            }
-        });
-
         return view;
     }
 
@@ -177,18 +161,19 @@ public class PreviousChatFragment extends Fragment {
         }
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated to
-     * the activity and potentially other fragments contained in that activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
+
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         public void onFragmentInteraction(String id);
     }
 
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        super.onListItemClick(l, v, position, id);
+        String selectedConversation = previousChat.get(position).chatId;
+        Intent intent = new Intent(getActivity().getApplicationContext(),
+                ChatActivity.class);
+        intent.putExtra("previousConversation", selectedConversation);
+        startActivity(intent);
+    }
 }
