@@ -21,14 +21,16 @@ public class ChatIdMapDBHandler {
 
     public static void InsertChatIdMap(Context context, ChatIdMap chatIdMap) {
         try {
-            ContentValues contentValues = new ContentValues();
-            contentValues.put(DbTableStrings.CHATID, chatIdMap.chatId);
-            contentValues.put(DbTableStrings.USERID, chatIdMap.userId);
-            contentValues.put(DbTableStrings.USERNAME, chatIdMap.userName);
+            if (CheckUserIdAndReturnChatId(context, chatIdMap.userId) == 0) {
+                ContentValues contentValues = new ContentValues();
+                contentValues.put(DbTableStrings.CHATID, chatIdMap.chatId);
+                contentValues.put(DbTableStrings.USERID, chatIdMap.userId);
+                contentValues.put(DbTableStrings.USERNAME, chatIdMap.userName);
 
-            dbHelper = new DbHelper((context.getApplicationContext()));
-            db = dbHelper.getWritableDatabase();
-            db.insert(DbTableStrings.TABLE_NAME_CHAT_ID_MAPPING, null, contentValues);
+                dbHelper = new DbHelper((context.getApplicationContext()));
+                db = dbHelper.getWritableDatabase();
+                db.insert(DbTableStrings.TABLE_NAME_CHAT_ID_MAPPING, null, contentValues);
+            }
         } catch (Exception e) {
             Log.e("ChatIdMapDBHandle", e.getMessage());
         }

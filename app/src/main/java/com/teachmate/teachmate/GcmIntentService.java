@@ -29,7 +29,9 @@ import android.util.Log;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.teachmate.teachmate.Chat.ChatActivity;
+import com.teachmate.teachmate.DBHandlers.ChatIdMapDBHandler;
 import com.teachmate.teachmate.DBHandlers.ChatInfoDBHandler;
+import com.teachmate.teachmate.models.ChatIdMap;
 import com.teachmate.teachmate.models.ChatInfo;
 
 import java.text.DateFormat;
@@ -193,6 +195,11 @@ public class GcmIntentService extends IntentService {
             chatIntent.putExtra("SenderId", chatSenderId);
             chatIntent.putExtra("UserName", chatSenderName);
             chatIntent.putExtra("received", true);
+            ChatIdMap chatIdMap  = new ChatIdMap();
+            chatIdMap.chatId = chatChatId;
+            chatIdMap.userId = chatSenderId;
+            chatIdMap.userName = chatSenderName;
+            ChatIdMapDBHandler.InsertChatIdMap(getApplicationContext(), chatIdMap);
             PendingIntent pendingIntent = PendingIntent.getActivity(
                     getApplicationContext(),
                     Integer.parseInt(chatChatId),
