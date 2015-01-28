@@ -110,7 +110,7 @@ public class PreviousChatFragment extends ListFragment {
             previousChatUserNames.add(map.userName);
         }
         mAdapter = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_list_item_1, android.R.id.text1, previousChatUserNames);
+                R.layout.chat_history_row, R.id.user_name, previousChatUserNames);
     }
 
     @Override
@@ -138,21 +138,6 @@ public class PreviousChatFragment extends ListFragment {
         mListener = null;
     }
 
-    // @Override
-    // public void onItemClick(AdapterView<?> parent, View view, int position,
-    // long id) {
-    // if (null != mListener) {
-    // // Notify the active callbacks interface (the activity, if the
-    // // fragment is attached to one) that an item has been selected.
-    // mListener.onFragmentInteraction(DummyContent.ITEMS.get(position).id);
-    // }
-    // }
-
-    /**
-     * The default content for this Fragment has a TextView that is shown when
-     * the list is empty. If you would like to change the text, call this method
-     * to supply the text it should use.
-     */
     public void setEmptyText(CharSequence emptyText) {
         View emptyView = mListView.getEmptyView();
 
