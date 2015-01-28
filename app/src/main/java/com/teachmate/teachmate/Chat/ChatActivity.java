@@ -14,9 +14,11 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.teachmate.teachmate.DBHandlers.ChatInfoDBHandler;
+import com.teachmate.teachmate.DBHandlers.UserModelDBHandler;
 import com.teachmate.teachmate.R;
 import com.teachmate.teachmate.TempDataClass;
 import com.teachmate.teachmate.models.ChatInfo;
+import com.teachmate.teachmate.models.UserModel;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -55,6 +57,12 @@ public class ChatActivity extends ListActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_acitivity);
+
+        UserModel user = UserModelDBHandler.ReturnValue(getApplicationContext());
+        TempDataClass.userName = user.FirstName + " " + user.LastName;
+        TempDataClass.serverUserId = user.ServerUserId;
+        TempDataClass.userProfession = user.Profession;
+        TempDataClass.emailId = user.EmailId;
 
 
         messages = new ArrayList<Message>();
@@ -169,11 +177,11 @@ public class ChatActivity extends ListActivity {
             String json = "";
 
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("chatId", chatId);
-            jsonObject.put("message", message);
+            jsonObject.put("ChatId", chatId);
+            jsonObject.put("Message", message);
             jsonObject.put("SenderId", Integer.parseInt(TempDataClass.serverUserId));
 //            jsonObject.put("userName", TempDataClass.userName);
-            jsonObject.put("type",CHAT_NOTIFICATION );
+            jsonObject.put("Type",CHAT_NOTIFICATION );
             jsonObject.put("SentOn", time);
 
 

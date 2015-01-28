@@ -14,10 +14,17 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="#ff000000" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_marginBottom="1dp"
+        android:layout_marginTop="1dp" />
+
     <EditText
         android:id="@+id/editTextDialogUserInput"
+        android:background="@drawable/rounded_edit_text"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="35dp"
         android:textColor="#ff000000">
 
         <requestFocus />

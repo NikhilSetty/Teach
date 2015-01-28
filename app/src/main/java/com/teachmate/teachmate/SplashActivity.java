@@ -309,7 +309,7 @@ public class SplashActivity extends Activity implements LocationListener {
                         gcm = GoogleCloudMessaging.getInstance(context);
                     }
                     regid = gcm.register(SENDER_ID);
-                    msg = "Device registered, registration ID=" + regid;
+                    msg = regid;
 
                     // You should send the registration ID to your server over HTTP, so it
                     // can use GCM/HTTP or CCS to send messages to your app.
@@ -335,7 +335,7 @@ public class SplashActivity extends Activity implements LocationListener {
             @Override
             protected void onPostExecute(String msg) {
                 mDisplay.append(msg + "\n");
-                TempDataClass.deviceRegId = regid;
+                TempDataClass.deviceRegId = msg;
             }
         }.execute(null, null, null);
     }

@@ -2,6 +2,7 @@ package com.teachmate.teachmate;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Entity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -714,7 +715,7 @@ public class SignUpActivity extends ActionBarActivity {
 
 
     public void UploadImage(String image_location){
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher);
+        Bitmap bitmap = BitmapFactory.decodeFile(image_location);
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 90, stream); //compress to which format you want.
         final byte [] byte_arr = stream.toByteArray();
@@ -727,17 +728,20 @@ public class SignUpActivity extends ActionBarActivity {
             public void run() {
                 try{
                     JSONObject json=new JSONObject();
-                    json.put("UserID",TempDataClass.serverUserId);
-                    json.put("ImageArray",image_str);
+                    json.put("UserID", TempDataClass.serverUserId);
+                    json.put("ImageArray",byte_arr);
                     String myjson="";
 
                     HttpClient httpclient = new DefaultHttpClient();
                     HttpPost httppost = new HttpPost("http://teach-mate.azurewebsites.net/TeachMate.Web/User/UploadImage");
                     myjson=json.toString();
                     StringEntity se = new StringEntity(myjson);
+                    Log.e("Upload", myjson);
                     httppost.setEntity(se);
                     HttpResponse response = httpclient.execute(httppost);
-                    final  String the_string_response = convertResponseToString(response);
+                    HttpEntity _response = response.getEntity(); // content will be consume only once
+                    final  String the_string_response = convertResponseToString(_response);
+                    Log.e("Upload", the_string_response);
                     runOnUiThread(new Runnable() {
 
                         @Override
@@ -754,20 +758,20 @@ public class SignUpActivity extends ActionBarActivity {
                             Toast.makeText(UploadImage.this, "ERROR " + e.getMessage(), Toast.LENGTH_LONG).show();
                         }
                     });*/
-                    System.out.println("Error in http connection "+e.toString());
-                    Toast.makeText(getApplicationContext(), "" +e.toString(),Toast.LENGTH_LONG).show();
+                    Log.e("Upload Image","Error in http connection "+e.toString());
+                    //Toast.makeText(getApplicationContext(), "" +e.toString(),Toast.LENGTH_LONG).show();
                 }
             }
         });
         t.start();
     }
 
-    public String convertResponseToString(HttpResponse response) throws IllegalStateException, IOException{
+    public String convertResponseToString(HttpEntity response) throws IllegalStateException, IOException{
 
         String res = "";
         StringBuffer buffer = new StringBuffer();
-        inputStream = response.getEntity().getContent();
-        final int contentLength = (int) response.getEntity().getContentLength(); //getting content length…..
+        inputStream = response.getContent();
+        final int contentLength = (int) response.getContentLength(); //getting content length…..
         runOnUiThread(new Runnable() {
 
             @Override
@@ -810,7 +814,7 @@ public class SignUpActivity extends ActionBarActivity {
                     Toast.makeText(UploadImage.this, "Result : " + res, Toast.LENGTH_LONG).show();
                 }
             });*/
-            System.out.println("Response => " +  EntityUtils.toString(response.getEntity()));
+            System.out.println("Response => " +  EntityUtils.toString(response));
         }
         return res;
     }

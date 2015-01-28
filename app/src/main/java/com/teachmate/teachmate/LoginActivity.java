@@ -321,7 +321,7 @@ public class LoginActivity extends Activity {
                 if (!result.equals("Empty")) {
                     List<Requests> list = GetObjectsFromResponse(result);
                     if (list != null) {
-                        for(int i = list.size(); i > 0; i++){
+                        for(int i = 0; i < list.size(); i++){
                             Requests request = list.get(i);
                             request.requestYear = Calendar.getInstance().get(Calendar.DAY_OF_YEAR);
                             request.requestDayOfTheYear = Calendar.getInstance().get(Calendar.DAY_OF_YEAR);
@@ -341,7 +341,7 @@ public class LoginActivity extends Activity {
             List<Requests> list = new ArrayList<Requests>();
 
 
-            for(int i = contacts.length(); i > 0 ; i--){
+            for(int i = contacts.length() - 1; i >= 0 ; i--){
                 Requests request = new Requests();
                 JSONObject temp = contacts.getJSONObject(i);
 
