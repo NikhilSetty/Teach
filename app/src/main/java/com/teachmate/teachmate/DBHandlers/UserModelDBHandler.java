@@ -99,5 +99,22 @@ public class UserModelDBHandler {
             return null;
         }
     }
+
+    public static void UpdateUserData(Context context, UserModel userModel){
+        try{
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(DbTableStrings.FNAME,userModel.FirstName);
+            contentValues.put(DbTableStrings.LNAME,userModel.LastName);
+            contentValues.put(DbTableStrings.PHONENUMBER,userModel.PhoneNumber);
+
+            dbHelper = new DbHelper(context);
+            db = dbHelper.getWritableDatabase();
+            db.update(DbTableStrings.TABLE_NAME_USER_MODEL, contentValues, DbTableStrings.SERVERUSERID + " =" + userModel.ServerUserId, null);
+        }
+        catch (Exception e)
+        {
+            Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
 }
 

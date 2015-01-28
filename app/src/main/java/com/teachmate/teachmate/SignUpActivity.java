@@ -729,17 +729,18 @@ public class SignUpActivity extends ActionBarActivity {
                 try{
                     JSONObject json=new JSONObject();
                     json.put("UserID", TempDataClass.serverUserId);
-                    json.put("ImageArray",byte_arr);
+                    json.put("ImageArray",image_str);
                     String myjson="";
 
                     HttpClient httpclient = new DefaultHttpClient();
-                    HttpPost httppost = new HttpPost("http://teach-mate.azurewebsites.net/TeachMate.Web/User/UploadImage");
+                    HttpPost httppost = new HttpPost("http://teach-mate.azurewebsites.net/User/UploadImage");
                     myjson=json.toString();
                     StringEntity se = new StringEntity(myjson);
                     Log.e("Upload", myjson);
                     httppost.setEntity(se);
                     HttpResponse response = httpclient.execute(httppost);
                     HttpEntity _response = response.getEntity(); // content will be consume only once
+
                     final  String the_string_response = convertResponseToString(_response);
                     Log.e("Upload", the_string_response);
                     runOnUiThread(new Runnable() {

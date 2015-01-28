@@ -17,6 +17,7 @@
         android:layout_width="fill_parent"
         android:id="@+id/userInfoNavigationDrawer"
         android:layout_below="@+id/spacerView1"
+        android:onClick="UpdateFragment"
         android:layout_height="wrap_content"
         android:background="#ff6f6f6f">
         <TextView

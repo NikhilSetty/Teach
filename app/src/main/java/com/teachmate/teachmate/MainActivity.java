@@ -274,4 +274,33 @@ public class MainActivity extends ActionBarActivity
         }
     }
 
+    public void UpdateFragment(View v){
+        TempDataClass.fragmentStack = new Stack<Fragment>();
+        TempDataClass.fragmentStack.push(new HomeFragment());
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        Fragment temp = new UpdateUserFragment();
+        fragmentManager.beginTransaction()
+                .replace(R.id.container, temp)
+                .commit();
+
+        mNavigationDrawerFragment.CloseDrawer();
+    }
+
+    public void ChangePassword(View v){
+
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.container);
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        Fragment temp = new ChangePasswordFragment();
+        TempDataClass.fragmentStack.lastElement().onPause();
+        TempDataClass.fragmentStack.push(currentFragment);
+        fragmentManager.beginTransaction()
+                .replace(R.id.container, temp)
+                .commit();
+
+        mNavigationDrawerFragment.CloseDrawer();
+    }
+
+
 }
