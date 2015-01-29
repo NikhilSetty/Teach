@@ -2,7 +2,6 @@ package com.teachmate.teachmate;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Entity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -474,8 +473,26 @@ public class SignUpActivity extends ActionBarActivity {
                     HttpPostRegIdToServer regIdPost = new HttpPostRegIdToServer();
                     regIdPost.execute("http://teach-mate.azurewebsites.net/User/UpdateRegId");
 
+                    DeviceInfoModel model = new DeviceInfoModel();
+
                     if(!profilePath.isEmpty()) {
+                        TempDataClass.profilePhotoLocalPath = profilePath;
+                        model.Key = DeviceInfoKeys.PROFILE_PHOTO_LOCAL_PATH;
+                        model.Value = profilePath;
+                        DeviceInfoDBHandler.InsertDeviceInfo(getApplicationContext(), model);
+
+                        model = new DeviceInfoModel();
+                        model.Key = DeviceInfoKeys.PROFILE_PHOTO_SERVER_PATH;
+                        model.Value = "http://teach-mate.azurewebsites.net/MyImages/"+TempDataClass.serverUserId+".jpg";
+                        DeviceInfoDBHandler.InsertDeviceInfo(getApplicationContext(), model);
+                        TempDataClass.profilePhotoServerPath = "http://teach-mate.azurewebsites.net/MyImages/"+TempDataClass.serverUserId+".jpg";
                         UploadImage(profilePath);
+                    }
+                    else{
+                        TempDataClass.profilePhotoServerPath = "http://teach-mate.azurewebsites.net/MyImages/default.jpg";
+                        model.Key = DeviceInfoKeys.PROFILE_PHOTO_SERVER_PATH;
+                        model.Value = "http://teach-mate.azurewebsites.net/MyImages/default.jpg";
+                        DeviceInfoDBHandler.InsertDeviceInfo(getApplicationContext(), model);
                     }
 
                 }
@@ -721,11 +738,7 @@ public class SignUpActivity extends ActionBarActivity {
 
 
     public void UploadImage(String image_location){
-        DeviceInfoModel model = new DeviceInfoModel();
-        model.Key = DeviceInfoKeys.PROFILE_PHOTO_LOCAL_PATH;
-        model.Value = image_location;
-        DeviceInfoDBHandler.InsertDeviceInfo(getApplicationContext(), model);
-        TempDataClass.profilePhotoLocalPath = image_location;
+
         Bitmap bitmap = BitmapFactory.decodeFile(image_location);
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 90, stream); //compress to which format you want.

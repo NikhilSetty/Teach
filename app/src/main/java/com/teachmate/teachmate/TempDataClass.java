@@ -28,4 +28,5 @@ public class TempDataClass {
     public static boolean isThroughSplash = false;
 
     public static String profilePhotoLocalPath = "";
+    public static String profilePhotoServerPath = "";
 }

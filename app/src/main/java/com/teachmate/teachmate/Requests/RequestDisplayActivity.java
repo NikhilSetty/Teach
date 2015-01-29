@@ -16,10 +16,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
 import com.teachmate.teachmate.DBHandlers.UserModelDBHandler;
 import com.teachmate.teachmate.R;
 import com.teachmate.teachmate.TempDataClass;
@@ -58,6 +60,7 @@ public class RequestDisplayActivity extends Fragment {
     TextView requestString;
     TextView requestTime;
     TextView requestUserProfession;
+    ImageView profilePhoto;
 
     ProgressDialog progressDialog;
 
@@ -78,6 +81,8 @@ public class RequestDisplayActivity extends Fragment {
         requestString = (TextView) layout.findViewById(R.id.textViewRequestString);
         requestTime = (TextView) layout.findViewById(R.id.textViewTime);
         requestUserProfession = (TextView) layout.findViewById(R.id.textViewRequestUserProfession);
+
+        profilePhoto = (ImageView) layout.findViewById(R.id.imageViewProfilePhoto);
 
         try {
             Bundle args = getArguments();
@@ -100,6 +105,10 @@ public class RequestDisplayActivity extends Fragment {
             requestString.setText(currentRequest.RequestString);
             requestTime.setText(currentRequest.RequestTime);
             requestUserProfession.setText(currentRequest.RequestUserProfession);
+
+            if(!currentRequest.RequestUserProfilePhotoServerPath.isEmpty() && currentRequest.RequestUserProfilePhotoServerPath != null){
+                Picasso.with(activity.getApplicationContext()).load(currentRequest.RequestUserProfilePhotoServerPath).into(profilePhoto);
+            }
         }
         else{
             progressDialog.show();

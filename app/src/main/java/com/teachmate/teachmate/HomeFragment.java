@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,6 +25,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
 import com.teachmate.teachmate.DBHandlers.RequestsDBHandler;
 import com.teachmate.teachmate.Requests.MyRequests;
 import com.teachmate.teachmate.models.Requests;
@@ -58,6 +60,8 @@ public class HomeFragment extends Fragment {
 
     Requests newRequest;
 
+    FragmentActivity activity;
+
 
     public HomeFragment() {
         // Required empty public constructor
@@ -69,13 +73,15 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         FrameLayout layout = (FrameLayout) inflater.inflate(R.layout.fragment_home, container, false);
 
+        activity = (FragmentActivity) super.getActivity();
+
         TextView userName = (TextView) layout.findViewById(R.id.homeUserName);
         userName.setText(TempDataClass.userName);
 
         profilePhoto = (ImageView) layout.findViewById(R.id.imageViewProfilePhoto);
 
         if(TempDataClass.profilePhotoLocalPath.isEmpty()){
-
+            Picasso.with(activity.getApplicationContext()).load(TempDataClass.profilePhotoServerPath).into(profilePhoto);
         }
         else{
             profilePhoto.setImageBitmap(BitmapFactory.decodeFile(TempDataClass.profilePhotoLocalPath));

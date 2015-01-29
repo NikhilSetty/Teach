@@ -24,6 +24,12 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:id="@+id/layoutProfilePhoto"
+            android:padding="3dip"
+            android:background="@drawable/image_bg"
+            android:layout_height="wrap_content">
         <ImageView
             android:layout_width="100dp"
             android:layout_height="100dp"
@@ -32,6 +38,7 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
+        </LinearLayout>
 
         <TextView
             android:layout_width="wrap_content"
@@ -42,8 +49,8 @@
             android:layout_above="@+id/textViewRequestUserProfession"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:layout_toRightOf="@+id/imageViewProfilePhoto"
-            android:layout_toEndOf="@+id/imageViewProfilePhoto"
+            android:layout_toRightOf="@+id/layoutProfilePhoto"
+            android:layout_toEndOf="@+id/layoutProfilePhoto"
             android:gravity="right" />
 
 
@@ -55,9 +62,9 @@
             android:id="@+id/textViewRequestUserProfession"
             android:layout_alignRight="@+id/textViewTime"
             android:layout_alignEnd="@+id/textViewTime"
-            android:layout_alignBottom="@+id/imageViewProfilePhoto"
-            android:layout_toRightOf="@+id/imageViewProfilePhoto"
-            android:layout_toEndOf="@+id/imageViewProfilePhoto"
+            android:layout_alignBottom="@+id/layoutProfilePhoto"
+            android:layout_toRightOf="@+id/layoutProfilePhoto"
+            android:layout_toEndOf="@+id/layoutProfilePhoto"
             android:gravity="right" />
     </RelativeLayout>
 

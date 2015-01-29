@@ -81,6 +81,8 @@ public class RequestsDisplayActivity extends Fragment {
 
     Button retryButton;
 
+    int index;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         activity = (FragmentActivity) super.getActivity();
@@ -138,6 +140,13 @@ public class RequestsDisplayActivity extends Fragment {
         super.onResume();
         isFromOnResume = true;
         populateListView(resumeList);
+        listViewRequests.setSelectionFromTop(index, 0);
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        index = listViewRequests.getFirstVisiblePosition();
     }
 
     private void populateListView(List<Requests> list) {

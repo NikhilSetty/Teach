@@ -15,7 +15,7 @@
             <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:background="#0099cc">
+                android:background="#ff6f6f6f">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -107,7 +107,7 @@
             <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:background="#0099cc">
+                android:background="#ff6f6f6f">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -124,7 +124,7 @@
             <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:background="#ba38b9d1">
+                android:background="#d29d9d9d">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -156,7 +156,7 @@
             <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:background="#ba38b9d1">
+                android:background="#d29d9d9d">
 
                 <TextView
                     android:layout_width="wrap_content"

@@ -10,8 +10,11 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.teachmate.teachmate.DBHandlers.DeviceInfoDBHandler;
 import com.teachmate.teachmate.DBHandlers.RequestsDBHandler;
 import com.teachmate.teachmate.DBHandlers.UserModelDBHandler;
+import com.teachmate.teachmate.models.DeviceInfoKeys;
+import com.teachmate.teachmate.models.DeviceInfoModel;
 import com.teachmate.teachmate.models.Requests;
 import com.teachmate.teachmate.models.UserModel;
 
@@ -47,6 +50,8 @@ public class LoginActivity extends Activity {
 
     String serverRegId;
 
+    String profilePhotoPath;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +78,7 @@ public class LoginActivity extends Activity {
     public void SignUpAction(View v){
         Intent i = new Intent(this, SignUpActivity.class);
         startActivity(i);
+        finish();
     }
 
     public void AuthenticateUser(View v){
@@ -199,7 +205,16 @@ public class LoginActivity extends Activity {
                 userData.Address2 = userDataJson.get("Address2").toString();
                 userData.PinCode2 = userDataJson.get("Pincode2").toString();
 
+                profilePhotoPath = userDataJson.get("ProfilePhotoUrl").toString();
+
                 UserModelDBHandler.InsertProfile(getApplicationContext(), userData);
+
+                DeviceInfoModel model = new DeviceInfoModel();
+                model.Key = DeviceInfoKeys.PROFILE_PHOTO_SERVER_PATH;
+                model.Value = profilePhotoPath;
+                DeviceInfoDBHandler.InsertDeviceInfo(getApplicationContext(), model);
+
+                TempDataClass.profilePhotoServerPath = profilePhotoPath;
 
                 serverRegId = userDataJson.get("RegistrationId").toString();
             }
@@ -275,6 +290,8 @@ public class LoginActivity extends Activity {
 
                 Intent i = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(i);
+
+                finish();
 
             }
         }

@@ -24,7 +24,7 @@ public class DeviceInfoDBHandler {
             contentValues.put(DbTableStrings.KEY, deviceInfo.Key);
             contentValues.put(DbTableStrings.VALUE, deviceInfo.Value);
 
-            dbHelper = new DbHelper((context.getApplicationContext()));
+            dbHelper = new DbHelper(context);
             db = dbHelper.getWritableDatabase();
             db.insert(DbTableStrings.TABLE_NAME_DEVICE_INFO, null, contentValues);
         } catch (Exception e) {
@@ -40,7 +40,7 @@ public class DeviceInfoDBHandler {
 
 
             Cursor c = db.rawQuery("Select * from " + DbTableStrings.TABLE_NAME_DEVICE_INFO + " where "+ DbTableStrings.KEY +" = '" + key + "'", null);
-            if (c != null ) {
+            if (c.moveToFirst()) {
 
                 String val = c.getString(c.getColumnIndex(DbTableStrings.VALUE));
                 return val;
@@ -64,7 +64,7 @@ public class DeviceInfoDBHandler {
 
 
             Cursor c = db.rawQuery("Select * from " + DbTableStrings.TABLE_NAME_DEVICE_INFO + " where "+ DbTableStrings.KEY +" = '" + key + "'", null);
-            if (c != null ) {
+            if (c.moveToFirst()) {
 
                 String val = c.getString(c.getColumnIndex(DbTableStrings.VALUE));
                 return val;
@@ -80,7 +80,7 @@ public class DeviceInfoDBHandler {
         }
     }
 
-    public static Boolean UpdateValueForExistingKey(Context context, String key){
+    public static boolean UpdateValueForExistingKey(Context context, String key){
 
         try {
             dbHelper = new DbHelper(context.getApplicationContext());
@@ -103,7 +103,7 @@ public class DeviceInfoDBHandler {
         }
         catch(Exception e){
             Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
-            return null;
+            return false;
         }
     }
 }

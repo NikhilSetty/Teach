@@ -12,5 +12,6 @@ public class Responses {
     public String ResponseUserName;
     public String ResponseUserProfession;
     public String ResponseTime;
-    public String ResponseUserProfilePhotoServerPath;
+    public String ResponseUserProfilePhotoServerPath = "";
+
 }

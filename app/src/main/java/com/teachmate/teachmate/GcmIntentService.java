@@ -64,6 +64,7 @@ public class GcmIntentService extends IntentService {
     String responseId;
 
     String responseUserProfession;
+    String responseUserProfilePath;
 
     String chatSenderId;
     String chatChatId;
@@ -114,7 +115,8 @@ public class GcmIntentService extends IntentService {
                         requestId = extras.getString("RequestId");
                         userId = extras.getString("ResponseUserId");
                         responseId = extras.getString("ResponseId");
-                        responseUserProfession = extras.getString("ResponseUserProfession");
+                        responseUserProfession = extras.getString("Profession");
+                        responseUserProfilePath = extras.getString("ProfilePhotoUrl");
                         break;
                     case 5:
                         chatChatId = extras.getString("ChatId");
@@ -171,6 +173,7 @@ public class GcmIntentService extends IntentService {
             responseIntent.putExtra("NotificationResponseUserName", username);
             responseIntent.putExtra("NotificationResponseMessage", message);
             responseIntent.putExtra("NotificationResponseUserProfession", responseUserProfession);
+            responseIntent.putExtra("NotificationResponseUserProfilePhotoServerPath", responseUserProfilePath);
 
             PendingIntent contentIntent = PendingIntent.getActivity(this, Integer.parseInt(responseId),
                     responseIntent, PendingIntent.FLAG_ONE_SHOT);

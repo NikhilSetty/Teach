@@ -12,9 +12,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
 import com.teachmate.teachmate.Chat.ChatActivity;
 import com.teachmate.teachmate.DBHandlers.ChatIdMapDBHandler;
 import com.teachmate.teachmate.DBHandlers.RequestsDBHandler;
@@ -53,6 +55,8 @@ public class ResponseDisplayActivity extends Fragment {
     TextView  responseUserProfession;
     TextView  responseString;
 
+    ImageView profilePhoto;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         FragmentActivity activity = (FragmentActivity) super.getActivity();
@@ -60,6 +64,8 @@ public class ResponseDisplayActivity extends Fragment {
                 R.layout.activity_response_display, container, false);
 
         acceptResponse = (Button) layout.findViewById(R.id.buttonAccept);
+
+        profilePhoto = (ImageView) layout.findViewById(R.id.imageViewUserProfilePhoto);
 
         requestString = (TextView) layout.findViewById(R.id.textViewResponseRequestString);
         responseUserName = (TextView) layout.findViewById(R.id.textViewResponseDisplayUserName);
@@ -108,6 +114,8 @@ public class ResponseDisplayActivity extends Fragment {
             currentResponse.ResponseString = args.getString("NotificationResponseMessage");
             currentResponse.ResponseUserProfession = args
                     .getString("NotificationResponseUserProfession");
+            currentResponse.ResponseUserProfilePhotoServerPath = args
+                    .getString("NotificationResponseUserProfilePhotoServerPath");
 
             currentRequest = RequestsDBHandler.GetRequest(getActivity().getApplicationContext(),
                     currentResponse.RequestId);
@@ -116,6 +124,10 @@ public class ResponseDisplayActivity extends Fragment {
             responseUserName.setText(currentResponse.ResponseUserName);
             responseUserProfession.setText(currentResponse.ResponseUserProfession);
             responseString.setText(currentResponse.ResponseString);
+        }
+
+        if(!currentResponse.ResponseUserProfilePhotoServerPath.isEmpty() && currentResponse.ResponseUserProfilePhotoServerPath != null){
+            Picasso.with(activity.getApplicationContext()).load(currentResponse.ResponseUserProfilePhotoServerPath).into(profilePhoto);
         }
 
         acceptResponse.setOnClickListener(new View.OnClickListener() {

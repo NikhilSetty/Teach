@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import com.teachmate.teachmate.DBClasses.DbHelper;
 import com.teachmate.teachmate.DBClasses.DbTableStrings;
+import com.teachmate.teachmate.TempDataClass;
 import com.teachmate.teachmate.models.Requests;
 
 import java.util.ArrayList;
@@ -68,7 +69,7 @@ public class RequestsDBHandler {
                         requests[i].RequestTime = c.getString(c.getColumnIndex(DbTableStrings.REQUEST_TIME));
                         requests[i].RequestUserName = c.getString(c.getColumnIndex(DbTableStrings.REQUEST_USERNAME));
                         requests[i].RequestUserProfession = c.getString(c.getColumnIndex(DbTableStrings.REQUEST_USER_PROFESSION));
-                        requests[i].RequestUserProfilePhotoServerPath = c.getString(c.getColumnIndex(DbTableStrings.REQUEST_USER_PROFILE_PHOTO_SERVER_PATH));
+                        requests[i].RequestUserProfilePhotoServerPath = TempDataClass.profilePhotoServerPath;
                         i++;
                     } while (c.moveToPrevious());
                 }

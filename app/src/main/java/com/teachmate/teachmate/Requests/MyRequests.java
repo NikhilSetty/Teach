@@ -80,13 +80,14 @@ public class MyRequests extends Fragment {
                     view, int position, long id) {
 
                 try {
+
                     Bundle i = new Bundle();
                     i.putString("RequestID", requestsArray[position].RequestID);
                     i.putString("RequesteUserId", requestsArray[position].RequesteUserId);
                     i.putString("RequestUserName", requestsArray[position].RequestUserName);
                     i.putString("RequestString", requestsArray[position].RequestString);
                     i.putString("RequestUserProfession", requestsArray[position].RequestUserProfession);
-                    i.putString("RequestUserProfilePhotoServerPath", requestsArray[position].RequestUserProfilePhotoServerPath);
+                    i.putString("RequestUserProfilePhotoServerPath", TempDataClass.profilePhotoServerPath);
                     i.putString("RequestTime", requestsArray[position].RequestTime);
 
                     Fragment individualRequestDisplayFragment = new ViewResponsesForARequest();

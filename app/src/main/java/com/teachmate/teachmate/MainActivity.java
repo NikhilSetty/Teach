@@ -13,7 +13,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.teachmate.teachmate.Chat.PreviousChatFragment;
 import com.teachmate.teachmate.DBHandlers.DeviceInfoDBHandler;
@@ -73,9 +72,9 @@ public class MainActivity extends ActionBarActivity
 
         setContentView(R.layout.activity_main);
 
-        String profilePhotoPath = DeviceInfoDBHandler.GetValueForKey(getApplicationContext(), DeviceInfoKeys.PROFILE_PHOTO_LOCAL_PATH);
+        String profilePhotoPath = DeviceInfoDBHandler.GetValueForKey(getApplicationContext(), DeviceInfoKeys.PROFILE_PHOTO_SERVER_PATH);
         if(profilePhotoPath != null && !profilePhotoPath.isEmpty()) {
-            TempDataClass.profilePhotoLocalPath = profilePhotoPath;
+            TempDataClass.profilePhotoServerPath = profilePhotoPath;
         }
 
         Bundle extras = new Bundle();
@@ -93,6 +92,7 @@ public class MainActivity extends ActionBarActivity
                 extras.putString("NotificationResponseUserName", getIntent().getStringExtra("NotificationResponseUserName"));
                 extras.putString("NotificationResponseMessage", getIntent().getStringExtra("NotificationResponseMessage"));
                 extras.putString("NotificationResponseUserProfession", getIntent().getStringExtra("NotificationResponseUserProfession"));
+                extras.putString("NotificationResponseUserProfilePhotoServerPath", getIntent().getStringExtra("NotificationResponseUserProfilePhotoServerPath"));
                 initialFragment = new ResponseDisplayActivity();
                 initialFragment.setArguments(extras);
                 break;

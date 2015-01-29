@@ -113,6 +113,14 @@ public class SplashActivity extends Activity implements LocationListener {
                 TempDataClass.profilePhotoLocalPath = "";
             }
 
+            String profilePhotoServerPath = DeviceInfoDBHandler.GetValueForKey(getApplicationContext(), DeviceInfoKeys.PROFILE_PHOTO_SERVER_PATH);
+            if(profilePhotoServerPath != null && !profilePhotoServerPath.isEmpty()) {
+                TempDataClass.profilePhotoServerPath = profilePhotoServerPath;
+            }
+            else{
+                TempDataClass.profilePhotoServerPath = "";
+            }
+
 
             if (!UserModelDBHandler.CheckIfUserDataExists(getApplication().getApplicationContext())) {
 
@@ -331,9 +339,7 @@ public class SplashActivity extends Activity implements LocationListener {
                     // Persist the regID - no need to register again.
                     storeRegistrationId(context, regid);
                 } catch (IOException ex) {
-                    msg = "Error :" + ex.getMessage();
-                    Toast.makeText(getApplicationContext(), "Registration Failed. Retry Again.", Toast.LENGTH_SHORT).show();
-                    finish();
+                    Log.e("ERROR", ex.getMessage());
                     // If there is an error, don't just keep trying to register.
                     // Require the user to click a button again, or perform
                     // exponential back-off.
