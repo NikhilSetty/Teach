@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -52,6 +54,8 @@ public class HomeFragment extends Fragment {
 
     ProgressDialog progressDialog;
 
+    ImageView profilePhoto;
+
     Requests newRequest;
 
 
@@ -67,6 +71,15 @@ public class HomeFragment extends Fragment {
 
         TextView userName = (TextView) layout.findViewById(R.id.homeUserName);
         userName.setText(TempDataClass.userName);
+
+        profilePhoto = (ImageView) layout.findViewById(R.id.imageViewProfilePhoto);
+
+        if(TempDataClass.profilePhotoLocalPath.isEmpty()){
+
+        }
+        else{
+            profilePhoto.setImageBitmap(BitmapFactory.decodeFile(TempDataClass.profilePhotoLocalPath));
+        }
 
         buttonNewRequest = (Button) layout.findViewById(R.id.buttonNewRequest);
         buttonNewQuestion = (Button) layout.findViewById(R.id.buttonNewQuestion);

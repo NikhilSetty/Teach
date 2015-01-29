@@ -105,6 +105,15 @@ public class SplashActivity extends Activity implements LocationListener {
 
             getCurrentLocation();
 
+            String profilePhotoPath = DeviceInfoDBHandler.GetValueForKey(getApplicationContext(), DeviceInfoKeys.PROFILE_PHOTO_LOCAL_PATH);
+            if(profilePhotoPath != null && !profilePhotoPath.isEmpty()) {
+                TempDataClass.profilePhotoLocalPath = profilePhotoPath;
+            }
+            else{
+                TempDataClass.profilePhotoLocalPath = "";
+            }
+
+
             if (!UserModelDBHandler.CheckIfUserDataExists(getApplication().getApplicationContext())) {
 
                 new Handler().postDelayed(new Runnable() {

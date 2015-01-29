@@ -162,6 +162,7 @@ public class LoginActivity extends Activity {
                 progressDialog.dismiss();
                 Intent i = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(i);
+                finish();
             }
         }
     }

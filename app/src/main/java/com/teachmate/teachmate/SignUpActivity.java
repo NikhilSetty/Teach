@@ -23,7 +23,10 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.teachmate.teachmate.DBHandlers.DeviceInfoDBHandler;
 import com.teachmate.teachmate.DBHandlers.UserModelDBHandler;
+import com.teachmate.teachmate.models.DeviceInfoKeys;
+import com.teachmate.teachmate.models.DeviceInfoModel;
 import com.teachmate.teachmate.models.UserModel;
 
 import org.apache.http.HttpEntity;
@@ -155,6 +158,7 @@ public class SignUpActivity extends ActionBarActivity {
             SelectedCursor.close();
 
             image.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+            CommonMethods.scaleImage(getApplicationContext(), image, 100);
             Toast.makeText(getApplicationContext(), picturePath, Toast.LENGTH_SHORT).show();
 
         }
@@ -389,6 +393,8 @@ public class SignUpActivity extends ActionBarActivity {
 
                 Intent i = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(i);
+
+                finish();
 
             }
         }
@@ -715,6 +721,11 @@ public class SignUpActivity extends ActionBarActivity {
 
 
     public void UploadImage(String image_location){
+        DeviceInfoModel model = new DeviceInfoModel();
+        model.Key = DeviceInfoKeys.PROFILE_PHOTO_LOCAL_PATH;
+        model.Value = image_location;
+        DeviceInfoDBHandler.InsertDeviceInfo(getApplicationContext(), model);
+        TempDataClass.profilePhotoLocalPath = image_location;
         Bitmap bitmap = BitmapFactory.decodeFile(image_location);
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 90, stream); //compress to which format you want.
@@ -740,7 +751,6 @@ public class SignUpActivity extends ActionBarActivity {
                     httppost.setEntity(se);
                     HttpResponse response = httpclient.execute(httppost);
                     HttpEntity _response = response.getEntity(); // content will be consume only once
-
                     final  String the_string_response = convertResponseToString(_response);
                     Log.e("Upload", the_string_response);
                     runOnUiThread(new Runnable() {

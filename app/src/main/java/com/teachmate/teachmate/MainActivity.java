@@ -13,13 +13,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.teachmate.teachmate.Chat.PreviousChatFragment;
+import com.teachmate.teachmate.DBHandlers.DeviceInfoDBHandler;
 import com.teachmate.teachmate.DBHandlers.UserModelDBHandler;
 import com.teachmate.teachmate.Requests.MyRequests;
 import com.teachmate.teachmate.Requests.RequestDisplayActivity;
 import com.teachmate.teachmate.Requests.RequestsDisplayActivity;
 import com.teachmate.teachmate.Responses.ResponseDisplayActivity;
+import com.teachmate.teachmate.models.DeviceInfoKeys;
 import com.teachmate.teachmate.models.UserModel;
 import com.teachmate.teachmate.questions.MyQuestions;
 import com.teachmate.teachmate.questions.QuestionsFeed;
@@ -36,6 +39,8 @@ public class MainActivity extends ActionBarActivity
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
      */
     private NavigationDrawerFragment mNavigationDrawerFragment;
+
+
 
     /**
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
@@ -67,6 +72,11 @@ public class MainActivity extends ActionBarActivity
         TempDataClass.emailId = user.EmailId;
 
         setContentView(R.layout.activity_main);
+
+        String profilePhotoPath = DeviceInfoDBHandler.GetValueForKey(getApplicationContext(), DeviceInfoKeys.PROFILE_PHOTO_LOCAL_PATH);
+        if(profilePhotoPath != null && !profilePhotoPath.isEmpty()) {
+            TempDataClass.profilePhotoLocalPath = profilePhotoPath;
+        }
 
         Bundle extras = new Bundle();
 
