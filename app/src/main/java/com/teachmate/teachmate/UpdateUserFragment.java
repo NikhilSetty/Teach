@@ -206,7 +206,7 @@ public class UpdateUserFragment extends Fragment {
         @Override
         protected void onPostExecute(String result) {
             progressDialog.dismiss();
-            Toast.makeText(activity.getBaseContext(), "Data Sent! -" + result.toString(), Toast.LENGTH_LONG).show();
+            //.makeText(activity.getBaseContext(), "Data Sent! -" + result.toString(), Toast.LENGTH_LONG).show();
 
             if(result != null){
                 if(!(result.isEmpty() || result.contains("ERROR"))){

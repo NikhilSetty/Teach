@@ -21,6 +21,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.teachmate.teachmate.FragmentTitles;
+import com.teachmate.teachmate.MainActivity;
 import com.teachmate.teachmate.R;
 import com.teachmate.teachmate.Responses.ResponseDisplayActivity;
 import com.teachmate.teachmate.TempDataClass;
@@ -219,7 +221,8 @@ public class ViewResponsesForARequest extends Fragment {
                             .replace(R.id.container, individualRequestDisplayFragment)
                             .commit();
                 } catch (Exception ex) {
-                    Toast.makeText(getActivity().getApplicationContext(), ex.toString(), Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getActivity().getApplicationContext(), ex.toString(), Toast.LENGTH_LONG).show();
+                    Log.e("Request", ex.getMessage());
                 }
 
             }
@@ -253,7 +256,8 @@ public class ViewResponsesForARequest extends Fragment {
             return list;
         }
         catch(Exception e){
-            Toast.makeText(getActivity().getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+            //.makeText(getActivity().getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+            Log.e("Request", e.getMessage());
             return null;
         }
     }
@@ -262,6 +266,7 @@ public class ViewResponsesForARequest extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+        ((MainActivity) activity).onSectionAttached(FragmentTitles.RESPONSES);
     }
 
     @Override

@@ -111,13 +111,19 @@ public class RequestsDisplayActivity extends Fragment {
                 listCurrentPosition = listViewRequests.getFirstVisiblePosition();
                 lastviewposition = listViewRequests.getCount()-1;
                 String lastRequestId;
-                lastRequestId = resumeList.get(listViewRequests.getCount()-2).RequestID;
+                try {
+                    lastRequestId = resumeList.get(listViewRequests.getCount() - 2).RequestID;
 
-                new loadmorelistview().execute("http://teach-mate.azurewebsites.net/Request/GetAllRequestsAssigned?id=" + TempDataClass.serverUserId + "&lastRequestId="+lastRequestId);
+                    new loadmorelistview().execute("http://teach-mate.azurewebsites.net/Request/GetAllRequestsAssigned?id=" + TempDataClass.serverUserId + "&lastRequestId=" + lastRequestId);
+                }catch(Exception ex){
+                    progressDialog.dismiss();
+                    //Log.e("Request", ex.getMessage());
+                }
 
 
 
-                Toast.makeText(getActivity().getApplicationContext(), "" + listViewRequests.getCount(), Toast.LENGTH_LONG).show();}
+                //Toast.makeText(getActivity().getApplicationContext(), "" + listViewRequests.getCount(), Toast.LENGTH_LONG).show();
+            }
         });
 
         setHasOptionsMenu(true);
@@ -215,7 +221,8 @@ public class RequestsDisplayActivity extends Fragment {
                             .commit();
                 }
                 catch(Exception ex){
-                    Toast.makeText(getActivity().getApplicationContext(), ex.toString(), Toast.LENGTH_LONG).show();
+                    //.makeText(getActivity().getApplicationContext(), ex.toString(), Toast.LENGTH_LONG).show();
+                    Log.e("Request", ex.getMessage());
                 }
 
             }
@@ -252,7 +259,8 @@ public class RequestsDisplayActivity extends Fragment {
             return list;
         }
         catch(Exception e){
-            Toast.makeText(getActivity().getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+            //Toast.makeText(getActivity().getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+            Log.e("Request", e.getMessage());
             return null;
         }
     }
@@ -423,7 +431,7 @@ public class RequestsDisplayActivity extends Fragment {
             newRequest.RequestUserName = TempDataClass.userName;
             newRequest.RequestUserProfession = TempDataClass.userProfession;
             RequestsDBHandler.InsertRequests(getActivity().getApplicationContext(), newRequest);
-            Toast.makeText(getActivity().getApplicationContext(), "Data Sent! -" + result.toString(), Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity().getApplicationContext(), "Request Generated Successfully!", Toast.LENGTH_LONG).show();
             progressDialog.dismiss();
         }
     }
@@ -643,7 +651,8 @@ public class RequestsDisplayActivity extends Fragment {
                             .commit();
                 }
                 catch(Exception ex){
-                    Toast.makeText(getActivity().getApplicationContext(), ex.toString(), Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getActivity().getApplicationContext(), ex.toString(), Toast.LENGTH_LONG).show();
+                    Log.e("Request", ex.getMessage());
                 }
 
             }

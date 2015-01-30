@@ -158,7 +158,7 @@ public class SignUpActivity extends ActionBarActivity {
 
             image.setImageBitmap(BitmapFactory.decodeFile(picturePath));
             CommonMethods.scaleImage(getApplicationContext(), image, 100);
-            Toast.makeText(getApplicationContext(), picturePath, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(), picturePath, Toast.LENGTH_SHORT).show();
 
         }
     }
@@ -456,11 +456,11 @@ public class SignUpActivity extends ActionBarActivity {
         @Override
         protected void onPostExecute(String result) {
             progressDialog.dismiss();
-            Toast.makeText(getBaseContext(), "Data Sent! -" + result.toString(), Toast.LENGTH_LONG).show();
+            //Toast.makeText(getBaseContext(), "Data Sent! -" + result.toString(), Toast.LENGTH_LONG).show();
 
             if(result != null){
                 if(!(result.isEmpty() || result.contains("ERROR"))){
-                    Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
 
                     TempDataClass.userName = userData.FirstName + userData.LastName;
                     TempDataClass.userProfession = userData.Profession;
@@ -568,7 +568,7 @@ public class SignUpActivity extends ActionBarActivity {
             if(pinCode1Status.equals("OK")) {
                 isPinCode1Verified = true;
             }
-            Toast.makeText(getApplicationContext(), pinCode1Status, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(), pinCode1Status, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -622,7 +622,8 @@ public class SignUpActivity extends ActionBarActivity {
                 eventType = parser.next();
             }
         }catch(Exception ex){
-            Toast.makeText(getApplicationContext(), ex.getMessage(), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(), ex.getMessage(), Toast.LENGTH_SHORT).show();
+            Log.e("PinCode", ex.getMessage());
         }
 
 
@@ -675,7 +676,7 @@ public class SignUpActivity extends ActionBarActivity {
             if(pinCode2Status.equals("OK")){
                 isPinCode2Verified = true;
             }
-            Toast.makeText(getApplicationContext(), "p2:" + pinCode2Status, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(), "p2:" + pinCode2Status, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -729,7 +730,8 @@ public class SignUpActivity extends ActionBarActivity {
                 eventType = parser.next();
             }
         }catch(Exception ex){
-            Toast.makeText(getApplicationContext(), ex.getMessage(), Toast.LENGTH_SHORT).show();
+            //.makeText(getApplicationContext(), ex.getMessage(), Toast.LENGTH_SHORT).show();
+            Log.e("PinCode", ex.getMessage());
         }
 
 
@@ -770,7 +772,7 @@ public class SignUpActivity extends ActionBarActivity {
 
                         @Override
                         public void run() {
-                            Toast.makeText(getApplicationContext(), "Response " + the_string_response, Toast.LENGTH_LONG).show();
+                            //Toast.makeText(getApplicationContext(), "Response " + the_string_response, Toast.LENGTH_LONG).show();
                         }
                     });
 
@@ -800,7 +802,8 @@ public class SignUpActivity extends ActionBarActivity {
 
             @Override
             public void run() {
-                Toast.makeText(getApplicationContext(), "contentLength : " + contentLength, Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(), "contentLength : " + contentLength, Toast.LENGTH_LONG).show();
+                Log.d("Upload", "Image Upload successful");
             }
         });
 

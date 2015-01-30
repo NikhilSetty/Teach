@@ -228,6 +228,12 @@ public class MainActivity extends ActionBarActivity
             case FragmentTitles.MY_QUESTIONS:
                 mTitle = FragmentTitles.MY_QUESTIONS;
                 break;
+            case FragmentTitles.ABOUT:
+                mTitle = FragmentTitles.ABOUT;
+                break;
+            case FragmentTitles.RESPONSES:
+                mTitle = FragmentTitles.RESPONSES;
+                break;
         }
     }
 
@@ -324,8 +330,12 @@ public class MainActivity extends ActionBarActivity
     }
 
     public void NavigatetoOfflineQuestions(View v){
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.container);
+
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment temp = new SavedForOfflineReading();
+        TempDataClass.fragmentStack.lastElement().onPause();
+        TempDataClass.fragmentStack.push(currentFragment);
         fragmentManager.beginTransaction()
                 .replace(R.id.container, temp)
                 .commit();

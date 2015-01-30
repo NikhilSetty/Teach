@@ -195,7 +195,8 @@ public class RequestDisplayActivity extends Fragment {
             return request;
         }
         catch(Exception e){
-            Toast.makeText(getActivity().getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+            //.makeText(getActivity().getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+            Log.e("Request", e.getMessage());
             return null;
         }
     }
@@ -303,7 +304,7 @@ public class RequestDisplayActivity extends Fragment {
 
         @Override
         protected void onPostExecute(String result) {
-            Toast.makeText(getActivity().getBaseContext(), "Data Sent! -" + result.toString(), Toast.LENGTH_LONG).show();
+            //Toast.makeText(getActivity().getBaseContext(), "Data Sent! -" + result.toString(), Toast.LENGTH_LONG).show();
 
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             progressDialog.dismiss();

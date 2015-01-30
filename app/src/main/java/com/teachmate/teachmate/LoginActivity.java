@@ -154,7 +154,7 @@ public class LoginActivity extends Activity {
 
         @Override
         protected void onPostExecute(String result) {
-            Toast.makeText(getBaseContext(), "Data Sent! -" + result.toString(), Toast.LENGTH_LONG).show();
+            //Toast.makeText(getBaseContext(), "Data Sent! -" + result.toString(), Toast.LENGTH_LONG).show();
             convertJsonToObject(result);
 
             HttpGetAllGeneratedRequests requests = new HttpGetAllGeneratedRequests();
@@ -378,7 +378,8 @@ public class LoginActivity extends Activity {
             return list;
         }
         catch(Exception e){
-            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+            //.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+            Log.e("ERROR", e.getMessage());
             return null;
         }
     }

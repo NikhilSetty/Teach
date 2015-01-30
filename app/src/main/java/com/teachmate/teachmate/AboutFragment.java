@@ -2,6 +2,7 @@ package com.teachmate.teachmate;
 
 import android.app.Activity;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -37,10 +38,11 @@ public class AboutFragment extends Fragment {
         link.setLinkTextColor(Color.WHITE);
         link.setMovementMethod(LinkMovementMethod.getInstance());*/
 
-        String text = "See the Frequently Asked Questions here.";
-        TextView label = (TextView) layout.findViewById(R.id.textViewFAQ);
+        String text = "here.";
+        TextView label = (TextView) layout.findViewById(R.id.textViewLink);
         label.setText(text);
-        Pattern pattern = Pattern.compile("here.");
+        Pattern pattern = Pattern.compile("");
+        label.setPaintFlags(label.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         Linkify.addLinks(label, pattern, "http://teach-mate.azurewebsites.net/");
         label.setLinkTextColor(Color.WHITE);
 
@@ -54,6 +56,7 @@ public class AboutFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+        ((MainActivity) activity).onSectionAttached(FragmentTitles.ABOUT);
     }
 
     @Override

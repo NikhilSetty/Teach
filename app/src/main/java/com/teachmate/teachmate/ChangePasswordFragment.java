@@ -188,7 +188,7 @@ public class ChangePasswordFragment extends Fragment {
         @Override
         protected void onPostExecute(String result) {
             progressDialog.dismiss();
-            Toast.makeText(activity.getBaseContext(), "Data Sent! -" + result.toString(), Toast.LENGTH_LONG).show();
+            //Toast.makeText(activity.getBaseContext(), "Data Sent! -" + result.toString(), Toast.LENGTH_LONG).show();
 
             if(result != null){
                 if(!(result.isEmpty() || result.contains("ERROR"))){
@@ -273,7 +273,7 @@ public class ChangePasswordFragment extends Fragment {
 
         @Override
         protected void onPostExecute(String result) {
-            Toast.makeText(activity.getBaseContext(), "Data Sent! -" + result.toString(), Toast.LENGTH_LONG).show();
+            //Toast.makeText(activity.getBaseContext(), "Data Sent! -" + result.toString(), Toast.LENGTH_LONG).show();
 
             boolean authentic = convertJsonToObject(result);
 
@@ -299,7 +299,8 @@ public class ChangePasswordFragment extends Fragment {
             }
         }catch(Exception ex){
             progressDialog.dismiss();
-            Toast.makeText(activity.getApplicationContext(), ex.getMessage(), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(activity.getApplicationContext(), ex.getMessage(), Toast.LENGTH_SHORT).show();
+            Log.e("UPDATE", ex.getMessage());
             return false;
         }
 

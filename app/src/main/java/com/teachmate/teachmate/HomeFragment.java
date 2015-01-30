@@ -152,7 +152,7 @@ public class HomeFragment extends Fragment {
                 questionmessage=etquestion.getText().toString();
                 category=etcategory.getText().toString();
                 if(TextUtils.isEmpty(category)|| TextUtils.isEmpty(questionmessage)){
-                    Toast.makeText(getActivity(),"The above fields cannot be wmpty.Please fill both the fields and retry",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(),"The above fields cannot be empty.Please fill both the fields and retry",Toast.LENGTH_LONG).show();
                 }else{
                     ask_question_async ask=new ask_question_async();
                     ask.execute("http://teach-mate.azurewebsites.net/QuestionForum/AddQuestion");
@@ -342,7 +342,7 @@ public class HomeFragment extends Fragment {
             newRequest.RequestUserName = TempDataClass.userName;
             newRequest.RequestUserProfession = TempDataClass.userProfession;
             RequestsDBHandler.InsertRequests(getActivity().getApplicationContext(), newRequest);
-            Toast.makeText(getActivity().getApplicationContext(), "Data Sent! -" + result.toString(), Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity().getApplicationContext(), "Request Generated Successfully!", Toast.LENGTH_LONG).show();
             progressDialog.dismiss();
 
             Fragment nextFragment = new MyRequests();
@@ -447,7 +447,7 @@ public class HomeFragment extends Fragment {
         //  addanswertodb.InsertAnswerList(getApplicationContext(),answerlist);
 
 
-        Toast.makeText(getActivity(),"added to db",Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(),"Saved For Offline Reading.",Toast.LENGTH_SHORT).show();
 
     }
 
