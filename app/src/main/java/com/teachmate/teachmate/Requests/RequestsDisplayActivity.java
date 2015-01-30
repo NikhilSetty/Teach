@@ -33,7 +33,9 @@ import com.teachmate.teachmate.FragmentTitles;
 import com.teachmate.teachmate.MainActivity;
 import com.teachmate.teachmate.R;
 import com.teachmate.teachmate.TempDataClass;
+import com.teachmate.teachmate.models.Question_Model;
 import com.teachmate.teachmate.models.Requests;
+import com.teachmate.teachmate.questions.Question_Adapter;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -44,7 +46,9 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -81,6 +85,9 @@ public class RequestsDisplayActivity extends Fragment {
 
     Button retryButton;
 
+    public int lastviewposition;
+    public int listCurrentPosition;
+
     int index;
 
     @Override
@@ -92,6 +99,27 @@ public class RequestsDisplayActivity extends Fragment {
         listViewRequests = (ListView) layout.findViewById(R.id.listViewRequests);
         retryButton = (Button) layout.findViewById(R.id.buttonRetry);
         connectionLostLayout = (RelativeLayout) layout.findViewById(R.id.layout_connectionLost);
+
+        Button loadmore = new Button(getActivity());
+        loadmore.setText("Load more items");
+        listViewRequests.addFooterView(loadmore);
+
+        loadmore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                progressDialog.show();
+                listCurrentPosition = listViewRequests.getFirstVisiblePosition();
+                lastviewposition = listViewRequests.getCount()-1;
+                String lastRequestId;
+                lastRequestId = resumeList.get(listViewRequests.getCount()-2).RequestID;
+
+                new loadmorelistview().execute("http://teach-mate.azurewebsites.net/Request/GetAllRequestsAssigned?id=" + TempDataClass.serverUserId + "&lastRequestId="+lastRequestId);
+
+
+
+                Toast.makeText(getActivity().getApplicationContext(), "" + listViewRequests.getCount(), Toast.LENGTH_LONG).show();}
+        });
+
         setHasOptionsMenu(true);
 
         if(!isFromOnResume) {
@@ -473,8 +501,154 @@ public class RequestsDisplayActivity extends Fragment {
                     AlertDialog alert11 = builder1.create();
                     alert11.show();
                 }
+            }else{
+                progressDialog.dismiss();
+                AlertDialog.Builder builder1 = new AlertDialog.Builder(activity);
+                builder1.setTitle("Alert!");
+                builder1.setMessage("No New Requests found in Server!");
+                builder1.setCancelable(true);
+                builder1.setPositiveButton("Ok",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+                AlertDialog alert11 = builder1.create();
+                alert11.show();
             }
         }
+    }
+
+    public class loadmorelistview extends AsyncTask<String ,Void,String>{
+        int current_position = listViewRequests.getFirstVisiblePosition();
+        int lastpostiton = listViewRequests.getCount()-1;
+
+
+        @Override
+        protected String doInBackground(String... params) {
+            // TODO Auto-generated method stub
+            StringBuilder builder = new StringBuilder();
+            HttpClient client = new DefaultHttpClient();
+            HttpGet httpGet = new HttpGet(params[0]);
+            String line = "";
+
+            try {
+                HttpResponse response = client.execute(httpGet);
+                StatusLine statusLine = response.getStatusLine();
+                int statusCode = statusLine.getStatusCode();
+                if (statusCode == 200) {
+                    HttpEntity entity = response.getEntity();
+                    InputStream content = entity.getContent();
+                    BufferedReader reader = new BufferedReader(
+                            new InputStreamReader(content));
+
+                    while ((line = reader.readLine()) != null) {
+                        builder.append(line);
+                    }
+                    Log.v("Getter", "Your data: " + builder.toString()); //response data
+                } else {
+                    Log.e("Getter", "Failed to get data");
+                }
+            } catch (ClientProtocolException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return builder.toString();
+        }
+        protected void onPostExecute(String result) {
+            if(result != null && !result.isEmpty()) {
+                if (!result.equals("Empty")) {
+                    List<Requests> list = GetObjectsFromResponse(result);
+                    if (list != null) {
+                        AddToListView(list);
+                    }
+                    progressDialog.dismiss();
+                } else {
+                    progressDialog.dismiss();
+                    AlertDialog.Builder builder1 = new AlertDialog.Builder(activity);
+                    builder1.setTitle("Alert!");
+                    builder1.setMessage("No more Requests found in Server!");
+                    builder1.setCancelable(true);
+                    builder1.setPositiveButton("Ok",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+
+                    AlertDialog alert11 = builder1.create();
+                    alert11.show();
+                }
+            }else{
+                progressDialog.dismiss();
+                AlertDialog.Builder builder1 = new AlertDialog.Builder(activity);
+                builder1.setTitle("Alert!");
+                builder1.setMessage("No more Requests found in Server!");
+                builder1.setCancelable(true);
+                builder1.setPositiveButton("Ok",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+                AlertDialog alert11 = builder1.create();
+                alert11.show();
+            }
+        }
+    }
+
+    private void AddToListView(List<Requests> list) {
+        for(int i = 0; i < list.size(); i++){
+            resumeList.add(list.get(i));
+        }
+        final Requests[] requestsArray = new Requests[resumeList.size()];
+        for(int i = 0; i < resumeList.size(); i++){
+            requestsArray[i] = resumeList.get(i);
+        }
+        listAdapter = new RequestsArrayAdapter(getActivity(), requestsArray);
+        listViewRequests.setAdapter(listAdapter);
+
+        listViewRequests.setSelectionFromTop(listCurrentPosition, 0);
+
+        listViewRequests.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View
+                    view, int position, long id) {
+
+                try {
+                    Bundle i = new Bundle();
+                    i.putString("RequestID", requestsArray[position].RequestID);
+                    i.putString("RequesteUserId", requestsArray[position].RequesteUserId);
+                    i.putString("RequestUserName", requestsArray[position].RequestUserName);
+                    i.putString("RequestString", requestsArray[position].RequestString);
+                    i.putString("RequestUserProfession", requestsArray[position].RequestUserProfession);
+                    i.putString("RequestUserProfilePhotoServerPath", requestsArray[position].RequestUserProfilePhotoServerPath);
+                    i.putString("RequestTime", requestsArray[position].RequestTime);
+
+                    Fragment individualRequestDisplayFragment = new RequestDisplayActivity();
+                    individualRequestDisplayFragment.setArguments(i);
+
+                    Fragment currentFragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.container);
+
+                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                    TempDataClass.fragmentStack.lastElement().onPause();
+                    TempDataClass.fragmentStack.push(currentFragment);
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.container, individualRequestDisplayFragment)
+                            .commit();
+                }
+                catch(Exception ex){
+                    Toast.makeText(getActivity().getApplicationContext(), ex.toString(), Toast.LENGTH_LONG).show();
+                }
+
+            }
+
+        });
     }
 
 }
