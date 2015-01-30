@@ -60,7 +60,7 @@ public class MyQuestions_Adapter extends ArrayAdapter<Question_Model> {
 
             holder.tvusername_myquestions.setText(questionmodellist_myquestions.get(position).getUsername());
             holder.tvquestion_myquestions.setText(questionmodellist_myquestions.get(position).getQuestion());
-            holder.tvquestion_id_myquestions.setText(questionmodellist_myquestions.get(position).getQuestion_id());
+           // holder.tvquestion_id_myquestions.setText(questionmodellist_myquestions.get(position).getQuestion_id());
             holder.tvaskedtime_myquestions.setText(questionmodellist_myquestions.get(position).getAsked_time());
         }
 

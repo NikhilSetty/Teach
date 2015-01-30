@@ -25,6 +25,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.teachmate.teachmate.FragmentTitles;
@@ -62,6 +63,7 @@ public class QuestionsFeed extends Fragment implements SwipeRefreshLayout.OnRefr
     public int lastviewposition;
     SwipeRefreshLayout swipeRefreshLayout;
     public ArrayList<Question_Model> questionlist;
+    TextView tvquestionid;
     Boolean flag = true;
 
     @Override
@@ -144,6 +146,7 @@ public class QuestionsFeed extends Fragment implements SwipeRefreshLayout.OnRefr
 
         RelativeLayout relativeLayout=(RelativeLayout)inflater.inflate(R.layout.mainlistview,container,false);
         swipeRefreshLayout = (SwipeRefreshLayout)relativeLayout.findViewById(R.id.lySwipeRefresh);
+
         setHasOptionsMenu(true);
 
         imageView = (ImageView)relativeLayout.findViewById(R.id.imageView);
@@ -224,6 +227,7 @@ public class QuestionsFeed extends Fragment implements SwipeRefreshLayout.OnRefr
                 String qid=questionlist.get(position).getQuestion_id();
                 String url=questionlist.get(position).getImage();
                 String quest=questionlist.get(position).getQuestion();
+                String category=questionlist.get(position).getCategory();
                 String asked=questionlist.get(position).getAsked_time();
                 String askedagain=questionlist.get(position).getAsked_time();
 
@@ -241,6 +245,7 @@ public class QuestionsFeed extends Fragment implements SwipeRefreshLayout.OnRefr
 
                 Bundle data=new Bundle();
                 data.putString("username", user);
+                data.putString("category",category);
                 data.putString("question", quest);
                 data.putString("asked_time", asked);
                 data.putString("question_id", qid);
@@ -323,11 +328,19 @@ public class QuestionsFeed extends Fragment implements SwipeRefreshLayout.OnRefr
                         question.setQuestion_id(real.getString("QuestionId"));//this would be the question id
                         if(real.getString("UserProfilePhotoServerPath").length()==0){
                             question.setImage("");
-                        }else{
-                        question.setImage(real.getString("UserProfilePhotoServerPath"));}
+                        }
+                        question.setImage(real.getString("UserProfilePhotoServerPath"));
+
+                     //   question.setImage("http://eraser2.heidi.ie/wp-content/plugins/all-in-one-seo-pack-pro/images/default-user-image.png");
                         question.setUsername(real.getString("AskedBy"));//this is the username of the person who asked the question
                         question.setQuestion(real.getString("QuestionMessage"));//jobj.getString("validate")//this would be the question itself
                         question.setQuestion_id(real.getString("QuestionId"));
+                        String categorycheck=real.getString("Category");
+                        if(categorycheck.length()==0){
+                            question.setCategory("Category : General Question");
+                        }
+                        question.setCategory(real.getString("Category"));
+                      //  question.setCategory("category");
                         question.setAsked_time(real.getString("AskedTime"));//this is the time the question was asked
 
                         questionlist.add(question);
@@ -401,6 +414,7 @@ public class QuestionsFeed extends Fragment implements SwipeRefreshLayout.OnRefr
                         question1.setUsername(real.getString("AskedBy"));//this is the username of the person who asked the question
                         question1.setQuestion(real.getString("QuestionMessage"));//jobj.getString("validate")//this would be the question itself
                         question1.setQuestion_id(real.getString("QuestionId"));
+                        question1.setCategory(real.getString("Category"));
                         question1.setAsked_time(real.getString("AskedTime"));//this is the time the question was asked
 
                         questionlist.add(question1);

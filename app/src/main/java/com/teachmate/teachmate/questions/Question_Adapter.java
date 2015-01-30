@@ -43,8 +43,9 @@ public class Question_Adapter extends ArrayAdapter<Question_Model> {
 
             holder.tvusername=(TextView)convertView.findViewById(R.id.tvusername);
             holder.tvquestion=(TextView)convertView.findViewById(R.id.tvquestion);
-            holder.tvquestion_id=(TextView)convertView.findViewById(R.id.tvquestion_id);
+          //  holder.tvquestion_id=(TextView)convertView.findViewById(R.id.tvquestion_id);
             holder.tvaskedtime=(TextView)convertView.findViewById(R.id.tvaskedtime);
+            holder.tvcategory=(TextView)convertView.findViewById(R.id.tvcategory);
 
 
             convertView.setTag(holder);
@@ -53,15 +54,18 @@ public class Question_Adapter extends ArrayAdapter<Question_Model> {
             holder=(ViewHolder)convertView.getTag();
         }
         Question_Model q=questionmodellist.get(position);
+        holder.imageView = (ImageView) convertView.findViewById(R.id.imageView);
+
         if(q!=null) {
-            Picasso.with(ctxt).load(questionmodellist.get(position).getImage()).into(holder.imageView);
-            holder.imageView = (ImageView) convertView.findViewById(R.id.imageView);
-            if(q.getImage().isEmpty()){
+
+            if(q.getImage().length()==0){
                 holder.imageView.setImageResource(R.drawable.user_icon);
             }
+            Picasso.with(ctxt).load(questionmodellist.get(position).getImage()).into(holder.imageView);
+            holder.tvcategory.setText("Category : "+questionmodellist.get(position).getCategory());
             holder.tvusername.setText(questionmodellist.get(position).getUsername());
             holder.tvquestion.setText(questionmodellist.get(position).getQuestion());
-            holder.tvquestion_id.setText(questionmodellist.get(position).getQuestion_id());
+//           holder.tvquestion_id.setText(questionmodellist.get(position).getQuestion_id());
             holder.tvaskedtime.setText(questionmodellist.get(position).getAsked_time());
         }
 
@@ -73,6 +77,7 @@ public class Question_Adapter extends ArrayAdapter<Question_Model> {
         public ImageView imageView;
         public TextView tvusername;
         public TextView tvquestion_id;
+        public TextView tvcategory;
         public TextView tvaskedtime;
         public TextView tvquestion;
 

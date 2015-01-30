@@ -63,6 +63,7 @@ public class MyQuestions extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 String user=((TextView)view.findViewById(R.id.tvusername_myquestions)).getText().toString();
+                String category=((TextView)view.findViewById(R.id.tvcategory_myquestions)).getText().toString();
                 String qid=((TextView)view.findViewById(R.id.tvquestion_id_myquestions)).getText().toString();
                 //String url=((TextView)view.findViewById(R.id.)).getText().toString();
                 String quest=((TextView)view.findViewById(R.id.tvquestion_myquestions)).getText().toString();
@@ -78,8 +79,9 @@ public class MyQuestions extends Fragment {
                 data.putString("question", quest);
                 data.putString("asked_time", asked);
                 data.putString("question_id", qid);
-                data.putString("cat","cat");
+                data.putString("category",category);
                 data.putString("image", "image url");
+                data.putString("myquestions","myquestions");
 
 
                 Fragment clicked_fragment=new clicked();
@@ -113,9 +115,9 @@ public class MyQuestions extends Fragment {
 
         dbHelper = new DbHelper(getActivity());
         db = dbHelper.getWritableDatabase();
-        Cursor cursor=db.rawQuery("SELECT * FROM "+ DbTableStrings.TABLE_NAME_MY_QUESTIONS,null);
-        String[] fromcolums=new String[]{DbTableStrings.MYUSERNAME,DbTableStrings.MYQUESTION,DbTableStrings.MYQUESTION_ID,DbTableStrings.MYIMAGE, DbTableStrings.MYASKED_TIME};
-        int[] tofeilds=new int[]{R.id.tvusername_myquestions,R.id.tvquestion_myquestions,R.id.tvquestion_id_myquestions,R.id.imageView_myquestions,R.id.tvaskedtime_myquestions};
+        Cursor cursor=db.rawQuery("SELECT * FROM "+ DbTableStrings.TABLE_NAME_MY_QUESTIONS+" ORDER BY "+DbTableStrings.MYQUESTION_ID+" DESC ",null);
+        String[] fromcolums=new String[]{DbTableStrings.MYUSERNAME,DbTableStrings.MYQUESTION,DbTableStrings.MYQUESTION_ID, DbTableStrings.MYASKED_TIME,DbTableStrings.MYCATEGORY};
+        int[] tofeilds=new int[]{R.id.tvusername_myquestions,R.id.tvquestion_myquestions,R.id.tvquestion_id_myquestions,R.id.tvaskedtime_myquestions,R.id.tvcategory_myquestions};
         SimpleCursorAdapter simpleCursorAdapter;
         simpleCursorAdapter=new SimpleCursorAdapter(getActivity(),R.layout.singlerow_myquestions,cursor,fromcolums,tofeilds,0);
         list.setAdapter(simpleCursorAdapter);

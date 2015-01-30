@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,19 +28,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
-import com.teachmate.teachmate.DBHandlers.DeviceInfoDBHandler;
+import com.teachmate.teachmate.DBHandlers.QuestionModelDBHandler;
 import com.teachmate.teachmate.DBHandlers.RequestsDBHandler;
 import com.teachmate.teachmate.Requests.MyRequests;
-import com.teachmate.teachmate.models.DeviceInfoKeys;
-import com.teachmate.teachmate.models.DeviceInfoModel;
+import com.teachmate.teachmate.models.Question_Model;
 import com.teachmate.teachmate.models.Requests;
-import com.teachmate.teachmate.models.UserModel;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -51,6 +52,19 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class HomeFragment extends Fragment {
+    ArrayList<String> myquestionids = new ArrayList<String>();
+    Question_Model myquestionsdb = new Question_Model();
+    public String created_time;
+    public String questionmessage;
+    public String result;
+    public String hour;
+    public String minutes;
+    public String month;
+    public String day;
+    public String seconds;
+    public String year;
+    public String category;
+    public Calendar c=Calendar.getInstance();
 
     Button buttonNewRequest;
     Button buttonNewQuestion;
@@ -85,15 +99,7 @@ public class HomeFragment extends Fragment {
         profilePhoto = (ImageView) layout.findViewById(R.id.imageViewProfilePhoto);
 
         if(TempDataClass.profilePhotoLocalPath.isEmpty()){
-            if(!TempDataClass.profilePhotoServerPath.isEmpty()) {
-                Picasso.with(activity.getApplicationContext()).load(TempDataClass.profilePhotoServerPath).into(profilePhoto);
-            }else{
-                TempDataClass.profilePhotoServerPath = "http://teach-mate.azurewebsites.net/MyImages/default.jpg";
-                DeviceInfoModel model = new DeviceInfoModel();
-                model.Key = DeviceInfoKeys.PROFILE_PHOTO_SERVER_PATH;
-                model.Value = "http://teach-mate.azurewebsites.net/MyImages/default.jpg";
-                DeviceInfoDBHandler.InsertDeviceInfo(activity.getApplicationContext(), model);
-            }
+            Picasso.with(activity.getApplicationContext()).load(TempDataClass.profilePhotoServerPath).into(profilePhoto);
         }
         else{
             profilePhoto.setImageBitmap(BitmapFactory.decodeFile(TempDataClass.profilePhotoLocalPath));
@@ -101,6 +107,12 @@ public class HomeFragment extends Fragment {
 
         buttonNewRequest = (Button) layout.findViewById(R.id.buttonNewRequest);
         buttonNewQuestion = (Button) layout.findViewById(R.id.buttonNewQuestion);
+        buttonNewQuestion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                generatenewquestion();
+            }
+        });
 
         newRequest = new Requests();
 
@@ -115,6 +127,54 @@ public class HomeFragment extends Fragment {
         });
 
         return layout;
+    }
+    public void generatenewquestion(){
+        LayoutInflater factory = LayoutInflater.from(getActivity());
+        final View promptview = factory.inflate(
+                R.layout.ask_question_dialogue, null);
+        final AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+        alertDialog.setView(promptview);
+        alertDialog.setMessage("Ask a new Question!");
+        final EditText etquestion=(EditText)promptview.findViewById(R.id.etquestion_ask_question);
+        final EditText etcategory=(EditText)promptview.findViewById(R.id.etcategory_ask_question);
+        promptview.findViewById(R.id.ask_button).setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                //your business logic
+                minutes=Integer.toString(c.get(Calendar.MINUTE));//getting time from calendar object
+                hour=Integer.toString(c.get(Calendar.HOUR));
+                seconds=Integer.toString(c.get(Calendar.SECOND));
+                month=Integer.toString(c.get(Calendar.MONTH)+1);
+                day=Integer.toString(c.get(Calendar.DAY_OF_MONTH));
+                year=Integer.toString(c.get(Calendar.YEAR));
+                created_time=day+"/"+month+"/"+year+" "+hour+":"+minutes+":"+seconds;
+                questionmessage=etquestion.getText().toString();
+                category=etcategory.getText().toString();
+                if(TextUtils.isEmpty(category)|| TextUtils.isEmpty(questionmessage)){
+                    Toast.makeText(getActivity(),"The above fields cannot be wmpty.Please fill both the fields and retry",Toast.LENGTH_LONG).show();
+                }else{
+                    ask_question_async ask=new ask_question_async();
+                    ask.execute("http://teach-mate.azurewebsites.net/QuestionForum/AddQuestion");
+                    alertDialog.dismiss();
+
+                }
+
+
+
+            }
+        });
+        promptview.findViewById(R.id.cancel_button).setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+
+            }
+        });
+
+        alertDialog.show();
+
     }
 
     @Override
@@ -307,6 +367,88 @@ public class HomeFragment extends Fragment {
 
         inputStream.close();
         return result;
+    }
+    public class ask_question_async extends AsyncTask<String,Void,String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            InputStream inputStream = null;
+
+            HttpClient httpClient=new DefaultHttpClient();
+            HttpPost post= new HttpPost(params[0]);
+
+
+            String json="";
+            try {
+                JSONObject jsonObject=new JSONObject();
+                jsonObject.put("UserId", TempDataClass.serverUserId);
+                jsonObject.put("TimeOfQuestion",created_time);
+                jsonObject.put("QuestionMessage",questionmessage);
+                jsonObject.put("Category",category);
+                jsonObject.put("QuestionBoardId","3");
+
+
+                json=jsonObject.toString();
+                StringEntity se=new StringEntity(json);
+                post.setEntity(se);
+                HttpResponse response=httpClient.execute(post);
+                inputStream = response.getEntity().getContent();
+                if(inputStream != null)
+
+                    result = convertInputStreamToString(inputStream);
+                else
+                    result = "Did not work!";
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            myquestionsdb.setQuestion_id(s);
+            myquestionsdb.setQuestion(questionmessage);
+            myquestionsdb.setAsked_time(created_time);
+            myquestionsdb.setUsername(TempDataClass.userName);
+            myquestionsdb.setImage("image");
+            myquestionsdb.setCategory(category);
+            addtomyquestionsdb();
+
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            FragmentTransaction ft = fragmentManager.beginTransaction();
+            ft.replace(R.id.container, TempDataClass.fragmentStack.lastElement());
+            TempDataClass.fragmentStack.pop();
+            ft.commit();
+
+        }
+
+        private  String convertInputStreamToString(InputStream inputStream) throws IOException{
+            BufferedReader bufferedReader = new BufferedReader( new InputStreamReader(inputStream));
+            String line = "";
+            String result = "";
+            while((line = bufferedReader.readLine()) != null)
+                result += line;
+
+            inputStream.close();
+            return result;
+
+        }
+
+    }
+    public void addtomyquestionsdb(){
+        QuestionModelDBHandler addtodb=new QuestionModelDBHandler();
+        // public static final AnswerModelDBHandler addanswertodb=new AnswerModelDBHandler();
+        //  addtodb.InsertQuestionModel(getActivity(),dbadd);
+        addtodb.Insertintomyquestionstable(getActivity(),myquestionsdb);
+        //  addanswertodb.InsertAnswerList(getApplicationContext(),answerlist);
+
+
+        Toast.makeText(getActivity(),"added to db",Toast.LENGTH_SHORT).show();
+
     }
 
 }

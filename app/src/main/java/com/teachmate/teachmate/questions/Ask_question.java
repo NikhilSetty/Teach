@@ -7,9 +7,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
@@ -41,11 +43,11 @@ import java.util.Calendar;
 public class Ask_question extends Fragment {
     ArrayList<String> myquestionids = new ArrayList<String>();
     Question_Model myquestionsdb = new Question_Model();
-    public static EditText etquestiontitle;
+    public static EditText etquestiontitle,etcategorytitle;
 
     Button post;
     public String created_time;
-    public String questionmessage;
+    public String questionmessage,category;
     public String result;
     public String hour;
     public String minutes;
@@ -59,8 +61,11 @@ public class Ask_question extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         FragmentActivity fragmentActivity=(FragmentActivity)super.getActivity();
+
         RelativeLayout relativeLayout=(RelativeLayout)inflater.inflate(R.layout.new_question_layout,container,false);
         etquestiontitle=(EditText)relativeLayout.findViewById(R.id.etquestiontitle);
+        etcategorytitle=(EditText)relativeLayout.findViewById(R.id.etcategorytitle);
+
         post=(Button)relativeLayout.findViewById(R.id.buttonquestionpost);
 
         //Setting functionality for post button
@@ -75,8 +80,13 @@ public class Ask_question extends Fragment {
                 year=Integer.toString(c.get(Calendar.YEAR));
                 created_time=day+"/"+month+"/"+year+" "+hour+":"+minutes+":"+seconds;
                 questionmessage=Ask_question.etquestiontitle.getText().toString();
-                ask_question_async ask=new ask_question_async();
-                ask.execute("http://teach-mate.azurewebsites.net/QuestionForum/AddQuestion");//My server url to hit
+                category=Ask_question.etcategorytitle.getText().toString();
+                if(TextUtils.isEmpty(category)){
+                    Toast.makeText(getActivity(),"Please add a Category to your question",Toast.LENGTH_LONG).show();
+                }else {
+                    ask_question_async ask = new ask_question_async();
+                    ask.execute("http://teach-mate.azurewebsites.net/QuestionForum/AddQuestion");//My server url to hit
+                }
 
             }
         });
@@ -101,7 +111,8 @@ public class Ask_question extends Fragment {
                 JSONObject jsonObject=new JSONObject();
                 jsonObject.put("UserId", TempDataClass.serverUserId);
                 jsonObject.put("TimeOfQuestion",created_time);
-                jsonObject.put("QuestionMessage",Ask_question.etquestiontitle.getText());
+                jsonObject.put("QuestionMessage",questionmessage);
+                jsonObject.put("Category",category);
                 jsonObject.put("QuestionBoardId","3");
 
                 json=jsonObject.toString();
@@ -129,8 +140,8 @@ public class Ask_question extends Fragment {
             myquestionsdb.setQuestion(questionmessage);
             myquestionsdb.setAsked_time(created_time);
             myquestionsdb.setUsername(TempDataClass.userName);
-            myquestionsdb.setImage("myimage");
-            myquestionsdb.setCategory("category");
+            myquestionsdb.setImage(TempDataClass.profilePhotoServerPath);
+            myquestionsdb.setCategory(category);
             addtomyquestionsdb();
 
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();

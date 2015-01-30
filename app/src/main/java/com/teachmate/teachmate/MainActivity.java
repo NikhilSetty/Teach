@@ -91,6 +91,18 @@ public class MainActivity extends ActionBarActivity
         Bundle extras = new Bundle();
 
         switch (type){
+            case "Replies":
+                extras.putString("type",getIntent().getStringExtra("type"));
+                extras.putString("askedby",getIntent().getStringExtra("askedby"));
+                extras.putString("userid_questions",getIntent().getStringExtra("userid_questions"));
+                extras.putString("questionmessage",getIntent().getStringExtra("questionmessage"));
+                extras.putString("asked_time_questions",getIntent().getStringExtra("asked_time_questions"));
+                extras.putString("imagepath",getIntent().getStringExtra("imagepath"));
+                extras.putString("questionid",getIntent().getStringExtra("questionid"));
+                extras.putString("userprofession_questions",getIntent().getStringExtra("userprofession_questions"));
+                initialFragment=new clicked();
+                initialFragment.setArguments(extras);
+                break;
             case "request":
                 extras.putString("NotificationRequestId", getIntent().getStringExtra("NotificationRequestId"));
                 initialFragment = new RequestDisplayActivity();
@@ -304,6 +316,16 @@ public class MainActivity extends ActionBarActivity
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment temp = new UpdateUserFragment();
+        fragmentManager.beginTransaction()
+                .replace(R.id.container, temp)
+                .commit();
+
+        mNavigationDrawerFragment.CloseDrawer();
+    }
+
+    public void NavigatetoOfflineQuestions(View v){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        Fragment temp = new SavedForOfflineReading();
         fragmentManager.beginTransaction()
                 .replace(R.id.container, temp)
                 .commit();

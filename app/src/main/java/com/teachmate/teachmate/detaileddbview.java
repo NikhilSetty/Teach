@@ -6,15 +6,18 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
+import com.teachmate.teachmate.Answers.AnswerForEveryQuestion;
 import com.teachmate.teachmate.Answers.Answer_Adapter;
 import com.teachmate.teachmate.DBClasses.DbHelper;
 import com.teachmate.teachmate.DBClasses.DbTableStrings;
@@ -61,7 +64,7 @@ public class detaileddbview extends Fragment {
             tvquestiondb.setText(data.getString("questiondb"));
             tvaskedtimedb.setText(data.getString("asked_timedb"));
             tvusernamedb.setText(data.getString("usernamedb"));
-           tvquestion_iddb.setText(data.getString("question_iddb"));
+          // tvquestion_iddb.setText(data.getString("question_iddb"));
         } catch (Exception e) {
             e.printStackTrace();
         }

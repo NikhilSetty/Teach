@@ -56,7 +56,7 @@ public class QuestionModelDBHandler {
         }
         catch (Exception e)
         {
-            Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT);
+            Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
     }

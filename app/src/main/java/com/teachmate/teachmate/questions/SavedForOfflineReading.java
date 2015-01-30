@@ -40,6 +40,7 @@ public class SavedForOfflineReading extends Fragment {
    // public ArrayList<Question_Model> questionlist3;
     public ArrayList<Answer_Model> answerlist;
     ImageView imageView;
+    TextView tvqid;
     Question_Model question1=new Question_Model();
     Answer_Model answer1=new Answer_Model();
     private static DbHelper dbHelper;
@@ -49,10 +50,17 @@ public class SavedForOfflineReading extends Fragment {
 
         FragmentActivity fragmentActivity=(FragmentActivity)super.getActivity();
         RelativeLayout relativeLayout=(RelativeLayout)inflater.inflate(R.layout.dblistview,container,false);
+        RelativeLayout hide=(RelativeLayout)relativeLayout.findViewById(R.id.userInfoNavigationDrawer);
+        hide.setVisibility(View.GONE);
         imageView = (ImageView)relativeLayout.findViewById(R.id.imageView);
+       // tvqid=(TextView)relativeLayout.findViewById(R.id.tvquestion_id);
+      //  tvqid.setVisibility(View.INVISIBLE);
         listviewdb = (ListView)relativeLayout.findViewById(R.id.listViewdb);
+
         questionlist3=new ArrayList<Question_Model>();
         populatelistviewfromdb();
+
+
        // questionlist3=new ArrayList<Question_Model>();
 
     //    openandquerydatabase();
@@ -64,13 +72,14 @@ public class SavedForOfflineReading extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                String user=((TextView)view.findViewById(R.id.tvusername)).getText().toString();
+                String user=((TextView)view.findViewById(R.id.tvusernamefromdb)).getText().toString();
 
 
-                String qid=((TextView)view.findViewById(R.id.tvquestion_id)).getText().toString();
+
+                String qid=((TextView)view.findViewById(R.id.tvquestion_idfromdb)).getText().toString();
                // String url=((ImageView)view.findViewById(R.id.imageView)).getText().toString();
-                String quest=((TextView)view.findViewById(R.id.tvquestion)).getText().toString();
-                String asked=((TextView)view.findViewById(R.id.tvaskedtime)).getText().toString();
+                String quest=((TextView)view.findViewById(R.id.tvquestionfromdb)).getText().toString();
+                String asked=((TextView)view.findViewById(R.id.tvaskedtimefromdb)).getText().toString();
                 //String cat=getText(R.id.).toString();
 /*
                 Intent data=new Intent(SavedForOfflineReading.this.getActivity(),Detaileddbview_activity.class);
@@ -111,11 +120,11 @@ public class SavedForOfflineReading extends Fragment {
     public void populatelistviewfromdb(){
         dbHelper = new DbHelper(getActivity());
         db = dbHelper.getWritableDatabase();
-        Cursor cursor=db.rawQuery("SELECT * FROM "+ DbTableStrings.TABLE_NAME_QUESTION_MODEL,null);
+        Cursor cursor=db.rawQuery("SELECT * FROM "+ DbTableStrings.TABLE_NAME_QUESTION_MODEL+" ORDER BY "+DbTableStrings.QUESTION_ID+" DESC ",null);
         String[] fromcolums=new String[]{DbTableStrings.USERNAME,DbTableStrings.QUESTION,DbTableStrings.QUESTION_ID,DbTableStrings.IMAGE,DbTableStrings.ASKED_TIME};
-        int[] tofeilds=new int[]{R.id.tvusername,R.id.tvquestion,R.id.tvquestion_id,R.id.image,R.id.tvaskedtime};
+        int[] tofeilds=new int[]{R.id.tvusernamefromdb,R.id.tvquestionfromdb,R.id.tvquestion_idfromdb,R.id.image,R.id.tvaskedtimefromdb};
         SimpleCursorAdapter simpleCursorAdapter;
-        simpleCursorAdapter=new SimpleCursorAdapter(getActivity(),R.layout.singlerow,cursor,fromcolums,tofeilds,0);
+        simpleCursorAdapter=new SimpleCursorAdapter(getActivity(),R.layout.singlerowfordblistview,cursor,fromcolums,tofeilds,0);
         listviewdb.setAdapter(simpleCursorAdapter);
 
 

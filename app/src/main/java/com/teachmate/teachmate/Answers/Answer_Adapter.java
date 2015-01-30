@@ -49,7 +49,7 @@ public class Answer_Adapter  extends ArrayAdapter<Answer_Model> {
         holder.tvansweredby.setText(answermodellist.get(position).getAnsweredby());
         holder.tvansweredtime.setText(answermodellist.get(position).getAnsweredtime());
         holder.tvrealanswer.setText(answermodellist.get(position).getActualanswer());
-        holder.tvanswerid.setText(answermodellist.get(position).getAnswer_id());
+       // holder.tvanswerid.setText(answermodellist.get(position).getAnswer_id());
 
 
 

@@ -59,6 +59,15 @@ public class GcmIntentService extends IntentService {
     String type;
     String requestId;
     String username;
+    String askedby;
+    String repliedby;
+    String replymessage;
+    String userid_questions;
+    String questionmessage;
+    String asked_time_questions;
+    String imagepath;
+    String questionid;
+    String userprofession_questions;
     String userId;
     int intType;
     String responseId;
@@ -103,6 +112,15 @@ public class GcmIntentService extends IntentService {
                         break;
                     case 2:
 
+                        askedby=extras.getString("AskedBy");
+                        repliedby=extras.getString("RepliedBy");
+                        replymessage=extras.getString("ReplyMessage");
+                        userid_questions=extras.getString("UserId");
+                        questionmessage=extras.getString("QuestionMessage");
+                        asked_time_questions=extras.getString("AskedTime");
+                        imagepath=extras.getString("UserProfilePhotoServerPath");
+                        questionid=extras.getString("QuestionId");
+                        userprofession_questions=extras.getString("UserProfession");
                         break;
                     case 3: //New Request Notification
                         message = extras.getString("message");
@@ -143,8 +161,33 @@ public class GcmIntentService extends IntentService {
     private void sendNotification(String msg) {
         mNotificationManager = (NotificationManager)
                 this.getSystemService(Context.NOTIFICATION_SERVICE);
+        if(intType == 2) {
+            Intent question = new Intent(this, MainActivity.class);
+            question.putExtra("type", "Replies");
+            question.putExtra("askedby", askedby);
+            question.putExtra("userid_questions", userid_questions);
+            question.putExtra("questionmessage", questionmessage);
+            question.putExtra("asked_time_questions", asked_time_questions);
+            question.putExtra("imagepath", imagepath);
+            question.putExtra("questionid", questionid);
+            question.putExtra("userprofession_questions", userprofession_questions);
 
-        if(intType == 3) {
+            PendingIntent contentIntent = PendingIntent.getActivity(this,Integer.parseInt(questionid),
+                    question, PendingIntent.FLAG_ONE_SHOT);
+
+            NotificationCompat.Builder mBuilder =
+                    new NotificationCompat.Builder(this)
+                            .setSmallIcon(R.drawable.ic_stat_gcm)
+                            .setContentTitle("New Answer")
+                            .setStyle(new NotificationCompat.BigTextStyle()
+                                    .bigText(repliedby + " says " + replymessage))
+                            .setContentText(repliedby + " says " + replymessage)
+                            .setAutoCancel(true);
+
+            mBuilder.setContentIntent(contentIntent);
+            mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
+        }
+       else if(intType == 3) {
             Intent requestIntent = new Intent(this, MainActivity.class);
             requestIntent.putExtra("type", "request");
             requestIntent.putExtra("NotificationRequestId", requestId);

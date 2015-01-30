@@ -1,15 +1,20 @@
 package com.teachmate.teachmate;
 
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -19,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
+import com.teachmate.teachmate.Answers.AnswerForEveryQuestion;
 import com.teachmate.teachmate.Answers.Answer_Adapter;
 import com.teachmate.teachmate.DBHandlers.AnswerModelDBHandler;
 import com.teachmate.teachmate.DBHandlers.NotifsTableDbHandler;
@@ -49,20 +55,22 @@ import java.util.Calendar;
  * Created by archon on 11-01-2015.
  */
 public class clicked extends Fragment {
+
     ListView l;
     QuestionModelDBHandler addtodb=new QuestionModelDBHandler();
 
     Answer_Adapter answer_adapter;
-    public String question,value,qid1,imageurl,asked_time,username,category,u;
+    public String question,value,qid1,imageurl,asked_time,username,category,u,myquestions;
     ArrayList<Answer_Model> answerlist;
     AnswerModelDBHandler addanswertodb=new AnswerModelDBHandler();
     String latestanswerid;
 
     Question_Model dbadd=new Question_Model();
     Answer_Model answer=new Answer_Model();
-    TextView tvusername,tvquestion,tvaskedtime,tvquestion_id1;
+    TextView tvusername,tvquestion,tvaskedtime,tvquestion_id1,tvcategory;
     ImageView imageView;
     Button addtodbbtn,addreply;
+    public String type;
     public String created_time;
     public String hour;
     public String minutes;
@@ -75,28 +83,95 @@ public class clicked extends Fragment {
     static FragmentActivity activity;
 
     @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         activity =(FragmentActivity)super.getActivity();
         RelativeLayout relativeLayout=(RelativeLayout)inflater.inflate(R.layout.clicked,container,false);
         tvusername=(TextView)relativeLayout.findViewById(R.id.tvusername);
         tvquestion=(TextView)relativeLayout.findViewById(R.id.tvquestion);
         tvaskedtime=(TextView)relativeLayout.findViewById(R.id.tvaskedtime);
+        tvcategory=(TextView)relativeLayout.findViewById(R.id.tvcategory_clicked);
         tvquestion_id1=(TextView)relativeLayout.findViewById(R.id.tvquestion_id);
         addreply=(Button)relativeLayout.findViewById(R.id.answerbutton);
         addtodbbtn=(Button)relativeLayout.findViewById(R.id.addtodb);
 
-        Bundle bundle=getArguments();
+
 
         imageView=(ImageView)relativeLayout.findViewById(R.id.imageView);
         l = (ListView)relativeLayout. findViewById(R.id.listView2);
         answerlist = new ArrayList<>();
+        Bundle bundle=getArguments();
+        type=bundle.getString("type");
+        if(type != null){
 
-         username=bundle.getString("username");
-         question=bundle.getString("question");
-         asked_time=bundle.getString("asked_time");
-         qid1=bundle.getString("question_id");
-         u=bundle.getString("image");
-        Picasso.with(this.getActivity()).load(u).into(imageView);
+            category=bundle.getString("Category");
+            if(category.length()==0){
+                category="General Question";
+            }
+            username = bundle.getString("askedby");
+            question=bundle.getString("questionmessage");
+            asked_time=bundle.getString("asked_time_questions");
+            qid1=bundle.getString("questionid");
+            u=bundle.getString("imagepath");
+            Picasso.with(this.getActivity()).load(u).into(imageView);
+
+
+        }
+        else {
+            category=bundle.getString("category");
+            if(category.length()==0){
+                category="General Question";
+            }
+
+
+            username = bundle.getString("username");
+            question = bundle.getString("question");
+            asked_time = bundle.getString("asked_time");
+            qid1 = bundle.getString("question_id");
+            u = bundle.getString("image");
+            myquestions=bundle.getString("myquestions");
+            if(myquestions!=null){
+                u=TempDataClass.profilePhotoServerPath;
+                Picasso.with(this.getActivity()).load(u).into(imageView);
+
+            }
+
+            Picasso.with(this.getActivity()).load(u).into(imageView);
+        }
 
         new answerfeed().execute("http://teach-mate.azurewebsites.net/QuestionForum/RetrieveRepliesForAQuestion?id="+qid1);
         addreply.setOnClickListener(new View.OnClickListener() {
@@ -104,7 +179,8 @@ public class clicked extends Fragment {
             public void onClick(View v) {
                 AlertDialog.Builder alert=new AlertDialog.Builder(getActivity());
                 alert.setTitle("Your Answer");
-                alert.setMessage("Question"+question);
+              //  alert.setMessage("Question : "+question);
+                alert.setMessage("Enter your Answer below");
 
 
                 final EditText input=new EditText(getActivity());
@@ -131,12 +207,18 @@ public class clicked extends Fragment {
                         //do something with value
                         try {
                             new AddReply().execute("http://teach-mate.azurewebsites.net/QuestionForum/AddReply");
+
+
                         } catch (Exception e) {
                             e.printStackTrace();
+                        }finally {
+                            Toast.makeText(getActivity(),"Reply posted to the server,you can now navigate back to view other questions",Toast.LENGTH_LONG).show();
+
                         }
 
                     }
                 });
+
 
                 alert.setNegativeButton("cancel",new DialogInterface.OnClickListener() {
                     @Override
@@ -152,17 +234,22 @@ public class clicked extends Fragment {
         addtodbbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addtodb.InsertQuestionModel(getActivity(), dbadd);
-                addanswertodb.InsertAnswerList(getActivity().getApplicationContext(), answerlist);
-                Toast.makeText(getActivity().getApplicationContext(),"added to db",Toast.LENGTH_SHORT).show();
+                if(answerlist.size()>0) {
+
+                    addtodb.InsertQuestionModel(getActivity(), dbadd);
+                    addanswertodb.InsertAnswerList(getActivity().getApplicationContext(), answerlist);
+                    Toast.makeText(getActivity().getApplicationContext(), "added to db", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(getActivity().getApplicationContext(), "No answers for this question", Toast.LENGTH_SHORT).show();
+                }
 
             }
         });
 
-
+        tvcategory.setText("Category : "+category);
         tvusername.setText(username);
         tvquestion.setText(question);
-        tvquestion_id1.setText(qid1);
+       // tvquestion_id1.setText("Question id : "+qid1);
         tvaskedtime.setText(asked_time);
       //return super.onCreateView(inflater, container, savedInstanceState);
 
@@ -174,6 +261,44 @@ public class clicked extends Fragment {
         dbadd.setCategory(category);
 
         //return inflater.inflate(R.layout.clicked,container,false);
+        l.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Bundle data1=new Bundle();
+               String askedby=username;
+                String questionstring=question;
+                String questiontime=asked_time;
+                String answeredtime=answerlist.get(position).getAnsweredtime();
+                String answer1=answerlist.get(position).getActualanswer();
+                String answeredby=answerlist.get(position).getAnsweredby();
+//                String username=((TextView)view.findViewById(R.id.tvusernameanswerlist_onclick)).getText().toString();
+
+                data1.putString("question",questionstring);
+                data1.putString("username",username);
+                data1.putString("answeredby",answeredby);
+                data1.putString("answeredtime",answeredtime);
+                data1.putString("answer",answer1);
+                data1.putString("askedtime",asked_time);
+
+                Fragment answer=new AnswerForEveryQuestion();
+                answer.setArguments(data1);
+                Fragment currentFragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.container);
+
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                TempDataClass.fragmentStack.lastElement().onPause();
+                TempDataClass.fragmentStack.push(currentFragment);
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, answer)
+                        .commit();
+
+
+
+
+
+
+            }
+        });
+
         return  relativeLayout;
     }
    /* public void addtodb(View v) {
@@ -246,7 +371,14 @@ public class clicked extends Fragment {
 
 
     public class answerfeed extends AsyncTask<String, Void, Boolean> {
-
+        ProgressDialog dialog = new ProgressDialog(getActivity());
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            dialog.setProgressStyle(2);
+            dialog.setMessage("Loading answers");
+            dialog.show();
+        }
 
         @Override
         protected Boolean doInBackground(String... params) {
@@ -298,6 +430,7 @@ public class clicked extends Fragment {
         @Override
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
+            dialog.dismiss();
 
             if (aBoolean == false) {
                 Toast.makeText(activity,"No answers for this question", Toast.LENGTH_LONG).show();
@@ -351,9 +484,16 @@ public class clicked extends Fragment {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
+
             NotifsTableDbHandler notifsTableDbHandler=new NotifsTableDbHandler();
             notifsTableDbHandler.addtonotifsdb(getActivity().getApplicationContext(),qid1,latestanswerid);
             Toast.makeText(getActivity().getApplicationContext(),"Added to notifs db "+latestanswerid,Toast.LENGTH_SHORT).show();
+            Fragment currentFragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.container);
+            if (currentFragment instanceof clicked) {
+                FragmentTransaction fragTransaction =   (getActivity()).getSupportFragmentManager().beginTransaction();
+                fragTransaction.detach(currentFragment);
+                fragTransaction.attach(currentFragment);
+                fragTransaction.commit();}
         }
 
         private  String convertInputStreamToString(InputStream inputStream) throws IOException{
