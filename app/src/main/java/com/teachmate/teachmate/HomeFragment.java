@@ -26,9 +26,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
+import com.teachmate.teachmate.DBHandlers.DeviceInfoDBHandler;
 import com.teachmate.teachmate.DBHandlers.RequestsDBHandler;
 import com.teachmate.teachmate.Requests.MyRequests;
+import com.teachmate.teachmate.models.DeviceInfoKeys;
+import com.teachmate.teachmate.models.DeviceInfoModel;
 import com.teachmate.teachmate.models.Requests;
+import com.teachmate.teachmate.models.UserModel;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -81,7 +85,15 @@ public class HomeFragment extends Fragment {
         profilePhoto = (ImageView) layout.findViewById(R.id.imageViewProfilePhoto);
 
         if(TempDataClass.profilePhotoLocalPath.isEmpty()){
-            Picasso.with(activity.getApplicationContext()).load(TempDataClass.profilePhotoServerPath).into(profilePhoto);
+            if(!TempDataClass.profilePhotoServerPath.isEmpty()) {
+                Picasso.with(activity.getApplicationContext()).load(TempDataClass.profilePhotoServerPath).into(profilePhoto);
+            }else{
+                TempDataClass.profilePhotoServerPath = "http://teach-mate.azurewebsites.net/MyImages/default.jpg";
+                DeviceInfoModel model = new DeviceInfoModel();
+                model.Key = DeviceInfoKeys.PROFILE_PHOTO_SERVER_PATH;
+                model.Value = "http://teach-mate.azurewebsites.net/MyImages/default.jpg";
+                DeviceInfoDBHandler.InsertDeviceInfo(activity.getApplicationContext(), model);
+            }
         }
         else{
             profilePhoto.setImageBitmap(BitmapFactory.decodeFile(TempDataClass.profilePhotoLocalPath));

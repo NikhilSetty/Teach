@@ -118,7 +118,7 @@ public class NavigationDrawerFragment extends Fragment {
                         getString(R.string.title_section3),
                 }));
 */
-        NsItemModel[] model = new NsItemModel[7];
+        NsItemModel[] model = new NsItemModel[8];
 
         NsItemModel home = new NsItemModel();
         home.title = "Home";
@@ -144,11 +144,14 @@ public class NavigationDrawerFragment extends Fragment {
         my_questions.title = "My Questions";
         my_questions.counter = 0;
         model[5] = my_questions;
-
         NsItemModel saved_questions = new NsItemModel();
         saved_questions.title = "Offline Questions";
         saved_questions.counter = 0;
         model[6] = saved_questions;
+        NsItemModel about = new NsItemModel();
+        about.title = "About";
+        about.counter = 0;
+        model[7] = about;
 
 
         ListAdapter adapter = new NsMenuAdapter(getActivity().getApplicationContext(), model);
