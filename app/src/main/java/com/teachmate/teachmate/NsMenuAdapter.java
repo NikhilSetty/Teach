@@ -58,6 +58,22 @@ public class NsMenuAdapter extends ArrayAdapter<NsItemModel> {
         if(item.title.equals("Chat")){
             image1.setImageResource(R.drawable.chat);
         }
+        if(item.title.equals("About")){
+            image1.setImageResource(R.drawable.info);
+        }
+        if(item.title.equals("Questions")){
+            image1.setImageResource(R.drawable.question);
+        }
+        if(item.title.equals("Requests")){
+            image1.setImageResource(R.drawable.requests);
+        }
+        if(item.title.equals("My Questions")){
+            image1.setImageResource(R.drawable.my_questions);
+        }
+        if(item.title.equals("My Requests")){
+            image1.setImageResource(R.drawable.my_requests);
+        }
+
         text1.setText(item.title);
         if(item.counter == 0){
             textcounter1.setVisibility(View.GONE);

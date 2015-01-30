@@ -179,19 +179,19 @@ public class MainActivity extends ActionBarActivity
             case 2:
                 initialFragment = new MyRequests();
                 break;
-            case 3:
+            case 5:
                 initialFragment = new PreviousChatFragment();
                 break;
-            case 4:
+            case 3:
                 initialFragment = new QuestionsFeed();
                 break;
-            case 5:
+            case 4:
                 initialFragment = new MyQuestions();
                 break;
-            case 6:
+            case 7:
                 initialFragment = new SavedForOfflineReading();
                 break;
-            case 7:
+            case 6:
                 initialFragment = new AboutFragment();
                 break;
             default:
