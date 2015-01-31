@@ -352,7 +352,7 @@ public class HomeFragment extends Fragment {
             Fragment currentFragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.container);
 
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-            TempDataClass.fragmentStack.lastElement().onPause();
+            //TempDataClass.fragmentStack.lastElement().onPause();
             TempDataClass.fragmentStack.push(currentFragment);
             fragmentManager.beginTransaction()
                     .replace(R.id.container, nextFragment)
