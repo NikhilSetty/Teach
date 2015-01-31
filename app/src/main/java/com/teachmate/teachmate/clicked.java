@@ -218,7 +218,7 @@ public class clicked extends Fragment {
                 });
 
 
-                alert.setNegativeButton("cancel",new DialogInterface.OnClickListener() {
+                alert.setNegativeButton("Cancel",new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //canceled

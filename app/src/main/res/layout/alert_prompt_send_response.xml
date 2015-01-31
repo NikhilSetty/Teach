@@ -25,7 +25,8 @@
         android:background="@drawable/rounded_edit_text"
         android:layout_width="match_parent"
         android:layout_height="35dp"
-        android:textColor="#ff000000">
+        android:textColor="#ff000000"
+        android:padding="5dp">
 
         <requestFocus />
 

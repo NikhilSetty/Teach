@@ -5,20 +5,21 @@
 
     <ImageView
         android:src="@drawable/user_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:id="@+id/imageView"
         android:layout_alignParentTop="true"
-        android:layout_margin="20dp" />
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#000000"
-        android:layout_marginTop="25dp"
         android:text="UserNAME"
         android:id="@+id/user_name"
         android:textSize="20dp"
+        android:layout_alignTop="@+id/imageView"
         android:layout_toRightOf="@+id/imageView"
         android:layout_toEndOf="@+id/imageView" />
 

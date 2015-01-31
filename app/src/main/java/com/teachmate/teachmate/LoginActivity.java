@@ -224,7 +224,8 @@ public class LoginActivity extends Activity {
             }
         }catch(Exception ex){
             progressDialog.dismiss();
-            Toast.makeText(getApplicationContext(), ex.getMessage(), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(), ex.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Wrong EmailId or Password. Try Again", Toast.LENGTH_SHORT).show();
         }
 
     }

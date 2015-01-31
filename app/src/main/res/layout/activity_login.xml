@@ -22,7 +22,7 @@
 
             <Button android:id="@+id/buttonSignIn" style="?metaButtonBarButtonStyle"
                 android:layout_width="150dp" android:layout_height="100dp"
-                android:layout_weight="1" android:text="@string/SignIn"
+                android:layout_weight="0.5" android:text="@string/SignIn"
                 android:background="@drawable/border"
                 android:onClick="AuthenticateUser"
                 android:textColor="#ff026b6c"
@@ -32,15 +32,15 @@
 
             <Button android:id="@+id/buttonSignUp" style="?metaButtonBarButtonStyle"
                 android:layout_width="wrap_content" android:layout_height="100dp"
-                android:text="SignUp/Register"
+                android:text="SignUp"
                 android:background="@drawable/border"
                 android:onClick="SignUpAction"
                 android:textColor="#ff026b6c"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
-                android:layout_toRightOf="@+id/buttonSignIn"
-                android:layout_toEndOf="@+id/buttonSignIn" />
+                android:layout_toEndOf="@+id/buttonSignIn"
+                android:layout_toRightOf="@+id/buttonSignIn" />
 
         </RelativeLayout>
 

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -101,12 +102,15 @@ public class RequestsDisplayActivity extends Fragment {
         connectionLostLayout = (RelativeLayout) layout.findViewById(R.id.layout_connectionLost);
 
         Button loadmore = new Button(getActivity());
+        loadmore.setBackgroundColor(Color.WHITE);
+        loadmore.setTextColor(Color.BLACK);
         loadmore.setText("Load more items");
         listViewRequests.addFooterView(loadmore);
 
         loadmore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressDialog.setMessage("Loading Requests...");
                 progressDialog.show();
                 listCurrentPosition = listViewRequests.getFirstVisiblePosition();
                 lastviewposition = listViewRequests.getCount()-1;
@@ -132,6 +136,7 @@ public class RequestsDisplayActivity extends Fragment {
             progressDialog = new ProgressDialog(getActivity());
             progressDialog.setCancelable(false);
             progressDialog.setIndeterminate(true);
+            progressDialog.setMessage("Loading Requests...");
             progressDialog.show();
 
 
@@ -331,6 +336,7 @@ public class RequestsDisplayActivity extends Fragment {
                             else{
                                 isCurrentLocation = true;
                             }
+                            progressDialog.setMessage("Generating Request...");
                             progressDialog.show();
                             HttpAsyncTaskPOST newPost = new HttpAsyncTaskPOST();
                             newPost.execute("http://teach-mate.azurewebsites.net/Request/SendRequestNotification");

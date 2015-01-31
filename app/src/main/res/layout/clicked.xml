@@ -104,7 +104,7 @@
         android:layout_gravity="left"
         style="@style/button_text"
         android:background="@drawable/styled_button"
-        android:text="Comment"
+        android:text="Reply"
         android:id="@+id/answerbutton"
        />
 

@@ -22,6 +22,8 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
@@ -163,6 +165,9 @@ public class GcmIntentService extends IntentService {
     private void sendNotification(String msg) {
         mNotificationManager = (NotificationManager)
                 this.getSystemService(Context.NOTIFICATION_SERVICE);
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.logo_notif);
+
+
         if(intType == 2) {
             Intent question = new Intent(this, MainActivity.class);
             question.putExtra("type", "Replies");
@@ -178,9 +183,12 @@ public class GcmIntentService extends IntentService {
             PendingIntent contentIntent = PendingIntent.getActivity(this,Integer.parseInt(questionid),
                     question, PendingIntent.FLAG_ONE_SHOT);
 
+
+
             NotificationCompat.Builder mBuilder =
                     new NotificationCompat.Builder(this)
-                            .setSmallIcon(R.drawable.ic_stat_gcm)
+                            .setSmallIcon(R.drawable.logo_notif)
+                            .setLargeIcon(bitmap)
                             .setContentTitle("New Answer")
                             .setStyle(new NotificationCompat.BigTextStyle()
                                     .bigText(repliedby + " says " + replymessage))
@@ -200,7 +208,8 @@ public class GcmIntentService extends IntentService {
 
             NotificationCompat.Builder mBuilder =
                     new NotificationCompat.Builder(this)
-                            .setSmallIcon(R.drawable.ic_stat_gcm)
+                            .setSmallIcon(R.drawable.logo_notif)
+                            .setLargeIcon(bitmap)
                             .setContentTitle("New Request")
                             .setStyle(new NotificationCompat.BigTextStyle()
                                     .bigText(username + " : " + message))
@@ -226,8 +235,9 @@ public class GcmIntentService extends IntentService {
 
             NotificationCompat.Builder mBuilder =
                     new NotificationCompat.Builder(this)
-                            .setSmallIcon(R.drawable.ic_stat_gcm)
+                            .setSmallIcon(R.drawable.logo_notif)
                             .setContentTitle("New Response")
+                            .setLargeIcon(bitmap)
                             .setStyle(new NotificationCompat.BigTextStyle()
                                     .bigText(username + " : " + message))
                             .setContentText(username + " : " + message)
@@ -257,7 +267,8 @@ public class GcmIntentService extends IntentService {
 
             Notification mBuilder =
                     new NotificationCompat.Builder(getApplicationContext())
-                            .setSmallIcon(R.drawable.ic_stat_gcm)
+                            .setSmallIcon(R.drawable.logo_notif)
+                            .setLargeIcon(bitmap)
                             .setContentTitle("Chat Notification")
                             .setContentIntent(pendingIntent)
                             .setStyle(new NotificationCompat.BigTextStyle()

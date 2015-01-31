@@ -80,6 +80,7 @@ public class ViewResponsesForARequest extends Fragment {
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setCancelable(false);
         progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Looking for Responses...");
         progressDialog.show();
 
         listViewResponses = (ListView) layout.findViewById(R.id.listViewMyRequestsResponsesDisplay);

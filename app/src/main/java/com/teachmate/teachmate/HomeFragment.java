@@ -117,6 +117,7 @@ public class HomeFragment extends Fragment {
         newRequest = new Requests();
 
         progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("Generating Request...");
         progressDialog.setCancelable(false);
         progressDialog.setIndeterminate(true);
 
@@ -128,6 +129,7 @@ public class HomeFragment extends Fragment {
 
         return layout;
     }
+
     public void generatenewquestion(){
         LayoutInflater factory = LayoutInflater.from(getActivity());
         final View promptview = factory.inflate(
@@ -286,7 +288,7 @@ public class HomeFragment extends Fragment {
                 jsonObject.put("Longitude", 0);
                 jsonObject.put("Longitude", 0);
             }
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
             String currentDateandTime = sdf.format(new Date());
             newRequest.RequestTime = currentDateandTime;
             jsonObject.put("TimeOfRequest", currentDateandTime);

@@ -111,6 +111,7 @@ public class RequestDisplayActivity extends Fragment {
             }
         }
         else{
+            progressDialog.setMessage("Loading Request...");
             progressDialog.show();
             UserModel cUser = UserModelDBHandler.ReturnValue(getActivity().getApplicationContext());
             TempDataClass.serverUserId = cUser.ServerUserId;
@@ -236,6 +237,7 @@ public class RequestDisplayActivity extends Fragment {
                             responseMessageString = responseEditText.getText().toString();
                             HttpAsyncTask post = new HttpAsyncTask();
                             post.execute("http://teach-mate.azurewebsites.net/Response/SendResponseNotification");
+                            progressDialog.setMessage("Generating Response...");
                             progressDialog.show();
                         }
                     }
@@ -305,7 +307,7 @@ public class RequestDisplayActivity extends Fragment {
         @Override
         protected void onPostExecute(String result) {
             //Toast.makeText(getActivity().getBaseContext(), "Data Sent! -" + result.toString(), Toast.LENGTH_LONG).show();
-
+            Toast.makeText(getActivity().getBaseContext(), "Generated Response Successfully.", Toast.LENGTH_LONG).show();
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             progressDialog.dismiss();
             FragmentTransaction ft = fragmentManager.beginTransaction();

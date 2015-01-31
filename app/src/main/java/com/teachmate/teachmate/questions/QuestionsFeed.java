@@ -2,6 +2,7 @@ package com.teachmate.teachmate.questions;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -154,6 +155,8 @@ public class QuestionsFeed extends Fragment implements SwipeRefreshLayout.OnRefr
         Button loadmore=new Button(getActivity());
 
         loadmore.setText("Load more items");
+        loadmore.setBackgroundColor(Color.WHITE);
+        loadmore.setTextColor(Color.BLACK);
         list.addFooterView(loadmore);
 
 
