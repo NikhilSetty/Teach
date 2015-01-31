@@ -178,6 +178,7 @@ public class LoginActivity extends Activity {
             String status = (new JSONObject(result)).get("Status").toString();
 
             if(status.equals("Success")){
+                Toast.makeText(getApplicationContext(), "Login Successful", Toast.LENGTH_SHORT).show();
                 JSONObject userDataJson = (new JSONObject(result)).getJSONObject("UserDetails");
 
                 UserModel userData = new UserModel();
@@ -287,7 +288,7 @@ public class LoginActivity extends Activity {
         @Override
         protected void onPostExecute(String result) {
             if(result.equals("OK")){
-                Toast.makeText(getApplicationContext(), "Registration Successfull.", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "Registration Successfull.", Toast.LENGTH_SHORT).show();
 
                 Intent i = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(i);
