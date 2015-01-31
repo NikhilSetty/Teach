@@ -56,6 +56,7 @@ public class MyQuestions extends Fragment {
         questionlist2=new ArrayList<Question_Model>();
         //openandquerydatabase();
         populatemyquestionsfromdb();
+
      //   displayresultlist();
 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {

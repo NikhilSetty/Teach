@@ -81,8 +81,8 @@ public class Ask_question extends Fragment {
                 created_time=day+"/"+month+"/"+year+" "+hour+":"+minutes+":"+seconds;
                 questionmessage=Ask_question.etquestiontitle.getText().toString();
                 category=Ask_question.etcategorytitle.getText().toString();
-                if(TextUtils.isEmpty(category)){
-                    Toast.makeText(getActivity(),"Please add a Category to your question",Toast.LENGTH_LONG).show();
+                if(TextUtils.isEmpty(category)||TextUtils.isEmpty(questionmessage)){
+                    Toast.makeText(getActivity(),"The above fields cannot be empty.Please fill both the fields and retry",Toast.LENGTH_LONG).show();
                 }else {
                     ask_question_async ask = new ask_question_async();
                     ask.execute("http://teach-mate.azurewebsites.net/QuestionForum/AddQuestion");//My server url to hit

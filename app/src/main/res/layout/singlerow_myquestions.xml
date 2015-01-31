@@ -10,12 +10,14 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:padding="5dp" />
+        android:padding="1dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="UserName"
+        android:textStyle="bold"
+        android:fontFamily="sans"
         android:textColor="#000000"
         android:id="@+id/tvusername_myquestions"
         android:textSize="20dp"
@@ -28,6 +30,8 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Question_id"
+        android:fontFamily="sans"
+
         android:textColor="#000000"
         android:id="@+id/tvquestion_id_myquestions"
         android:textSize="10dp"
@@ -39,6 +43,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#000000"
+        android:fontFamily="sans"
+
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Time question was asked"
         android:id="@+id/tvaskedtime_myquestions"
@@ -51,7 +57,9 @@
         android:layout_height="wrap_content"
         android:text="The actual question would be displayed here"
         android:id="@+id/tvquestion_myquestions"
-        android:maxLines="4"
+        android:singleLine="true"
+        android:fontFamily="sans"
+
         android:textColor="#000000"
         android:layout_below="@+id/imageView_myquestions"
         android:layout_alignParentLeft="true"
@@ -61,16 +69,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Category"
+        android:gravity="left"
         android:id="@+id/tvcategory_myquestions"
+        android:textColor="#000000"
+
+        android:fontFamily="sans"
+
         android:layout_below="@+id/tvaskedtime_myquestions"
-        android:layout_toRightOf="@+id/imageView_myquestions"
-        android:layout_toEndOf="@+id/imageView_myquestions" />
+        android:layout_toRightOf="@+id/textView11"
+        android:layout_toEndOf="@+id/textView11" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Question id : "
+        android:fontFamily="sans"
+
         android:textSize="10dp"
         android:textColor="#000000"
 
@@ -78,5 +92,19 @@
         android:layout_alignParentTop="true"
         android:layout_toLeftOf="@+id/tvquestion_id_myquestions"
         android:layout_toStartOf="@+id/tvquestion_id_myquestions" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Category  : "
+        android:textColor="#000000"
+
+        android:fontFamily="sans"
+
+        android:id="@+id/textView11"
+        android:layout_alignTop="@+id/tvcategory_myquestions"
+        android:layout_toRightOf="@+id/imageView_myquestions"
+        android:layout_toEndOf="@+id/imageView_myquestions" />
 
 </RelativeLayout>

@@ -157,7 +157,6 @@ public class clicked extends Fragment {
                 category="General Question";
             }
 
-
             username = bundle.getString("username");
             question = bundle.getString("question");
             asked_time = bundle.getString("asked_time");
@@ -167,7 +166,6 @@ public class clicked extends Fragment {
             if(myquestions!=null){
                 u=TempDataClass.profilePhotoServerPath;
                 Picasso.with(this.getActivity()).load(u).into(imageView);
-
             }
 
             Picasso.with(this.getActivity()).load(u).into(imageView);
@@ -238,7 +236,7 @@ public class clicked extends Fragment {
 
                     addtodb.InsertQuestionModel(getActivity(), dbadd);
                     addanswertodb.InsertAnswerList(getActivity().getApplicationContext(), answerlist);
-                    Toast.makeText(getActivity().getApplicationContext(), "added to db", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity().getApplicationContext(), "Saved for offline viewing", Toast.LENGTH_SHORT).show();
                 }else{
                     Toast.makeText(getActivity().getApplicationContext(), "No answers for this question", Toast.LENGTH_SHORT).show();
                 }
@@ -443,6 +441,18 @@ public class clicked extends Fragment {
 
     }
     public class AddReply extends AsyncTask<String,Void,String>{
+        ProgressDialog dialog = new ProgressDialog(getActivity());
+
+        @Override
+        protected void onPreExecute() {
+            //
+            super.onPreExecute();
+
+            dialog.setProgressStyle(2);
+            dialog.setMessage("Please wait while we post your reply");
+            dialog.show();
+
+        }
         @Override
         protected String doInBackground(String... params) {
             InputStream inputStream = null;
@@ -476,18 +486,17 @@ public class clicked extends Fragment {
 
         }
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
+
 
         @Override
         protected void onPostExecute(String s) {
+
             super.onPostExecute(s);
+            dialog.dismiss();
 
             NotifsTableDbHandler notifsTableDbHandler=new NotifsTableDbHandler();
             notifsTableDbHandler.addtonotifsdb(getActivity().getApplicationContext(),qid1,latestanswerid);
-            Toast.makeText(getActivity().getApplicationContext(),"Added to notifs db "+latestanswerid,Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getActivity().getApplicationContext(),"Added to notifs db "+latestanswerid,Toast.LENGTH_SHORT).show();
             Fragment currentFragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.container);
             if (currentFragment instanceof clicked) {
                 FragmentTransaction fragTransaction =   (getActivity()).getSupportFragmentManager().beginTransaction();

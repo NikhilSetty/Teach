@@ -17,16 +17,18 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:padding="5dp" />
+        android:padding="1dp" />
     </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="UserName"
+        android:textStyle="bold"
+        android:fontFamily="sans"
         android:textColor="#000000"
+
         android:id="@+id/tvusername"
-        android:textSize="20dp"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/layoutProfilePhoto"
         android:layout_toEndOf="@+id/layoutProfilePhoto" />
@@ -35,6 +37,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
+        android:fontFamily="sans"
 
         android:textColor="#000000"
         android:id="@+id/tvquestion_id"
@@ -51,6 +54,7 @@
         android:textColor="#000000"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:paddingTop="5dp"
+        android:fontFamily="sans"
         android:paddingBottom="5dp"
         android:text="Time question was asked"
         android:id="@+id/tvaskedtime"
@@ -63,6 +67,7 @@
         android:layout_height="wrap_content"
         android:text="The actual question would be displayed here"
         android:id="@+id/tvquestion"
+        android:fontFamily="sans"
         android:singleLine="true"
         android:maxLines="4"
         android:textColor="#000000"
@@ -75,6 +80,8 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Category"
+        android:textColor="#000000"
+        android:fontFamily="sans"
         android:id="@+id/tvcategory"
         android:layout_below="@+id/tvaskedtime"
         android:layout_toRightOf="@+id/layoutProfilePhoto"
@@ -84,8 +91,8 @@
         android:layout_height="wrap_content"
         android:src="@drawable/arrow"
         android:id="@+id/imagearrow"
-        android:layout_alignTop="@+id/tvcategory"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/tvaskedtime" />
 
 </RelativeLayout>

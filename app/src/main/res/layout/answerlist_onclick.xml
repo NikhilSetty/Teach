@@ -2,12 +2,18 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     android:id="@+id/answerforeveryquestion">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Askedtime"
+
+        android:textColor="#000000"
+
+        android:fontFamily="sans"
+
         android:id="@+id/tvaskedtimeanswerlist_onclick"
         android:layout_gravity="right" />
 
@@ -15,7 +21,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="20dp"
+        android:textColor="#000000"
+
+        android:fontFamily="sans"
         android:text="Username"
+        android:textStyle="bold"
         android:id="@+id/tvusernameanswerlist_onclick" />
 
     <TextView
@@ -23,12 +33,18 @@
         android:layout_height="wrap_content"
         android:text="Question"
         android:paddingBottom="20dp"
+        android:textColor="#000000"
+
+        android:fontFamily="sans"
         android:id="@+id/tvquestionanswerlist_onclick" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="ANswered time"
+        android:textColor="#000000"
+
+        android:fontFamily="sans"
         android:id="@+id/tvanswertimeanswerlist_onclick"
         android:layout_gravity="right" />
 
@@ -37,11 +53,18 @@
         android:layout_height="wrap_content"
         android:textSize="20dp"
         android:text="Answered by"
+        android:textColor="#000000"
+        android:textStyle="bold"
+
+        android:fontFamily="sans"
         android:id="@+id/tvansweredbyanswerlist_onclick" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="#000000"
+
+        android:fontFamily="sans"
         android:text="Answer"
         android:id="@+id/tvansweranswerlist_onclick" />
 

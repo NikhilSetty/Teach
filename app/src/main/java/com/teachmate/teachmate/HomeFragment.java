@@ -369,6 +369,18 @@ public class HomeFragment extends Fragment {
         return result;
     }
     public class ask_question_async extends AsyncTask<String,Void,String> {
+        ProgressDialog dialog = new ProgressDialog(getActivity());
+
+        @Override
+        protected void onPreExecute() {
+            //
+            super.onPreExecute();
+
+            dialog.setProgressStyle(2);
+            dialog.setMessage("Please wait while we post your Question.");
+            dialog.show();
+
+        }
 
         @Override
         protected String doInBackground(String... params) {
@@ -410,6 +422,7 @@ public class HomeFragment extends Fragment {
 
         @Override
         protected void onPostExecute(String s) {
+            dialog.dismiss();
             myquestionsdb.setQuestion_id(s);
             myquestionsdb.setQuestion(questionmessage);
             myquestionsdb.setAsked_time(created_time);
@@ -447,7 +460,7 @@ public class HomeFragment extends Fragment {
         //  addanswertodb.InsertAnswerList(getApplicationContext(),answerlist);
 
 
-        Toast.makeText(getActivity(),"Saved For Offline Reading.",Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(),"Question Posted Successfully",Toast.LENGTH_SHORT).show();
 
     }
 

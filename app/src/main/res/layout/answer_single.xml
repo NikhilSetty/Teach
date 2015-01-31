@@ -9,6 +9,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Answered by"
+        android:textStyle="bold"
+        android:fontFamily="sans"
         android:textColor="#000000"
         android:id="@+id/tvansweredby"
         android:layout_alignParentTop="true"
@@ -19,6 +21,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#000000"
+        android:fontFamily="sans"
+
         android:text="Answered Time"
         android:id="@+id/tvansweredtime"
         android:layout_alignParentTop="true"
@@ -29,6 +33,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Real answer"
+        android:fontFamily="sans"
+
         android:textColor="#000000"
         android:id="@+id/tvrealanswer"
         android:layout_below="@+id/tvansweredtime"
@@ -39,6 +45,8 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="sans"
+
 
         android:id="@+id/tvanswerid"
         android:layout_toRightOf="@+id/tvansweredby"

@@ -386,6 +386,18 @@ public class QuestionsFeed extends Fragment implements SwipeRefreshLayout.OnRefr
     public class loadmorelistview extends AsyncTask<String ,Void,Boolean>{
         int current_position=list.getFirstVisiblePosition();
         int lastpostiton=list.getCount()-1;
+        ProgressDialog dialog = new ProgressDialog(getActivity());
+
+        @Override
+        protected void onPreExecute() {
+            //
+            super.onPreExecute();
+
+            dialog.setProgressStyle(2);
+            dialog.setMessage("loading more questions");
+            dialog.show();
+
+        }
 
 
         @Override
@@ -471,6 +483,7 @@ public class QuestionsFeed extends Fragment implements SwipeRefreshLayout.OnRefr
         }
         protected void onPostExecute(Boolean aboolean) {
             super.onPostExecute(aboolean);
+            dialog.dismiss();
             Question_Adapter question_adapter = new Question_Adapter(getActivity().getApplicationContext(), R.layout.singlerow,questionlist);
 
             list.setAdapter(question_adapter);
