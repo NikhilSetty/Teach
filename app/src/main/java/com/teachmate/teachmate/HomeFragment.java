@@ -397,7 +397,7 @@ public class HomeFragment extends Fragment {
                 jsonObject.put("TimeOfQuestion",created_time);
                 jsonObject.put("QuestionMessage",questionmessage);
                 jsonObject.put("Category",category);
-                jsonObject.put("QuestionBoardId","3");
+                jsonObject.put("QuestionBoardId","4");
 
 
                 json=jsonObject.toString();

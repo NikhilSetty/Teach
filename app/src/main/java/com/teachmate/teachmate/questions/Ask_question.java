@@ -1,5 +1,6 @@
 package com.teachmate.teachmate.questions;
 
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -97,6 +98,18 @@ public class Ask_question extends Fragment {
 
 
     public class ask_question_async extends AsyncTask<String,Void,String> {
+        ProgressDialog dialog = new ProgressDialog(getActivity());
+
+        @Override
+        protected void onPreExecute() {
+            //
+            super.onPreExecute();
+
+            dialog.setProgressStyle(2);
+            dialog.setMessage("Please wait while we post your Question.");
+            dialog.show();
+
+        }
 
         @Override
         protected String doInBackground(String... params) {
@@ -113,7 +126,7 @@ public class Ask_question extends Fragment {
                 jsonObject.put("TimeOfQuestion",created_time);
                 jsonObject.put("QuestionMessage",questionmessage);
                 jsonObject.put("Category",category);
-                jsonObject.put("QuestionBoardId","3");
+                jsonObject.put("QuestionBoardId","4");
 
                 json=jsonObject.toString();
                 StringEntity se=new StringEntity(json);
@@ -136,6 +149,7 @@ public class Ask_question extends Fragment {
 
         @Override
         protected void onPostExecute(String s) {
+            dialog.dismiss();
             myquestionsdb.setQuestion_id(s);
             myquestionsdb.setQuestion(questionmessage);
             myquestionsdb.setAsked_time(created_time);
@@ -173,7 +187,7 @@ public class Ask_question extends Fragment {
       //  addanswertodb.InsertAnswerList(getApplicationContext(),answerlist);
 
 
-        Toast.makeText(getActivity(),"added to db",Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getActivity(),"added to db",Toast.LENGTH_SHORT).show();
 
     }
 

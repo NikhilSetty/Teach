@@ -169,7 +169,8 @@ public class QuestionsFeed extends Fragment implements SwipeRefreshLayout.OnRefr
 
 
 
-                Toast.makeText(getActivity().getApplicationContext(), "" + list.getCount(), Toast.LENGTH_LONG).show();}
+               // Toast.makeText(getActivity().getApplicationContext(), "" + list.getCount(), Toast.LENGTH_LONG).show();
+            }
         });
 
         etsearch = (EditText)relativeLayout.findViewById(R.id.etsearch);
@@ -363,7 +364,7 @@ public class QuestionsFeed extends Fragment implements SwipeRefreshLayout.OnRefr
             dialog.dismiss();
 
             if (aBoolean == false) {
-                Toast.makeText(getActivity().getApplicationContext(), "data not found", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity().getApplicationContext(), "No Questions found", Toast.LENGTH_LONG).show();
 
             } else {
                 final   Question_Adapter question_adapter = new Question_Adapter(getActivity(),R.layout.singlerow, questionlist);
@@ -373,7 +374,7 @@ public class QuestionsFeed extends Fragment implements SwipeRefreshLayout.OnRefr
 
                 list.setAdapter(question_adapter);
                 list.setTextFilterEnabled(true);
-                Toast.makeText(getActivity().getApplicationContext(), "" + list.getCount(), Toast.LENGTH_LONG).show();
+             //   Toast.makeText(getActivity().getApplicationContext(), "" + list.getCount(), Toast.LENGTH_LONG).show();
                 stopSwipeRefresh();
                 list.onRestoreInstanceState(state);
 
@@ -489,7 +490,7 @@ public class QuestionsFeed extends Fragment implements SwipeRefreshLayout.OnRefr
             list.setAdapter(question_adapter);
             question_adapter.notifyDataSetChanged();
             list.setSelectionFromTop(lastviewposition + 1, 0);
-            Toast.makeText(getActivity().getApplicationContext(), "" + list.getCount(), Toast.LENGTH_LONG).show();
+          //  Toast.makeText(getActivity().getApplicationContext(), "" + list.getCount(), Toast.LENGTH_LONG).show();
         }
     }
 }

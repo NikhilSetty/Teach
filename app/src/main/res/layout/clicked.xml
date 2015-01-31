@@ -17,6 +17,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="UserName"
+        android:fontFamily="sans"
+        android:textColor="#000000"
+
+        android:textStyle="bold"
         android:id="@+id/tvusername"
         android:textSize="20dp"
         android:layout_alignParentTop="true"
@@ -30,6 +34,7 @@
         android:textColor="#000000"
         android:id="@+id/tvquestion_id"
         android:textSize="10dp"
+        android:fontFamily="sans"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
@@ -42,6 +47,10 @@
 
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Time question was asked"
+        android:fontFamily="sans"
+        android:textColor="#000000"
+
+
         android:id="@+id/tvaskedtime"
         android:layout_below="@+id/tvusername"
         android:layout_toRightOf="@+id/imageView"
@@ -52,7 +61,10 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="The actual question would be displayed here"
+        android:fontFamily="sans"
         android:id="@+id/tvquestion"
+        android:textColor="#000000"
+
         android:maxLines="4"
         android:layout_below="@+id/imageView"
         android:layout_alignParentLeft="true"
@@ -116,6 +128,8 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Category"
+        android:textColor="#000000"
+        android:fontFamily="sans"
         android:id="@+id/tvcategory_clicked"
         android:layout_below="@+id/tvaskedtime"
         android:layout_toRightOf="@+id/imageView"
