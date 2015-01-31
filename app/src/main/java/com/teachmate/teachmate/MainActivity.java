@@ -93,6 +93,7 @@ public class MainActivity extends ActionBarActivity
         switch (type){
             case "Replies":
                 extras.putString("type",getIntent().getStringExtra("type"));
+                extras.putString("Category",getIntent().getStringExtra("Category"));
                 extras.putString("askedby",getIntent().getStringExtra("askedby"));
                 extras.putString("userid_questions",getIntent().getStringExtra("userid_questions"));
                 extras.putString("questionmessage",getIntent().getStringExtra("questionmessage"));

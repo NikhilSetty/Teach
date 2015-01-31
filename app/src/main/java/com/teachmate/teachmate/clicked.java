@@ -139,9 +139,9 @@ public class clicked extends Fragment {
         if(type != null){
 
             category=bundle.getString("Category");
-            if(category.length()==0){
-                category="General Question";
-            }
+            //if(category.length()==0){
+              //  category="General Question";
+            //}
             username = bundle.getString("askedby");
             question=bundle.getString("questionmessage");
             asked_time=bundle.getString("asked_time_questions");
@@ -153,9 +153,9 @@ public class clicked extends Fragment {
         }
         else {
             category=bundle.getString("category");
-            if(category.length()==0){
-                category="General Question";
-            }
+            //if(category.length()==0){
+              //  category="General Question";
+            //}
 
             username = bundle.getString("username");
             question = bundle.getString("question");

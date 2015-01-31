@@ -63,6 +63,7 @@ public class GcmIntentService extends IntentService {
     String repliedby;
     String replymessage;
     String userid_questions;
+    String category;
     String questionmessage;
     String asked_time_questions;
     String imagepath;
@@ -113,6 +114,7 @@ public class GcmIntentService extends IntentService {
                     case 2:
 
                         askedby=extras.getString("AskedBy");
+                        category=extras.getString("Category");
                         repliedby=extras.getString("RepliedBy");
                         replymessage=extras.getString("ReplyMessage");
                         userid_questions=extras.getString("UserId");
@@ -169,6 +171,7 @@ public class GcmIntentService extends IntentService {
             question.putExtra("questionmessage", questionmessage);
             question.putExtra("asked_time_questions", asked_time_questions);
             question.putExtra("imagepath", imagepath);
+            question.putExtra("Category",category);
             question.putExtra("questionid", questionid);
             question.putExtra("userprofession_questions", userprofession_questions);
 
