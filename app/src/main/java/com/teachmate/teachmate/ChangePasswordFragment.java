@@ -65,6 +65,12 @@ public class ChangePasswordFragment extends Fragment {
     }
 
     @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        ((MainActivity) activity).onSectionAttached(FragmentTitles.CHANGE_PASSWORD);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         FrameLayout layout = (FrameLayout) inflater.inflate(R.layout.fragment_change_password, container, false);
@@ -121,12 +127,6 @@ public class ChangePasswordFragment extends Fragment {
         });
 
         return layout;
-    }
-
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
     }
 
     @Override

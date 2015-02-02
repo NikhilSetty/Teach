@@ -1,5 +1,6 @@
 package com.teachmate.teachmate.questions;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -19,6 +20,8 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.teachmate.teachmate.DBHandlers.QuestionModelDBHandler;
+import com.teachmate.teachmate.FragmentTitles;
+import com.teachmate.teachmate.MainActivity;
 import com.teachmate.teachmate.R;
 import com.teachmate.teachmate.TempDataClass;
 import com.teachmate.teachmate.models.Question_Model;
@@ -57,6 +60,12 @@ public class Ask_question extends Fragment {
     public String seconds;
     public String year;
     public Calendar c=Calendar.getInstance();
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        ((MainActivity) activity).onSectionAttached(FragmentTitles.NEW_QUESTION);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

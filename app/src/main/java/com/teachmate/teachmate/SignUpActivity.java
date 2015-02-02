@@ -124,6 +124,8 @@ public class SignUpActivity extends ActionBarActivity {
         image = (ImageButton) findViewById(R.id.imageButtonProfilePhoto);
         prefs = getSharedPreferences("com.example.app", Context.MODE_PRIVATE);
 
+        this.setTitle("Sign Up");
+
 
         image.setOnClickListener(new View.OnClickListener(){
             @Override

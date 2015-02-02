@@ -133,6 +133,7 @@ public class UpdateUserFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+        ((MainActivity) activity).onSectionAttached(FragmentTitles.UPDATE_PROFILE);
     }
 
     @Override

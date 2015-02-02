@@ -1,5 +1,6 @@
 package com.teachmate.teachmate.questions;
 
+import android.app.Activity;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -21,6 +22,8 @@ import android.widget.TextView;
 
 import com.teachmate.teachmate.DBClasses.DbHelper;
 import com.teachmate.teachmate.DBClasses.DbTableStrings;
+import com.teachmate.teachmate.FragmentTitles;
+import com.teachmate.teachmate.MainActivity;
 import com.teachmate.teachmate.R;
 import com.teachmate.teachmate.TempDataClass;
 import com.teachmate.teachmate.detaileddbview;
@@ -32,6 +35,8 @@ import java.util.ArrayList;
 /**
  * Created by archon on 16-01-2015.
  */
+
+
 public class SavedForOfflineReading extends Fragment {
     public ListView listviewdb;
     public String username,qusetion,question_id,category,image,asked_time;
@@ -45,6 +50,14 @@ public class SavedForOfflineReading extends Fragment {
     Answer_Model answer1=new Answer_Model();
     private static DbHelper dbHelper;
     private static SQLiteDatabase db;
+
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        ((MainActivity) activity).onSectionAttached(FragmentTitles.SAVED_QUESTIONS);
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 

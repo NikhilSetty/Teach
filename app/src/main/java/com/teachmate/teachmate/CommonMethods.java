@@ -9,6 +9,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -89,7 +90,7 @@ public class CommonMethods {
         }
     }
 
-    public static void scaleImage(Context context, ImageView view, int boundBoxInDp)
+    public static void scaleImage(Context context, ImageButton view, int boundBoxInDp)
     {
         // Get the ImageView and its bitmap
         Drawable drawing = view.getDrawable();

@@ -235,6 +235,18 @@ public class MainActivity extends ActionBarActivity
             case FragmentTitles.RESPONSES:
                 mTitle = FragmentTitles.RESPONSES;
                 break;
+            case FragmentTitles.REQUEST:
+                mTitle = FragmentTitles.REQUEST;
+                break;
+            case FragmentTitles.CHANGE_PASSWORD:
+                mTitle = FragmentTitles.CHANGE_PASSWORD;
+                break;
+            case FragmentTitles.UPDATE_PROFILE:
+                mTitle = FragmentTitles.UPDATE_PROFILE;
+                break;
+            case FragmentTitles.NEW_QUESTION:
+                mTitle = FragmentTitles.NEW_QUESTION;
+                break;
         }
     }
 

@@ -28,6 +28,7 @@ public class DbHelper extends SQLiteOpenHelper{
         db.execSQL(Schema.INSERT_NOTIFICATION_CONSTANT4);
         Log.v("created " , "DB");
     }
+
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
     }

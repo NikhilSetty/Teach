@@ -1,5 +1,6 @@
 package com.teachmate.teachmate.Requests;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -23,6 +24,8 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 import com.teachmate.teachmate.DBHandlers.UserModelDBHandler;
+import com.teachmate.teachmate.FragmentTitles;
+import com.teachmate.teachmate.MainActivity;
 import com.teachmate.teachmate.R;
 import com.teachmate.teachmate.TempDataClass;
 import com.teachmate.teachmate.models.Requests;
@@ -63,6 +66,12 @@ public class RequestDisplayActivity extends Fragment {
     ImageView profilePhoto;
 
     ProgressDialog progressDialog;
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        ((MainActivity) activity).onSectionAttached(FragmentTitles.REQUEST);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
