@@ -14,11 +14,9 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.teachmate.teachmate.DBHandlers.ChatInfoDBHandler;
-import com.teachmate.teachmate.DBHandlers.UserModelDBHandler;
 import com.teachmate.teachmate.R;
 import com.teachmate.teachmate.TempDataClass;
 import com.teachmate.teachmate.models.ChatInfo;
-import com.teachmate.teachmate.models.UserModel;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -58,11 +56,11 @@ public class ChatActivity extends ListActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_acitivity);
 
-        UserModel user = UserModelDBHandler.ReturnValue(getApplicationContext());
-        TempDataClass.userName = user.FirstName + " " + user.LastName;
-        TempDataClass.serverUserId = user.ServerUserId;
-        TempDataClass.userProfession = user.Profession;
-        TempDataClass.emailId = user.EmailId;
+//        UserModel user = UserModelDBHandler.ReturnValue(getApplicationContext());
+//        TempDataClass.userName = user.FirstName + " " + user.LastName;
+//        TempDataClass.serverUserId = user.ServerUserId;
+//        TempDataClass.userProfession = user.Profession;
+//        TempDataClass.emailId = user.EmailId;
 
 
         messages = new ArrayList<Message>();
@@ -93,14 +91,23 @@ public class ChatActivity extends ListActivity {
         currentTime = new Time();
         text = (EditText) this.findViewById(R.id.text);
         send = (Button) this.findViewById(R.id.send_button);
+
+        //get current date time with Date()
+//        Date date = new Date();
+//        time = dateFormat.format(date);
+//        time = time.substring(11,time.lastIndexOf(':'));
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String newMessage = text.getText().toString().trim();
                 if (!TextUtils.isEmpty(newMessage)) {
+                    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    Date date = new Date();
+                    time = dateFormat.format(date);
+                    time = time.substring(11,time.lastIndexOf(':'));
                     text.setText("");
-                    addNewMessage(new Message(newMessage, sentBy));
-                    //sentBy = !sentBy;
+                    addNewMessage(new Message(newMessage, sentBy,time));
+//                    sentBy = !sentBy;
                     new SendMessage().execute("http://teach-mate.azurewebsites.net/Chat/ChatMsg", newMessage);
                 }
             }
@@ -110,7 +117,7 @@ public class ChatActivity extends ListActivity {
         List<ChatInfo> previousChatMessages = ChatInfoDBHandler.GetPreviousChat(getApplicationContext(), chatId);
         if (previousChatMessages != null) {
             for (ChatInfo chatmessages : previousChatMessages) {
-                messages.add(new Message(chatmessages.getMessage(), chatmessages.isSentBy()));
+                messages.add(new Message(chatmessages.getMessage(), chatmessages.isSentBy(),chatmessages.getTimeStamp()));
             }
         }
         adapter = new ChatAdapter(this, messages);
@@ -127,10 +134,7 @@ public class ChatActivity extends ListActivity {
 
 
         if(m.isMine() == true) {
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            //get current date time with Date()
-            Date date = new Date();
-            time = dateFormat.format(date);
+
         }
         else{
             time = receivedAt;
