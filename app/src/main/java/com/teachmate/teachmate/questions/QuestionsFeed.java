@@ -53,8 +53,8 @@ import java.util.ArrayList;
 /**
  * Created by archon on 11-01-2015.
  */
-public class QuestionsFeed extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
-
+public class QuestionsFeed extends Fragment  {
+//will need to implement SwipeRefreshLayout.OnRefreshListener if swipe view is necessary
     public ListView list;
     public String imageurl;
     EditText etsearch;
@@ -62,7 +62,7 @@ public class QuestionsFeed extends Fragment implements SwipeRefreshLayout.OnRefr
     Question_Adapter question_adapter;
     public int REFRESH_TIME_IN_SECONDS = 5;
     public int lastviewposition;
-    SwipeRefreshLayout swipeRefreshLayout;
+    //SwipeRefreshLayout swipeRefreshLayout;
     public ArrayList<Question_Model> questionlist;
     TextView tvquestionid;
     Boolean flag = true;
@@ -146,7 +146,7 @@ public class QuestionsFeed extends Fragment implements SwipeRefreshLayout.OnRefr
 
 
         RelativeLayout relativeLayout=(RelativeLayout)inflater.inflate(R.layout.mainlistview,container,false);
-        swipeRefreshLayout = (SwipeRefreshLayout)relativeLayout.findViewById(R.id.lySwipeRefresh);
+      //  swipeRefreshLayout = (SwipeRefreshLayout)relativeLayout.findViewById(R.id.lySwipeRefresh);
 
         setHasOptionsMenu(true);
 
@@ -178,11 +178,11 @@ public class QuestionsFeed extends Fragment implements SwipeRefreshLayout.OnRefr
 
         etsearch = (EditText)relativeLayout.findViewById(R.id.etsearch);
 
-        swipeRefreshLayout.setOnRefreshListener(this);
+       /* swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setColorScheme(android.R.color.holo_blue_light,
                 android.R.color.white, android.R.color.holo_blue_light,
                 android.R.color.white);
-
+*/
         etsearch.setVisibility(View.GONE);
         questionlist = new ArrayList<Question_Model>();
         list.invalidateViews();
@@ -281,7 +281,7 @@ public class QuestionsFeed extends Fragment implements SwipeRefreshLayout.OnRefr
         return relativeLayout;
     }
 
-    @Override
+    /*@Override
     public void onRefresh() {
         questionlist.clear();
         new questionfeed().execute("http://teach-mate.azurewebsites.net/QuestionForum/RetrieveQuestions?lastQuestionId=0");
@@ -290,7 +290,7 @@ public class QuestionsFeed extends Fragment implements SwipeRefreshLayout.OnRefr
     private void stopSwipeRefresh() {
         swipeRefreshLayout.setRefreshing(false);
     }
-
+*/
 
 
 
@@ -378,7 +378,7 @@ public class QuestionsFeed extends Fragment implements SwipeRefreshLayout.OnRefr
                 list.setAdapter(question_adapter);
                 list.setTextFilterEnabled(true);
              //   Toast.makeText(getActivity().getApplicationContext(), "" + list.getCount(), Toast.LENGTH_LONG).show();
-                stopSwipeRefresh();
+                //stopSwipeRefresh();
                 list.onRestoreInstanceState(state);
 
                 //question_adapter.notifyDataSetChanged();
