@@ -1,18 +1,22 @@
+
 package com.teachmate.teachmate.Chat;
 
-import android.app.ListActivity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
-import android.text.format.Time;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
 
+import com.teachmate.teachmate.DBHandlers.ChatIdMapDBHandler;
 import com.teachmate.teachmate.DBHandlers.ChatInfoDBHandler;
 import com.teachmate.teachmate.DBHandlers.UserModelDBHandler;
 import com.teachmate.teachmate.R;
@@ -37,55 +41,53 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class ChatActivity extends ListActivity {
+public class ChatActivity extends ActionBarActivity {
 
-
-    ArrayList<Message> messages;
-    ChatAdapter adapter;
-    EditText text;
-    Button send;
-    boolean sentBy = true;
-    Time currentTime;
-    static String chatId;
-    String receivedFrom;
-    String receivedAt;
-    String time;
+    ArrayList<Message>      messages;
+    ChatAdapter             adapter;
+    EditText                text;
+    Button                  send;
+    boolean                 sentBy            = true;
+    static String           chatId;
+    String                  receivedFrom;
+    String                  receivedAt;
+    String                  time;
     public static final int CHAT_NOTIFICATION = 5;
-
+    ListView                chatMessages;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_acitivity);
 
-        UserModel user = UserModelDBHandler.ReturnValue(getApplicationContext());
+        UserModel user =
+                UserModelDBHandler.ReturnValue(getApplicationContext());
         TempDataClass.userName = user.FirstName + " " + user.LastName;
         TempDataClass.serverUserId = user.ServerUserId;
         TempDataClass.userProfession = user.Profession;
         TempDataClass.emailId = user.EmailId;
 
-
+        chatMessages = (ListView) findViewById(R.id.list);
         messages = new ArrayList<Message>();
         adapter = new ChatAdapter(this, messages);
-        setListAdapter(adapter);
+        chatMessages.setAdapter(adapter);
 
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
 
-        //chatId bundle from intent service
-            if (bundle != null && bundle.containsKey("ChatId")) {
+        // chatId bundle from intent service
+        if (bundle != null && bundle.containsKey("ChatId")) {
             chatId = bundle.getString("ChatId");
         }
-        //username bundle from intent service
+        // username bundle from intent service
         if (bundle != null && bundle.containsKey("UserName")) {
             receivedFrom = bundle.getString("UserName");
         }
-        //previousConversation bundle from previous chat
+        // previousConversation bundle from previous chat
         if (bundle != null && bundle.containsKey("previousConversation")) {
             chatId = bundle.getString("previousConversation");
         }
 
-        currentTime = new Time();
         text = (EditText) this.findViewById(R.id.text);
         send = (Button) this.findViewById(R.id.send_button);
 
@@ -97,38 +99,44 @@ public class ChatActivity extends ListActivity {
                     DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     Date date = new Date();
                     time = dateFormat.format(date);
-                    time = time.substring(11,time.lastIndexOf(':'));
+                    time = time.substring(11, time.lastIndexOf(':'));
                     text.setText("");
-                    addNewMessage(new Message(newMessage, sentBy,time));
-//                    sentBy = !sentBy;
-                    new SendMessage().execute("http://teach-mate.azurewebsites.net/Chat/ChatMsg", newMessage);
+                    addNewMessage(new Message(newMessage, sentBy, time));
+                    // sentBy = !sentBy;
+                    new SendMessage().execute("http://teach-mate.azurewebsites.net/Chat/ChatMsg",
+                            newMessage);
                 }
             }
         });
 
-        List<ChatInfo> previousChatMessages = ChatInfoDBHandler.GetPreviousChat(getApplicationContext(), chatId);
+        List<ChatInfo> previousChatMessages = ChatInfoDBHandler.GetPreviousChat(
+                getApplicationContext(), chatId);
         if (previousChatMessages != null) {
             for (ChatInfo chatmessages : previousChatMessages) {
-                messages.add(new Message(chatmessages.getMessage(), chatmessages.isSentBy(),chatmessages.getTimeStamp()));
+                messages.add(new Message(chatmessages.getMessage(), chatmessages.isSentBy(),
+                        chatmessages.getTimeStamp()));
             }
         }
-        adapter = new ChatAdapter(this, messages);
-        setListAdapter(adapter);
 
+        setActionBarLayout();
+
+        adapter = new ChatAdapter(this, messages);
+        chatMessages.setAdapter(adapter);
 
     }
 
+    /*
+     * Adding message to the list and storing the message in the db
+     */
     void addNewMessage(Message m) {
         messages.add(m);
         adapter.notifyDataSetChanged();
-        getListView().setSelection(messages.size() - 1);
+        chatMessages.setSelection(messages.size() - 1);
 
-
-
-        if(m.isMine() == true) {
+        if (m.isMine() == true) {
 
         }
-        else{
+        else {
             time = receivedAt;
         }
 
@@ -142,26 +150,10 @@ public class ChatActivity extends ListActivity {
 
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_chat_acitivity, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    public  String POST(String url, String message) {
+    /*
+     * Preparing JSON Object and sending it to the server
+     */
+    public String POST(String url, String message) {
         InputStream inputStream = null;
         String result = "";
         try {
@@ -176,10 +168,9 @@ public class ChatActivity extends ListActivity {
             jsonObject.put("ChatId", chatId);
             jsonObject.put("Message", message);
             jsonObject.put("SenderId", Integer.parseInt(TempDataClass.serverUserId));
-//            jsonObject.put("userName", TempDataClass.userName);
-            jsonObject.put("Type",CHAT_NOTIFICATION );
+            // jsonObject.put("userName", TempDataClass.userName);
+            jsonObject.put("Type", CHAT_NOTIFICATION);
             jsonObject.put("SentOn", time);
-
 
             json = jsonObject.toString();
             StringEntity se = new StringEntity(json);
@@ -193,8 +184,6 @@ public class ChatActivity extends ListActivity {
             inputStream = httpResponse.getEntity().getContent();
             result = convertInputStreamToString(inputStream);
 
-//            Toast.makeText(getApplicationContext(),result,Toast.LENGTH_LONG).show();
-
         } catch (Exception e) {
             Log.d("InputStream", e.getLocalizedMessage());
         }
@@ -202,6 +191,9 @@ public class ChatActivity extends ListActivity {
         return result;
     }
 
+    /*
+     * Network call to send message to server
+     */
     private class SendMessage extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... urls) {
@@ -211,13 +203,34 @@ public class ChatActivity extends ListActivity {
     }
 
     private static String convertInputStreamToString(InputStream inputStream) throws IOException {
-        BufferedReader bufferedReader = new BufferedReader( new InputStreamReader(inputStream));
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
         String line = "";
         String result = "";
-        while((line = bufferedReader.readLine()) != null)
+        while ((line = bufferedReader.readLine()) != null)
             result += line;
 
         inputStream.close();
         return result;
+    }
+
+    /*
+     * sets a custom view on the action bar to show user you are chatting with
+     * and their image
+     */
+    private void setActionBarLayout() {
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayShowCustomEnabled(true);
+
+        // Inflate the custom view
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View header = inflater.inflate(R.layout.action_bar_chat, null);
+        TextView userChattingWith = (TextView) header.findViewById(R.id.action_bar_user_name);
+        ImageView imageChattingWith = (ImageView) header.findViewById(R.id.action_bar_user_image);
+        userChattingWith.setText(ChatIdMapDBHandler.chattingWith(getApplicationContext(), chatId));
+        ActionBar.LayoutParams layout = new ActionBar.LayoutParams(
+                ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.MATCH_PARENT);
+        actionBar.setCustomView(header, layout);
+
     }
 }

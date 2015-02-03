@@ -32,8 +32,8 @@
     </LinearLayout>
 
     <ListView
-        android:id="@android:id/list"
-        android:layout_width="fill_parent"
+        android:id="@+id/list"
+        android:layout_width="wrap_content"
         android:layout_height="0dip"
         android:layout_above="@id/bottom_write_bar"
         android:layout_alignParentTop="true"
@@ -44,13 +44,13 @@
         android:listSelector="#00000000" >
     </ListView>
 
-    <TextView
-        android:id="@android:id/empty"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_above="@id/bottom_write_bar"
-        android:layout_alignParentTop="true"
-        android:gravity="center_vertical|center_horizontal"
-        android:text="No Converstaions Available" />
+    <!--<TextView-->
+        <!--android:id="@android:id/empty"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="fill_parent"-->
+        <!--android:layout_above="@id/bottom_write_bar"-->
+        <!--android:layout_alignParentTop="true"-->
+        <!--android:gravity="center_vertical|center_horizontal"-->
+        <!--android:text="No Converstaions Available" />-->
 
 </RelativeLayout>

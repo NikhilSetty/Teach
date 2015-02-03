@@ -32,7 +32,7 @@ public class ChatIdMapDBHandler {
                 db.insert(DbTableStrings.TABLE_NAME_CHAT_ID_MAPPING, null, contentValues);
             }
         } catch (Exception e) {
-            Log.e("ChatIdMapDBHandle", e.getMessage());
+            Log.e("ChatIdMapDBHandler", e.getMessage());
         }
     }
 
@@ -56,7 +56,7 @@ public class ChatIdMapDBHandler {
             }
 
         } catch (Exception e) {
-            Log.e("ChatIdMapDBHandle", e.getMessage());
+            Log.e("ChatIdMapDBHandler", e.getMessage());
             return 0;
         }
         return 0;
@@ -82,8 +82,34 @@ public class ChatIdMapDBHandler {
                 }
             }
         } catch (Exception e) {
-            Log.e("ChatIdMapDBHandle", e.getMessage());
+            Log.e("ChatIdMapDBHandler", e.getMessage());
         }
         return previousChats;
+    }
+
+
+    public static String chattingWith(Context context, String chatId) {
+
+        try {
+            dbHelper = new DbHelper(context.getApplicationContext());
+            db = dbHelper.getWritableDatabase();
+
+            Cursor c = db.rawQuery("Select * from " + DbTableStrings.TABLE_NAME_CHAT_ID_MAPPING
+                    + " where " + DbTableStrings.CHATID + " = '" + chatId + "'", null);
+            if (c != null) {
+                if (c.moveToFirst()) {
+                    String name = c.getString(c.getColumnIndex(DbTableStrings.USERNAME));
+                    return name;
+                }
+            }
+            else {
+                return null;
+            }
+
+        } catch (Exception e) {
+            Log.e("ChatIdMapDBHandler", e.getMessage());
+            return null;
+        }
+        return null;
     }
 }
