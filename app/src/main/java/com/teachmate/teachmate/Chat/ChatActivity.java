@@ -14,9 +14,11 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.teachmate.teachmate.DBHandlers.ChatInfoDBHandler;
+import com.teachmate.teachmate.DBHandlers.UserModelDBHandler;
 import com.teachmate.teachmate.R;
 import com.teachmate.teachmate.TempDataClass;
 import com.teachmate.teachmate.models.ChatInfo;
+import com.teachmate.teachmate.models.UserModel;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -56,11 +58,11 @@ public class ChatActivity extends ListActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_acitivity);
 
-//        UserModel user = UserModelDBHandler.ReturnValue(getApplicationContext());
-//        TempDataClass.userName = user.FirstName + " " + user.LastName;
-//        TempDataClass.serverUserId = user.ServerUserId;
-//        TempDataClass.userProfession = user.Profession;
-//        TempDataClass.emailId = user.EmailId;
+        UserModel user = UserModelDBHandler.ReturnValue(getApplicationContext());
+        TempDataClass.userName = user.FirstName + " " + user.LastName;
+        TempDataClass.serverUserId = user.ServerUserId;
+        TempDataClass.userProfession = user.Profession;
+        TempDataClass.emailId = user.EmailId;
 
 
         messages = new ArrayList<Message>();
@@ -69,12 +71,7 @@ public class ChatActivity extends ListActivity {
 
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
-        //message bundle from intent service
-/*        if (bundle != null && bundle.containsKey("Message")) {
-            String receivedMessage = bundle.getString("Message");
-            Log.d("Received Message",receivedMessage);
-            addNewMessage(new Message(receivedMessage, false));
-        }*/
+
         //chatId bundle from intent service
             if (bundle != null && bundle.containsKey("ChatId")) {
             chatId = bundle.getString("ChatId");
@@ -92,10 +89,6 @@ public class ChatActivity extends ListActivity {
         text = (EditText) this.findViewById(R.id.text);
         send = (Button) this.findViewById(R.id.send_button);
 
-        //get current date time with Date()
-//        Date date = new Date();
-//        time = dateFormat.format(date);
-//        time = time.substring(11,time.lastIndexOf(':'));
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -113,7 +106,6 @@ public class ChatActivity extends ListActivity {
             }
         });
 
-//        messages = new ArrayList<Message>();
         List<ChatInfo> previousChatMessages = ChatInfoDBHandler.GetPreviousChat(getApplicationContext(), chatId);
         if (previousChatMessages != null) {
             for (ChatInfo chatmessages : previousChatMessages) {
