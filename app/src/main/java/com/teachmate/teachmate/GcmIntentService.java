@@ -281,7 +281,7 @@ public class GcmIntentService extends IntentService {
             //get current date time with Date()
             Date date = new Date();
             String time = dateFormat.format(date);
-
+            time = time.substring(11, time.lastIndexOf(':'));
             ChatInfo newMessage = new ChatInfo();
             newMessage.setMessage(chatMessage);
             newMessage.setSentBy(false);
