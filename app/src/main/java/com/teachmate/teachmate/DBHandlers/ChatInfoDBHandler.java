@@ -1,3 +1,4 @@
+
 package com.teachmate.teachmate.DBHandlers;
 
 import android.content.ContentValues;
@@ -13,10 +14,9 @@ import com.teachmate.teachmate.models.ChatInfo;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class ChatInfoDBHandler {
 
-    private static DbHelper dbHelper;
+    private static DbHelper       dbHelper;
     private static SQLiteDatabase db;
 
     public static void InsertChatInfo(Context context, ChatInfo chatInfo) {
@@ -31,43 +31,43 @@ public class ChatInfoDBHandler {
             db = dbHelper.getWritableDatabase();
             db.insert(DbTableStrings.TABLE_NAME_CHAT_INFO, null, contentValues);
         } catch (Exception e) {
-            Log.e("ChatInfoDBHandler",e.getMessage());
-        }finally {
+            Log.e("ChatInfoDBHandler", e.getMessage());
+        } finally {
             db.close();
         }
     }
 
-    public static List<ChatInfo> GetPreviousChat(Context context, String chatID){
+    public static List<ChatInfo> GetPreviousChat(Context context, String chatID) {
 
-        try{
+        try {
             dbHelper = new DbHelper(context.getApplicationContext());
             db = dbHelper.getWritableDatabase();
 
-            Cursor c = db.rawQuery("Select * from " + DbTableStrings.TABLE_NAME_CHAT_INFO + " where "+ DbTableStrings.CHATID +" = '" +chatID + "'", null);
+            Cursor c = db.rawQuery("Select * from " + DbTableStrings.TABLE_NAME_CHAT_INFO
+                    + " where " + DbTableStrings.CHATID + " = '" + chatID + "'", null);
 
             List<ChatInfo> listOfChats = new ArrayList<ChatInfo>();
 
             ChatInfo chat;
 
-            if (c != null ) {
-                if  (c.moveToFirst()) {
+            if (c != null) {
+                if (c.moveToFirst()) {
                     do {
                         chat = new ChatInfo();
                         chat.chatId = c.getString(c.getColumnIndex(DbTableStrings.CHATID));
                         chat.message = c.getString(c.getColumnIndex(DbTableStrings.MESSAGE));
-                        chat.sentBy = c.getInt(c.getColumnIndex(DbTableStrings.SENTBY))>0;
+                        chat.sentBy = c.getInt(c.getColumnIndex(DbTableStrings.SENTBY)) > 0;
                         chat.timeStamp = c.getString(c.getColumnIndex(DbTableStrings.TIMESTAMP));
                         listOfChats.add(chat);
-                    }while (c.moveToNext());
+                    } while (c.moveToNext());
                 }
                 return listOfChats;
             }
             return null;
-        }
-        catch(Exception e){
-            Log.e("ChatInfoDBHandler",e.getMessage());
+        } catch (Exception e) {
+            Log.e("ChatInfoDBHandler", e.getMessage());
             return null;
-        }finally {
+        } finally {
             db.close();
         }
     }

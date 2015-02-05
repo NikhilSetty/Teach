@@ -33,7 +33,7 @@ public class ChatIdMapDBHandler {
             }
         } catch (Exception e) {
             Log.e("ChatIdMapDBHandler", e.getMessage());
-        }finally {
+        } finally {
             db.close();
         }
     }
@@ -60,7 +60,7 @@ public class ChatIdMapDBHandler {
         } catch (Exception e) {
             Log.e("ChatIdMapDBHandler", e.getMessage());
             return 0;
-        }finally {
+        } finally {
             db.close();
         }
         return 0;
@@ -87,12 +87,11 @@ public class ChatIdMapDBHandler {
             }
         } catch (Exception e) {
             Log.e("ChatIdMapDBHandler", e.getMessage());
-        }finally {
+        } finally {
             db.close();
         }
         return previousChats;
     }
-
 
     public static String chattingWith(Context context, String chatId) {
 
@@ -115,7 +114,7 @@ public class ChatIdMapDBHandler {
         } catch (Exception e) {
             Log.e("ChatIdMapDBHandler", e.getMessage());
             return null;
-        }finally {
+        } finally {
             db.close();
         }
         return null;
