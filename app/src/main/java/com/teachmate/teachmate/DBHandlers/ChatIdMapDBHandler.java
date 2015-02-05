@@ -33,6 +33,8 @@ public class ChatIdMapDBHandler {
             }
         } catch (Exception e) {
             Log.e("ChatIdMapDBHandler", e.getMessage());
+        }finally {
+            db.close();
         }
     }
 
@@ -58,6 +60,8 @@ public class ChatIdMapDBHandler {
         } catch (Exception e) {
             Log.e("ChatIdMapDBHandler", e.getMessage());
             return 0;
+        }finally {
+            db.close();
         }
         return 0;
     }
@@ -83,6 +87,8 @@ public class ChatIdMapDBHandler {
             }
         } catch (Exception e) {
             Log.e("ChatIdMapDBHandler", e.getMessage());
+        }finally {
+            db.close();
         }
         return previousChats;
     }
@@ -109,6 +115,8 @@ public class ChatIdMapDBHandler {
         } catch (Exception e) {
             Log.e("ChatIdMapDBHandler", e.getMessage());
             return null;
+        }finally {
+            db.close();
         }
         return null;
     }

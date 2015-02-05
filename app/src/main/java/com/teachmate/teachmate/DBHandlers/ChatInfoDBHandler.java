@@ -32,6 +32,8 @@ public class ChatInfoDBHandler {
             db.insert(DbTableStrings.TABLE_NAME_CHAT_INFO, null, contentValues);
         } catch (Exception e) {
             Log.e("ChatInfoDBHandler",e.getMessage());
+        }finally {
+            db.close();
         }
     }
 
@@ -65,6 +67,8 @@ public class ChatInfoDBHandler {
         catch(Exception e){
             Log.e("ChatInfoDBHandler",e.getMessage());
             return null;
+        }finally {
+            db.close();
         }
     }
 }
