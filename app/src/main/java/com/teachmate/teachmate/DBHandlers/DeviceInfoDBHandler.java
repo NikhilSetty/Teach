@@ -48,7 +48,6 @@ public class DeviceInfoDBHandler {
             else{
                 return null;
             }
-
         }
         catch(Exception e){
             Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
