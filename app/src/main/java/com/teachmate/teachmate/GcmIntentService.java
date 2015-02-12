@@ -55,6 +55,7 @@ public class GcmIntentService extends IntentService {
     public GcmIntentService() {
         super("GcmIntentService");
     }
+
     public static final String TAG = "GCM Demo";
 
     String message;
@@ -104,27 +105,27 @@ public class GcmIntentService extends IntentService {
                 sendNotification("Send error: " + extras.toString());
             } else if (GoogleCloudMessaging.MESSAGE_TYPE_DELETED.equals(messageType)) {
                 sendNotification("Deleted messages on server: " + extras.toString());
-            // If it's a regular GCM message, do some work.
+                // If it's a regular GCM message, do some work.
             } else if (GoogleCloudMessaging.MESSAGE_TYPE_MESSAGE.equals(messageType)) {
 
                 type = extras.getString("Type");
                 intType = Integer.parseInt(type);
-                switch (intType){
+                switch (intType) {
                     case 1:
                         verifyUserId = extras.getString("UserId");
                         break;
                     case 2:
 
-                        askedby=extras.getString("AskedBy");
-                        category=extras.getString("Category");
-                        repliedby=extras.getString("RepliedBy");
-                        replymessage=extras.getString("ReplyMessage");
-                        userid_questions=extras.getString("UserId");
-                        questionmessage=extras.getString("QuestionMessage");
-                        asked_time_questions=extras.getString("AskedTime");
-                        imagepath=extras.getString("UserProfilePhotoServerPath");
-                        questionid=extras.getString("QuestionId");
-                        userprofession_questions=extras.getString("UserProfession");
+                        askedby = extras.getString("AskedBy");
+                        category = extras.getString("Category");
+                        repliedby = extras.getString("RepliedBy");
+                        replymessage = extras.getString("ReplyMessage");
+                        userid_questions = extras.getString("UserId");
+                        questionmessage = extras.getString("QuestionMessage");
+                        asked_time_questions = extras.getString("AskedTime");
+                        imagepath = extras.getString("UserProfilePhotoServerPath");
+                        questionid = extras.getString("QuestionId");
+                        userprofession_questions = extras.getString("UserProfession");
                         break;
                     case 3: //New Request Notification
                         message = extras.getString("message");
@@ -168,7 +169,7 @@ public class GcmIntentService extends IntentService {
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.logo_notif);
 
 
-        if(intType == 2) {
+        if (intType == 2) {
             Intent question = new Intent(this, MainActivity.class);
             question.putExtra("type", "Replies");
             question.putExtra("askedby", askedby);
@@ -176,13 +177,12 @@ public class GcmIntentService extends IntentService {
             question.putExtra("questionmessage", questionmessage);
             question.putExtra("asked_time_questions", asked_time_questions);
             question.putExtra("imagepath", imagepath);
-            question.putExtra("Category",category);
+            question.putExtra("Category", category);
             question.putExtra("questionid", questionid);
             question.putExtra("userprofession_questions", userprofession_questions);
 
-            PendingIntent contentIntent = PendingIntent.getActivity(this,Integer.parseInt(questionid),
+            PendingIntent contentIntent = PendingIntent.getActivity(this, Integer.parseInt(questionid),
                     question, PendingIntent.FLAG_ONE_SHOT);
-
 
 
             NotificationCompat.Builder mBuilder =
@@ -197,8 +197,7 @@ public class GcmIntentService extends IntentService {
 
             mBuilder.setContentIntent(contentIntent);
             mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
-        }
-       else if(intType == 3) {
+        } else if (intType == 3) {
             Intent requestIntent = new Intent(this, MainActivity.class);
             requestIntent.putExtra("type", "request");
             requestIntent.putExtra("NotificationRequestId", requestId);
@@ -218,8 +217,7 @@ public class GcmIntentService extends IntentService {
 
             mBuilder.setContentIntent(contentIntent);
             mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
-        }
-        else if(intType == 4){
+        } else if (intType == 4) {
             Intent responseIntent = new Intent(this, MainActivity.class);
             responseIntent.putExtra("type", "response");
             responseIntent.putExtra("NotificationResponseId", responseId);
@@ -245,8 +243,7 @@ public class GcmIntentService extends IntentService {
 
             mBuilder.setContentIntent(contentIntent);
             mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
-        }
-        else if(intType == 5){
+        } else if (intType == 5) {
             Intent chatIntent = new Intent(getApplicationContext(), ChatActivity.class);
             chatIntent.putExtra("ChatId", chatChatId);
             chatIntent.putExtra("Message", chatMessage);
@@ -254,7 +251,7 @@ public class GcmIntentService extends IntentService {
             chatIntent.putExtra("SenderId", chatSenderId);
             chatIntent.putExtra("UserName", chatSenderName);
             chatIntent.putExtra("received", true);
-            ChatIdMap chatIdMap  = new ChatIdMap();
+            ChatIdMap chatIdMap = new ChatIdMap();
             chatIdMap.chatId = chatChatId;
             chatIdMap.userId = chatSenderId;
             chatIdMap.userName = chatSenderName;
@@ -264,6 +261,24 @@ public class GcmIntentService extends IntentService {
                     Integer.parseInt(chatChatId),
                     chatIntent,
                     PendingIntent.FLAG_ONE_SHOT);
+
+
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date date = new Date();
+            String time = dateFormat.format(date);
+            time = time.substring(11, time.lastIndexOf(':'));
+            ChatInfo newMessage = new ChatInfo();
+            newMessage.setMessage(chatMessage);
+            newMessage.setSentBy(false);
+            newMessage.setTimeStamp(time);
+            newMessage.setChatId(chatChatId);
+
+            ChatInfoDBHandler.InsertChatInfo(getApplicationContext(), newMessage);
+
+            if (TempDataClass.alreadyAdded == true) {
+                TempDataClass.alreadyAdded = false;
+                return;
+            }
 
             Notification mBuilder =
                     new NotificationCompat.Builder(getApplicationContext())
@@ -277,24 +292,11 @@ public class GcmIntentService extends IntentService {
                             .setAutoCancel(true)
                             .build();
 
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            //get current date time with Date()
-            Date date = new Date();
-            String time = dateFormat.format(date);
-            time = time.substring(11, time.lastIndexOf(':'));
-            ChatInfo newMessage = new ChatInfo();
-            newMessage.setMessage(chatMessage);
-            newMessage.setSentBy(false);
-            newMessage.setTimeStamp(time);
-            newMessage.setChatId(chatChatId);
-
-            ChatInfoDBHandler.InsertChatInfo(getApplicationContext(), newMessage);
 
             mNotificationManager =
-                    (NotificationManager)getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+                    (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
             mNotificationManager.notify(NOTIFICATION_ID, mBuilder);
-        }
-        else{
+        } else {
 
         }
     }

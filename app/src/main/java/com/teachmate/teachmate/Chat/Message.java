@@ -3,11 +3,11 @@ package com.teachmate.teachmate.Chat;
 
 public class Message {
 
-    String  message;
+    String message;
 
     boolean isMine;
 
-    String  time;
+    String time;
 
     public Message(String message, boolean isMine, String time) {
         super();
