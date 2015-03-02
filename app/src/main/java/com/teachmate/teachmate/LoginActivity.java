@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.teachmate.teachmate.DBHandlers.DeviceInfoDBHandler;
 import com.teachmate.teachmate.DBHandlers.RequestsDBHandler;
 import com.teachmate.teachmate.DBHandlers.UserModelDBHandler;
+import com.teachmate.teachmate.SignUp.NewSignUpActicity;
 import com.teachmate.teachmate.models.DeviceInfoKeys;
 import com.teachmate.teachmate.models.DeviceInfoModel;
 import com.teachmate.teachmate.models.Requests;
@@ -76,7 +77,7 @@ public class LoginActivity extends Activity {
     }
 
     public void SignUpAction(View v){
-        Intent i = new Intent(this, SignUpActivity.class);
+        Intent i = new Intent(this, NewSignUpActicity.class);
         startActivity(i);
         finish();
     }

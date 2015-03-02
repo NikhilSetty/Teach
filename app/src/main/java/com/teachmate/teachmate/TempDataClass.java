@@ -29,4 +29,5 @@ public class TempDataClass {
 
     public static String profilePhotoLocalPath = "";
     public static String profilePhotoServerPath = "";
+    public static boolean alreadyAdded = false;
 }

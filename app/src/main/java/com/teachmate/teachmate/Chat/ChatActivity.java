@@ -1,7 +1,10 @@
 
 package com.teachmate.teachmate.Chat;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -43,17 +46,46 @@ import java.util.List;
 
 public class ChatActivity extends ActionBarActivity {
 
-    ArrayList<Message>      messages;
-    ChatAdapter             adapter;
-    EditText                text;
-    Button                  send;
-    boolean                 sentBy            = true;
-    static String           chatId;
-    String                  receivedFrom;
-    String                  receivedAt;
-    String                  time;
+    ArrayList<Message> messages;
+    ChatAdapter adapter;
+    EditText text;
+    Button send;
+    boolean sentBy = true;
+    static String chatId;
+    String receivedFrom;
+    String receivedAt;
+    String time;
     public static final int CHAT_NOTIFICATION = 5;
-    ListView                chatMessages;
+    ListView chatMessages;
+    IntentFilter intentFilter;
+
+
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String newMessage = "";
+            String messageFrom = "";
+            Bundle bundle = intent.getExtras();
+            if (bundle != null && bundle.containsKey("Message")) {
+                newMessage = bundle.getString("Message");
+            }
+            if (bundle != null && bundle.containsKey("UserName")) {
+                messageFrom = bundle.getString("UserName");
+            }
+            if (messageFrom.equalsIgnoreCase(receivedFrom)) {
+                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                Date date = new Date();
+                time = dateFormat.format(date);
+                time = time.substring(11, time.lastIndexOf(':'));
+                text.setText("");
+                addNewMessage(new Message(newMessage, false, time));
+                TempDataClass.alreadyAdded = true;
+            }
+
+        }
+    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +103,7 @@ public class ChatActivity extends ActionBarActivity {
         messages = new ArrayList<Message>();
         adapter = new ChatAdapter(this, messages);
         chatMessages.setAdapter(adapter);
+
 
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
@@ -123,11 +156,27 @@ public class ChatActivity extends ActionBarActivity {
         adapter = new ChatAdapter(this, messages);
         chatMessages.setAdapter(adapter);
 
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(receiver);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        intentFilter = new IntentFilter();
+        intentFilter.addAction("com.google.android.c2dm.intent.RECEIVE");
+        registerReceiver(receiver, new IntentFilter(intentFilter));
+        adapter.notifyDataSetChanged();
     }
 
     /*
-     * Adding message to the list and storing the message in the db
-     */
+         * Adding message to the list and storing the message in the db
+         */
     void addNewMessage(Message m) {
         messages.add(m);
         adapter.notifyDataSetChanged();
@@ -135,8 +184,7 @@ public class ChatActivity extends ActionBarActivity {
 
         if (m.isMine() == true) {
 
-        }
-        else {
+        } else {
             time = receivedAt;
         }
 

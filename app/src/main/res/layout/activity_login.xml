@@ -13,36 +13,31 @@
         android:fitsSystemWindows="true">
 
 
-        <RelativeLayout android:id="@+id/fullscreen_content_controls" style="?metaButtonBarStyle"
-            android:layout_width="match_parent" android:layout_height="67dp"
+        <LinearLayout android:id="@+id/fullscreen_content_controls"
+            android:layout_width="fill_parent" android:layout_height="67dp"
+            android:layout_alignParentBottom="true"
             android:layout_gravity="bottom|center_horizontal"
             android:orientation="horizontal"
-            tools:ignore="UselessParent"
-            android:background="#ffffffff">
+            android:background="#ffffffff"
+            android:weightSum="1">
 
             <Button android:id="@+id/buttonSignIn" style="?metaButtonBarButtonStyle"
-                android:layout_width="150dp" android:layout_height="100dp"
-                android:layout_weight="0.5" android:text="@string/SignIn"
+                android:layout_width="wrap_content" android:layout_height="match_parent"
+                android:text="@string/SignIn"
+                android:layout_weight="0.5"
                 android:background="@drawable/border"
                 android:onClick="AuthenticateUser"
-                android:textColor="#ff026b6c"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true" />
+                android:textColor="#ff026b6c" />
 
             <Button android:id="@+id/buttonSignUp" style="?metaButtonBarButtonStyle"
-                android:layout_width="wrap_content" android:layout_height="100dp"
+                android:layout_width="wrap_content" android:layout_height="match_parent"
                 android:text="SignUp"
                 android:background="@drawable/border"
                 android:onClick="SignUpAction"
                 android:textColor="#ff026b6c"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:layout_toEndOf="@+id/buttonSignIn"
-                android:layout_toRightOf="@+id/buttonSignIn" />
+                android:layout_weight="0.5" />
 
-        </RelativeLayout>
+        </LinearLayout>
 
         <RelativeLayout android:id="@+id/sign_in_controls" style="?metaButtonBarStyle"
             android:layout_width="match_parent" android:layout_height="434dp"

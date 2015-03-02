@@ -1,6 +1,6 @@
 package com.teachmate.teachmate.models;
 
-public class ChatInfo{
+public class ChatInfo {
     public String message;
     public boolean sentBy;
     public String timeStamp;
