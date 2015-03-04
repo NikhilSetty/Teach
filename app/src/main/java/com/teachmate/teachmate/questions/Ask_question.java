@@ -14,6 +14,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
@@ -24,6 +26,7 @@ import com.teachmate.teachmate.FragmentTitles;
 import com.teachmate.teachmate.MainActivity;
 import com.teachmate.teachmate.R;
 import com.teachmate.teachmate.TempDataClass;
+import com.teachmate.teachmate.models.QuestionCategoryList;
 import com.teachmate.teachmate.models.Question_Model;
 
 import org.apache.http.HttpResponse;
@@ -47,9 +50,18 @@ import java.util.Calendar;
 public class Ask_question extends Fragment {
     ArrayList<String> myquestionids = new ArrayList<String>();
     Question_Model myquestionsdb = new Question_Model();
-    public static EditText etquestiontitle,etcategorytitle;
+    public static EditText etquestiontitle;
+    public static AutoCompleteTextView etcategorytitle;
+    private static final String[] CATEGORIES = new String[] {
+            "Physics", "Chemistry", "Math", "Biology", "Literature","Science","Travel","Cuisine","Technology","Programming","Music"
+    };
+
+    public static String[] getCategories() {
+        return CATEGORIES;
+    }
 
     Button post;
+    public boolean isInCategories;
     public String created_time;
     public String questionmessage,category;
     public String result;
@@ -74,7 +86,13 @@ public class Ask_question extends Fragment {
 
         RelativeLayout relativeLayout=(RelativeLayout)inflater.inflate(R.layout.new_question_layout,container,false);
         etquestiontitle=(EditText)relativeLayout.findViewById(R.id.etquestiontitle);
-        etcategorytitle=(EditText)relativeLayout.findViewById(R.id.etcategorytitle);
+      //  etcategorytitle=(EditText)relativeLayout.findViewById(R.id.etcategorytitle);
+        etcategorytitle=(AutoCompleteTextView)relativeLayout.findViewById(R.id.etcategorytitle);
+        //QuestionCategoryList categoryList=new QuestionCategoryList();
+        ArrayAdapter<String> adapter=new ArrayAdapter<String>(this.getActivity(),android.R.layout.simple_dropdown_item_1line,CATEGORIES);
+        etcategorytitle.setAdapter(adapter);
+
+
 
         post=(Button)relativeLayout.findViewById(R.id.buttonquestionpost);
 
@@ -91,18 +109,35 @@ public class Ask_question extends Fragment {
                 created_time=day+"/"+month+"/"+year+" "+hour+":"+minutes+":"+seconds;
                 questionmessage=Ask_question.etquestiontitle.getText().toString();
                 category=Ask_question.etcategorytitle.getText().toString();
-                if(TextUtils.isEmpty(category)||TextUtils.isEmpty(questionmessage)){
-                    Toast.makeText(getActivity(),"The above fields cannot be empty.Please fill both the fields and retry",Toast.LENGTH_LONG).show();
-                }else {
-                    ask_question_async ask = new ask_question_async();
-                    ask.execute("http://teach-mate.azurewebsites.net/QuestionForum/AddQuestion");//My server url to hit
+                isInCategories=checkinarray(CATEGORIES,category);
+                if(isInCategories) {
+
+                    if (TextUtils.isEmpty(category) || TextUtils.isEmpty(questionmessage)) {
+                        Toast.makeText(getActivity(), "The above fields cannot be empty.Please fill both the fields and retry", Toast.LENGTH_LONG).show();
+                    } else {
+                        ask_question_async ask = new ask_question_async();
+                        ask.execute("http://teach-mate.azurewebsites.net/QuestionForum/AddQuestion");//My server url to hit
+                    }
+                }else{
+                    Toast.makeText(getActivity(),"Please select an option from the defined categories",Toast.LENGTH_LONG).show();
                 }
 
             }
         });
 
 
+
         return relativeLayout;
+    }
+    public boolean checkinarray(String[] arr,String targetvalue){
+        for(String check:arr){
+            if(check.equals(targetvalue))
+                return true;
+
+        }
+        return false;
+
+
     }
 
 

@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -33,6 +34,7 @@ import com.teachmate.teachmate.DBHandlers.RequestsDBHandler;
 import com.teachmate.teachmate.Requests.MyRequests;
 import com.teachmate.teachmate.models.Question_Model;
 import com.teachmate.teachmate.models.Requests;
+import com.teachmate.teachmate.questions.Ask_question;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -64,6 +66,7 @@ public class HomeFragment extends Fragment {
     public String seconds;
     public String year;
     public String category;
+    public boolean isInCategory;
     public Calendar c=Calendar.getInstance();
 
     Button buttonNewRequest;
@@ -138,7 +141,10 @@ public class HomeFragment extends Fragment {
         alertDialog.setView(promptview);
         alertDialog.setMessage("Ask a new Question!");
         final EditText etquestion=(EditText)promptview.findViewById(R.id.etquestion_ask_question);
-        final EditText etcategory=(EditText)promptview.findViewById(R.id.etcategory_ask_question);
+        final AutoCompleteTextView etcategory=(AutoCompleteTextView)promptview.findViewById(R.id.etcategory_ask_question);
+        final Ask_question askquestionobj=new Ask_question();
+        ArrayAdapter<String> adapter=new ArrayAdapter<String>(this.getActivity(),android.R.layout.simple_dropdown_item_1line,askquestionobj.getCategories());
+        etcategory.setAdapter(adapter);
         promptview.findViewById(R.id.ask_button).setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -153,14 +159,20 @@ public class HomeFragment extends Fragment {
                 created_time=day+"/"+month+"/"+year+" "+hour+":"+minutes+":"+seconds;
                 questionmessage=etquestion.getText().toString();
                 category=etcategory.getText().toString();
-                if(TextUtils.isEmpty(category)|| TextUtils.isEmpty(questionmessage)){
-                    Toast.makeText(getActivity(),"The above fields cannot be empty.Please fill both the fields and retry",Toast.LENGTH_LONG).show();
-                }else{
-                    ask_question_async ask=new ask_question_async();
-                    ask.execute("http://teach-mate.azurewebsites.net/QuestionForum/AddQuestion");
-                    alertDialog.dismiss();
+                isInCategory=askquestionobj.checkinarray(askquestionobj.getCategories(),category);
+                if(isInCategory) {
+                    if (TextUtils.isEmpty(category) || TextUtils.isEmpty(questionmessage)) {
+                        Toast.makeText(getActivity(), "The above fields cannot be empty.Please fill both the fields and retry", Toast.LENGTH_LONG).show();
+                    } else {
+                        ask_question_async ask = new ask_question_async();
+                        ask.execute("http://teach-mate.azurewebsites.net/QuestionForum/AddQuestion");
+                        alertDialog.dismiss();
 
+                    }
+                }else{
+                    Toast.makeText(getActivity(),"Please select an option from the defined categories",Toast.LENGTH_LONG).show();
                 }
+
 
 
 

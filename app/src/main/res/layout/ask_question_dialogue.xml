@@ -41,7 +41,7 @@
         android:paddingTop="5dp"
         android:id="@+id/tvcategory_ask_question" />
 
-    <EditText
+    <AutoCompleteTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/oval"

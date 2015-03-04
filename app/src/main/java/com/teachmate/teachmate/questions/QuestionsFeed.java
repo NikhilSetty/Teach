@@ -424,11 +424,12 @@ public class QuestionsFeed extends Fragment  {
 
                         question1.setQuestion_id(real.getString("QuestionId"));//this would be the question id
                         if(real.getString("UserProfilePhotoServerPath").length()==0){
-                            question1.setImage("http://www.intuitive-analytics.com/Portals/83361/images/by-default-logo.gif");
+                            question1.setImage("");
+
                         }else{
                             question1.setImage(real.getString("UserProfilePhotoServerPath"));}
-                        question1.setUsername(real.getString("AskedBy"));//this is the username of the person who asked the question
-                        question1.setQuestion(real.getString("QuestionMessage"));//jobj.getString("validate")//this would be the question itself
+                        question1.setUsername(real.getString("AskedBy"));
+                        question1.setQuestion(real.getString("QuestionMessage"));
                         question1.setQuestion_id(real.getString("QuestionId"));
                         question1.setCategory(real.getString("Category"));
                         question1.setAsked_time(real.getString("AskedTime"));//this is the time the question was asked
@@ -443,43 +444,7 @@ public class QuestionsFeed extends Fragment  {
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
             }
-            /*getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    int currentpage=1;
-                    Question_Model question = new Question_Model();
-                    question.setUsername("new item added.");//this is the username of the person who asked the question
-                    question.setQuestion("this should be the first item");//jobj.getString("validate")//this would be the question itself
 
-                    question.setAsked_time("time");//this is the time the question was asked
-
-                    questionlist.add(question);
-                    int current_position=list.getFirstVisiblePosition();
-                    Question_Adapter question_adapter = new Question_Adapter(getActivity().getApplicationContext(), R.layout.singlerow, questionlist);
-                    list.setAdapter(question_adapter);
-                    question_adapter.notifyDataSetChanged();
-                    list.setSelectionFromTop(current_position + 1, 0);
-                    Toast.makeText(getActivity().getApplicationContext(), "" + list.getCount(), Toast.LENGTH_LONG).show();
-                }
-            });*/
-           /* int currentpage=1;
-            int i;
-            for (i=0;i<5;i++) {
-                Question_Model question = new Question_Model();
-                question.setUsername("new item added." +i);//this is the username of the person who asked the question
-                question.setQuestion("this should be the first item");//jobj.getString("validate")//this would be the question itself
-
-                question.setAsked_time("item 2"+i);//this is the time the question was asked
-
-                questionlist.add(question);
-            }*/
-
-
-            /*Question_Adapter question_adapter = new Question_Adapter(getActivity().getApplicationContext(), R.layout.singlerow, questionlist);
-            list.setAdapter(question_adapter);
-            question_adapter.notifyDataSetChanged();
-            list.setSelectionFromTop(current_position + 1, 0);
-            Toast.makeText(getActivity().getApplicationContext(), "" + list.getCount(), Toast.LENGTH_LONG).show();*/
 
 
 

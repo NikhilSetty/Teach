@@ -58,7 +58,7 @@
         android:layout_toLeftOf="@+id/buttonquestionpost"
         android:layout_toStartOf="@+id/buttonquestionpost" />
 
-    <EditText
+    <AutoCompleteTextView
         android:layout_width="fill_parent"
         android:background="@drawable/oval"
         android:padding="5dp"
