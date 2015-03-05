@@ -32,6 +32,7 @@ import com.squareup.picasso.Picasso;
 import com.teachmate.teachmate.DBHandlers.QuestionModelDBHandler;
 import com.teachmate.teachmate.DBHandlers.RequestsDBHandler;
 import com.teachmate.teachmate.Requests.MyRequests;
+import com.teachmate.teachmate.models.CategoryList;
 import com.teachmate.teachmate.models.Question_Model;
 import com.teachmate.teachmate.models.Requests;
 import com.teachmate.teachmate.questions.Ask_question;
@@ -142,8 +143,8 @@ public class HomeFragment extends Fragment {
         alertDialog.setMessage("Ask a new Question!");
         final EditText etquestion=(EditText)promptview.findViewById(R.id.etquestion_ask_question);
         final AutoCompleteTextView etcategory=(AutoCompleteTextView)promptview.findViewById(R.id.etcategory_ask_question);
-        final Ask_question askquestionobj=new Ask_question();
-        ArrayAdapter<String> adapter=new ArrayAdapter<String>(this.getActivity(),android.R.layout.simple_dropdown_item_1line,askquestionobj.getCategories());
+        final CategoryList categorylist1=new CategoryList();
+        ArrayAdapter<String> adapter=new ArrayAdapter<String>(this.getActivity(),android.R.layout.simple_dropdown_item_1line,categorylist1.CATEGORIES);
         etcategory.setAdapter(adapter);
         promptview.findViewById(R.id.ask_button).setOnClickListener(new View.OnClickListener() {
 
@@ -159,7 +160,7 @@ public class HomeFragment extends Fragment {
                 created_time=day+"/"+month+"/"+year+" "+hour+":"+minutes+":"+seconds;
                 questionmessage=etquestion.getText().toString();
                 category=etcategory.getText().toString();
-                isInCategory=askquestionobj.checkinarray(askquestionobj.getCategories(),category);
+                isInCategory=categorylist1.checkinarray(categorylist1.CATEGORIES,category);
                 if(isInCategory) {
                     if (TextUtils.isEmpty(category) || TextUtils.isEmpty(questionmessage)) {
                         Toast.makeText(getActivity(), "The above fields cannot be empty.Please fill both the fields and retry", Toast.LENGTH_LONG).show();

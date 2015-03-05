@@ -26,6 +26,7 @@ import com.teachmate.teachmate.FragmentTitles;
 import com.teachmate.teachmate.MainActivity;
 import com.teachmate.teachmate.R;
 import com.teachmate.teachmate.TempDataClass;
+import com.teachmate.teachmate.models.CategoryList;
 import com.teachmate.teachmate.models.QuestionCategoryList;
 import com.teachmate.teachmate.models.Question_Model;
 
@@ -52,13 +53,13 @@ public class Ask_question extends Fragment {
     Question_Model myquestionsdb = new Question_Model();
     public static EditText etquestiontitle;
     public static AutoCompleteTextView etcategorytitle;
-    private static final String[] CATEGORIES = new String[] {
+    /*private static final String[] CATEGORIES = new String[] {
             "Physics", "Chemistry", "Math", "Biology", "Literature","Science","Travel","Cuisine","Technology","Programming","Music"
     };
 
     public static String[] getCategories() {
         return CATEGORIES;
-    }
+    }*/
 
     Button post;
     public boolean isInCategories;
@@ -89,7 +90,8 @@ public class Ask_question extends Fragment {
       //  etcategorytitle=(EditText)relativeLayout.findViewById(R.id.etcategorytitle);
         etcategorytitle=(AutoCompleteTextView)relativeLayout.findViewById(R.id.etcategorytitle);
         //QuestionCategoryList categoryList=new QuestionCategoryList();
-        ArrayAdapter<String> adapter=new ArrayAdapter<String>(this.getActivity(),android.R.layout.simple_dropdown_item_1line,CATEGORIES);
+        final CategoryList categoryList=new CategoryList();
+        ArrayAdapter<String> adapter=new ArrayAdapter<String>(this.getActivity(),android.R.layout.simple_dropdown_item_1line,categoryList.CATEGORIES);
         etcategorytitle.setAdapter(adapter);
 
 
@@ -109,7 +111,7 @@ public class Ask_question extends Fragment {
                 created_time=day+"/"+month+"/"+year+" "+hour+":"+minutes+":"+seconds;
                 questionmessage=Ask_question.etquestiontitle.getText().toString();
                 category=Ask_question.etcategorytitle.getText().toString();
-                isInCategories=checkinarray(CATEGORIES,category);
+                isInCategories=categoryList.checkinarray(categoryList.CATEGORIES, category);
                 if(isInCategories) {
 
                     if (TextUtils.isEmpty(category) || TextUtils.isEmpty(questionmessage)) {
@@ -129,7 +131,7 @@ public class Ask_question extends Fragment {
 
         return relativeLayout;
     }
-    public boolean checkinarray(String[] arr,String targetvalue){
+   /* public boolean checkinarray(String[] arr,String targetvalue){
         for(String check:arr){
             if(check.equals(targetvalue))
                 return true;
@@ -138,7 +140,7 @@ public class Ask_question extends Fragment {
         return false;
 
 
-    }
+    }*/
 
 
     public class ask_question_async extends AsyncTask<String,Void,String> {
