@@ -10,7 +10,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Post this question"
+        android:text="@string/Post_Question"
         android:id="@+id/buttonquestionpost"
         android:layout_below="@+id/etcategorytitle"
 
@@ -25,7 +25,7 @@
         android:background="@drawable/oval"
         android:padding="5dp"
         android:gravity="top|left"
-        android:hint="Enter Question "
+        android:hint="@string/Hint_Enter_Question"
         android:layout_alignParentLeft="false"
         android:layout_alignParentStart="true"
         android:layout_marginTop="61dp"
@@ -37,7 +37,7 @@
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="30dp"
-        android:text="ASK A NEW QUESTION"
+        android:text="@string/Ask_New_Question"
         android:id="@+id/tvtitleask"
         android:layout_alignParentTop="true"
         android:gravity="center"
@@ -48,7 +48,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Category "
+        android:text="@string/Category"
         android:paddingBottom="10dp"
         android:paddingTop="10dp"
         android:id="@+id/textView8"
@@ -63,7 +63,7 @@
         android:background="@drawable/oval"
         android:padding="5dp"
         android:layout_height="wrap_content"
-        android:hint="Enter Category"
+        android:hint="@string/Hint_Enter_Category"
         android:id="@+id/etcategorytitle"
         android:layout_below="@+id/textView8"
         android:layout_alignParentLeft="true"

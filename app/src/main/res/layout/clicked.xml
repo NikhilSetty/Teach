@@ -16,10 +16,9 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="UserName"
+        android:text="@string/Username"
         android:fontFamily="sans"
         android:textColor="#000000"
-
         android:textStyle="bold"
         android:id="@+id/tvusername"
         android:textSize="20dp"
@@ -44,9 +43,8 @@
         android:layout_height="wrap_content"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
-
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Time question was asked"
+        android:text="@string/Asked_Time"
         android:fontFamily="sans"
         android:textColor="#000000"
 
@@ -60,7 +58,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="The actual question would be displayed here"
+        android:text="@string/Question"
         android:fontFamily="sans"
         android:id="@+id/tvquestion"
         android:textColor="#000000"
@@ -104,7 +102,7 @@
         android:layout_gravity="left"
         style="@style/button_text"
         android:background="@drawable/styled_button"
-        android:text="Reply"
+        android:text="@string/Reply_Button"
         android:id="@+id/answerbutton"
        />
 
@@ -113,7 +111,7 @@
         android:layout_width="fill_parent"
         android:layout_marginBottom="0dp"
         android:layout_height="wrap_content"
-        android:text="Read Later"
+        android:text="@string/Read_Later_button"
         android:gravity="center"
         android:layout_weight="1"
         style="@style/button_text"
@@ -127,7 +125,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Category"
+        android:text="@string/Category"
         android:textColor="#000000"
         android:fontFamily="sans"
         android:id="@+id/tvcategory_clicked"

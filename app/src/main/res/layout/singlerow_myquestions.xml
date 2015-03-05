@@ -15,7 +15,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="UserName"
+        android:text="@string/Username"
         android:textStyle="bold"
         android:fontFamily="sans"
         android:textColor="#000000"
@@ -29,7 +29,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Question_id"
+        android:text="@string/Question_id"
         android:fontFamily="sans"
 
         android:textColor="#000000"
@@ -46,7 +46,7 @@
         android:fontFamily="sans"
 
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Time question was asked"
+        android:text="@string/Asked_Time"
         android:id="@+id/tvaskedtime_myquestions"
         android:layout_below="@+id/tvusername_myquestions"
         android:layout_toRightOf="@+id/imageView_myquestions"
@@ -55,7 +55,7 @@
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="The actual question would be displayed here"
+        android:text="@string/Question"
         android:id="@+id/tvquestion_myquestions"
         android:singleLine="true"
         android:fontFamily="sans"
@@ -82,7 +82,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Question id : "
+        android:text="@string/Questionid_isto"
         android:fontFamily="sans"
 
         android:textSize="10dp"
@@ -97,7 +97,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Category  : "
+        android:text="@string/Category__isto"
         android:textColor="#000000"
 
         android:fontFamily="sans"

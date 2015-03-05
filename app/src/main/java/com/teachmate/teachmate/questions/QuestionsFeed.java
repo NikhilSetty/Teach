@@ -154,7 +154,7 @@ public class QuestionsFeed extends Fragment  {
         list = (ListView)relativeLayout.findViewById(R.id.listView);
         Button loadmore=new Button(getActivity());
 
-        loadmore.setText("Load more items");
+        loadmore.setText(faActivity.getString(R.string.Load_More_Items));
         loadmore.setBackgroundColor(Color.WHITE);
         loadmore.setTextColor(Color.BLACK);
         list.addFooterView(loadmore);
@@ -306,7 +306,7 @@ public class QuestionsFeed extends Fragment  {
             super.onPreExecute();
 
             dialog.setProgressStyle(2);
-            dialog.setMessage("loading");
+            dialog.setMessage(getString(R.string.Loading));
             dialog.show();
 
         }
@@ -367,7 +367,7 @@ public class QuestionsFeed extends Fragment  {
             dialog.dismiss();
 
             if (aBoolean == false) {
-                Toast.makeText(getActivity().getApplicationContext(), "No Questions found", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity().getApplicationContext(), getString(R.string.No_Questions_Found), Toast.LENGTH_LONG).show();
 
             } else {
                 final   Question_Adapter question_adapter = new Question_Adapter(getActivity(),R.layout.singlerow, questionlist);
@@ -398,7 +398,7 @@ public class QuestionsFeed extends Fragment  {
             super.onPreExecute();
 
             dialog.setProgressStyle(2);
-            dialog.setMessage("loading more questions");
+            dialog.setMessage(getString(R.string.Loading_More_Questions));
             dialog.show();
 
         }

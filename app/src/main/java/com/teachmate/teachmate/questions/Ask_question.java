@@ -53,13 +53,7 @@ public class Ask_question extends Fragment {
     Question_Model myquestionsdb = new Question_Model();
     public static EditText etquestiontitle;
     public static AutoCompleteTextView etcategorytitle;
-    /*private static final String[] CATEGORIES = new String[] {
-            "Physics", "Chemistry", "Math", "Biology", "Literature","Science","Travel","Cuisine","Technology","Programming","Music"
-    };
 
-    public static String[] getCategories() {
-        return CATEGORIES;
-    }*/
 
     Button post;
     public boolean isInCategories;
@@ -83,13 +77,11 @@ public class Ask_question extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        FragmentActivity fragmentActivity=(FragmentActivity)super.getActivity();
+        final FragmentActivity fragmentActivity=(FragmentActivity)super.getActivity();
 
         RelativeLayout relativeLayout=(RelativeLayout)inflater.inflate(R.layout.new_question_layout,container,false);
         etquestiontitle=(EditText)relativeLayout.findViewById(R.id.etquestiontitle);
-      //  etcategorytitle=(EditText)relativeLayout.findViewById(R.id.etcategorytitle);
-        etcategorytitle=(AutoCompleteTextView)relativeLayout.findViewById(R.id.etcategorytitle);
-        //QuestionCategoryList categoryList=new QuestionCategoryList();
+        etcategorytitle=(AutoCompleteTextView)relativeLayout.findViewById(R.id.etcategorytitle);//autocomplete text view for categories
         final CategoryList categoryList=new CategoryList();
         ArrayAdapter<String> adapter=new ArrayAdapter<String>(this.getActivity(),android.R.layout.simple_dropdown_item_1line,categoryList.CATEGORIES);
         etcategorytitle.setAdapter(adapter);
@@ -115,13 +107,13 @@ public class Ask_question extends Fragment {
                 if(isInCategories) {
 
                     if (TextUtils.isEmpty(category) || TextUtils.isEmpty(questionmessage)) {
-                        Toast.makeText(getActivity(), "The above fields cannot be empty.Please fill both the fields and retry", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), fragmentActivity.getString(R.string.Question_feilds_empty), Toast.LENGTH_LONG).show();
                     } else {
                         ask_question_async ask = new ask_question_async();
                         ask.execute("http://teach-mate.azurewebsites.net/QuestionForum/AddQuestion");//My server url to hit
                     }
                 }else{
-                    Toast.makeText(getActivity(),"Please select an option from the defined categories",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(),fragmentActivity.getString(R.string.select_from_predefined_categories),Toast.LENGTH_LONG).show();
                 }
 
             }
@@ -131,16 +123,7 @@ public class Ask_question extends Fragment {
 
         return relativeLayout;
     }
-   /* public boolean checkinarray(String[] arr,String targetvalue){
-        for(String check:arr){
-            if(check.equals(targetvalue))
-                return true;
 
-        }
-        return false;
-
-
-    }*/
 
 
     public class ask_question_async extends AsyncTask<String,Void,String> {
@@ -152,7 +135,7 @@ public class Ask_question extends Fragment {
             super.onPreExecute();
 
             dialog.setProgressStyle(2);
-            dialog.setMessage("Please wait while we post your Question.");
+            dialog.setMessage(getString(R.string.Posting_Question));
             dialog.show();
 
         }
@@ -182,7 +165,7 @@ public class Ask_question extends Fragment {
                 if(inputStream != null)
                     result = convertInputStreamToString(inputStream);
                 else
-                    result = "Did not work!";
+                    result = getString(R.string.Did_not_Work);
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -226,6 +209,7 @@ public class Ask_question extends Fragment {
 
 }
     public void addtomyquestionsdb(){
+        //Function to add the asked question to local db
         QuestionModelDBHandler addtodb=new QuestionModelDBHandler();
         // public static final AnswerModelDBHandler addanswertodb=new AnswerModelDBHandler();
       //  addtodb.InsertQuestionModel(getActivity(),dbadd);
