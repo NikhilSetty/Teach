@@ -458,7 +458,7 @@ public class SignUpActivity extends ActionBarActivity {
         @Override
         protected void onPostExecute(String result) {
             progressDialog.dismiss();
-            //Toast.makeText(getBaseContext(), "Data Sent! -" + result.toString(), Toast.LENGTH_LONG).show();
+            Toast.makeText(getBaseContext(), "Data Sent! -" + result.toString(), Toast.LENGTH_LONG).show();
 
             if(result != null){
                 if(!(result.isEmpty() || result.contains("ERROR"))){
@@ -737,7 +737,7 @@ public class SignUpActivity extends ActionBarActivity {
         }
 
 
-        return pinCode1Status;
+        return pinCode2Status;
     }
 
 
