@@ -18,16 +18,11 @@
             android:hint="Write here"
             android:padding="5sp"/>
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:layout_margin="5sp"
-            android:paddingBottom="5sp"
-            android:paddingLeft="15sp"
-            android:paddingRight="15sp"
-            android:paddingTop="5sp"
-            android:text="Send"
-            android:textColor="#FFF"
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:clickable="true"
+            android:src="@drawable/send_now"
             android:id="@+id/send_button"/>
     </LinearLayout>
 
