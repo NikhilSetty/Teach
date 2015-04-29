@@ -11,7 +11,8 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:src="@drawable/user_icon"
-        app:maskDrawable="@drawable/circle_mask"/>
+        app:maskDrawable="@drawable/circle_mask"
+        android:scaleType="centerCrop"/>
 
     <TextView
         android:id="@+id/action_bar_user_name"

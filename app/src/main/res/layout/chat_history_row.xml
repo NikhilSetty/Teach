@@ -12,7 +12,8 @@
         android:layout_alignParentTop="true"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="20dp"
-        app:maskDrawable="@drawable/circle_mask"/>
+        app:maskDrawable="@drawable/circle_mask"
+        android:scaleType="centerCrop"/>
 
     <TextView
         android:layout_width="wrap_content"

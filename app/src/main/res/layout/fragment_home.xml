@@ -27,7 +27,8 @@
                 android:id="@+id/imageViewProfilePhoto"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
-                app:maskDrawable="@drawable/circle_mask"/>
+                app:maskDrawable="@drawable/circle_mask"
+                android:scaleType="centerCrop"/>
 
             <TextView
                 android:layout_width="wrap_content"
