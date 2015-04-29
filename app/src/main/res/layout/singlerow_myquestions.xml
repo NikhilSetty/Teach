@@ -32,7 +32,7 @@
         android:text="@string/Question_id"
         android:fontFamily="sans"
 
-        android:textColor="#000000"
+        android:textColor="#EEEEEE"
         android:id="@+id/tvquestion_id_myquestions"
         android:textSize="10dp"
         android:layout_alignParentTop="true"
@@ -86,7 +86,7 @@
         android:fontFamily="sans"
 
         android:textSize="10dp"
-        android:textColor="#000000"
+        android:textColor="#EEEEEE"
 
         android:id="@+id/textView10"
         android:layout_alignParentTop="true"

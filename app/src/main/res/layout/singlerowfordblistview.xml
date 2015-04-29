@@ -100,7 +100,6 @@
         android:fontFamily="sans"
         android:textColor="#EEEEEE"
         android:textSize="10dp"
-        android:text="@string/Question_id"
         android:id="@+id/tvquestiodidstring"
         android:layout_alignRight="@+id/tvquestion_idfromdb"
         android:layout_alignEnd="@+id/tvquestion_idfromdb" />

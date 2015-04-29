@@ -135,10 +135,12 @@ public class SavedForOfflineReading extends Fragment {
         db = dbHelper.getWritableDatabase();
         Cursor cursor=db.rawQuery("SELECT * FROM "+ DbTableStrings.TABLE_NAME_QUESTION_MODEL+" ORDER BY "+DbTableStrings.QUESTION_ID+" DESC ",null);
         String[] fromcolums=new String[]{DbTableStrings.USERNAME,DbTableStrings.QUESTION,DbTableStrings.QUESTION_ID,DbTableStrings.IMAGE,DbTableStrings.ASKED_TIME};
-        int[] tofeilds=new int[]{R.id.tvusernamefromdb,R.id.tvquestionfromdb,R.id.tvquestion_idfromdb,R.id.image,R.id.tvaskedtimefromdb};
+        int[] tofeilds=new int[]{R.id.tvusernamefromdb,R.id.tvquestionfromdb,R.id.tvquestiodidstring,R.id.image,R.id.tvaskedtimefromdb};
+
         SimpleCursorAdapter simpleCursorAdapter;
         simpleCursorAdapter=new SimpleCursorAdapter(getActivity(),R.layout.singlerowfordblistview,cursor,fromcolums,tofeilds,0);
         listviewdb.setAdapter(simpleCursorAdapter);
+
 
 
     }
