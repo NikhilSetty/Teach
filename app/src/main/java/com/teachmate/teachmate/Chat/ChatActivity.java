@@ -13,7 +13,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -49,7 +48,7 @@ public class ChatActivity extends ActionBarActivity {
     ArrayList<Message> messages;
     ChatAdapter adapter;
     EditText text;
-    Button send;
+    ImageView send;
     boolean sentBy = true;
     static String chatId;
     String receivedFrom;
@@ -122,7 +121,7 @@ public class ChatActivity extends ActionBarActivity {
         }
 
         text = (EditText) this.findViewById(R.id.text);
-        send = (Button) this.findViewById(R.id.send_button);
+        send = (ImageView) this.findViewById(R.id.send_button);
 
         send.setOnClickListener(new View.OnClickListener() {
             @Override
