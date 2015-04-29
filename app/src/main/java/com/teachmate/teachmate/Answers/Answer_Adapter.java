@@ -26,6 +26,7 @@ public class Answer_Adapter  extends ArrayAdapter<Answer_Model> {
         Resource1=resource;
         ctxt =context;
         v=(LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
     }
 
     @Override

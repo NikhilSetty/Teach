@@ -23,7 +23,7 @@
         android:background="@drawable/oval"
         android:layout_height="wrap_content"
         android:id="@+id/etsearch"
-        android:hint="search here"
+        android:hint="@string/searchhere"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />

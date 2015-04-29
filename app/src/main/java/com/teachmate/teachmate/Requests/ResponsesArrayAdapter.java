@@ -40,6 +40,7 @@ public class ResponsesArrayAdapter extends ArrayAdapter<Responses> {
         textViewTime.setText(values[position].ResponseTime);
         // Change the icon for Windows and iPhone
 
+
         if(!values[position].ResponseUserProfilePhotoServerPath.isEmpty() && values[position].ResponseUserProfilePhotoServerPath != null){
             Picasso.with(context).load(values[position].ResponseUserProfilePhotoServerPath).into(image);
         }

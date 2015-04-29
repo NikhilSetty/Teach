@@ -5,19 +5,18 @@ package com.teachmate.teachmate.models;
  */
 public class CategoryList {
     public final String[] CATEGORIES = new String[] {
-            "Physics", "Chemistry", "Math", "Biology", "Literature","Science","Travel","Cuisine","Technology","Programming","Music"
+           "Literature","Science","Travel","Cuisine","Technology","Programming","Music","Movies","Sports","Politics","Other","Miscellaneous"
     };
 
    /* public static String[] getCategories() {
         return CATEGORIES;
     }*/
     public boolean checkinarray(String[] arr,String targetvalue){
+
         for(String check:arr){
             if(check.equals(targetvalue))
                 return true;
         }
         return false;
-
-
     }
 }

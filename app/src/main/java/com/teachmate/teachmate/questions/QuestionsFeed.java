@@ -12,6 +12,8 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -67,11 +69,14 @@ public class QuestionsFeed extends Fragment  {
     TextView tvquestionid;
     Boolean flag = true;
 
+
     @Override
     public void onAttach(Activity activity) {
 
         super.onAttach(activity);
         ((MainActivity) activity).onSectionAttached(FragmentTitles.QUESTIONS_FEED);
+
+
     }
 
     @Override
@@ -152,6 +157,8 @@ public class QuestionsFeed extends Fragment  {
 
         imageView = (ImageView)relativeLayout.findViewById(R.id.imageView);
         list = (ListView)relativeLayout.findViewById(R.id.listView);
+        etsearch = (EditText)relativeLayout.findViewById(R.id.etsearch);
+
         Button loadmore=new Button(getActivity());
 
         loadmore.setText(faActivity.getString(R.string.Load_More_Items));
@@ -164,7 +171,7 @@ public class QuestionsFeed extends Fragment  {
             @Override
             public void onClick(View v) {
                 int current_position=list.getFirstVisiblePosition();
-               lastviewposition =list.getCount()-1;
+                lastviewposition =list.getCount()-1;
                 String lastquestionid;
                 lastquestionid = questionlist.get(list.getCount()-2).getQuestion_id();
 
@@ -176,7 +183,6 @@ public class QuestionsFeed extends Fragment  {
             }
         });
 
-        etsearch = (EditText)relativeLayout.findViewById(R.id.etsearch);
 
        /* swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setColorScheme(android.R.color.holo_blue_light,
@@ -237,14 +243,6 @@ public class QuestionsFeed extends Fragment  {
 
 
 
-              /*  Intent i = new Intent(getActivity().getApplicationContext(), clicked_activity.class);
-                i.putExtra("username",user);
-                i.putExtra("question",quest);
-                i.putExtra("asked_time",asked);
-                i.putExtra("question_id",qid);
-                i.putExtra("category","category");
-                i.putExtra("image",url);
-                startActivity(i);*/
 
 
                 Bundle data=new Bundle();
@@ -256,15 +254,8 @@ public class QuestionsFeed extends Fragment  {
                 data.putString("image", url);
 
                 Fragment clickedfragment = new clicked();
-               // Fragment click= getFragmentManager().findFragmentById(R.id.pager);
                 clickedfragment.setArguments(data);
-                /*FragmentTransaction transaction =getChildFragmentManager().beginTransaction();
 
-                transaction.replace(R.id.mainrel,clickedfragment);
-                transaction.addToBackStack(null);
-               // MainActivity instanceFragment= getSupportFragmentManager().findFragmentById(R.id.pager);
-                               transaction.commit();
-*/
                 Fragment currentFragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.container);
 
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
